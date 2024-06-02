@@ -8,28 +8,51 @@
 
     <!-- Display statistics -->
     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="100dp"
+        android:gravity="center_horizontal"
+        android:text="Stats"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/livePlayersTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Live Players: " />
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="20dp"
+        android:text="Live Players: "
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/basketballPlayersTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Basketball Players: " />
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="20dp"
+        android:text="Basketball Players: "
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/soccerPlayersTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Soccer Players: " />
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="20dp"
+        android:text="Soccer Players: "
+        android:textSize="20sp" />
 
     <!-- Button to navigate to MapActivity -->
     <Button
         android:id="@+id/mapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View Map" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="View Map"
+        android:textSize="16sp" />
 
 </LinearLayout>

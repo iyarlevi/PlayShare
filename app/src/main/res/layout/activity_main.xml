@@ -1,33 +1,85 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal|center_vertical"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <EditText
+<!--     android:background="@drawable/minimal_background"-->
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="140dp"
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:text="PlayShare"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
         android:id="@+id/nameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name" />
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:text="איתמר ברינה 208560920"
+        android:textStyle="bold" />
 
-    <EditText
+
+    <TextView
         android:id="@+id/heightEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Height"
-        android:minHeight="48dp" />
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:text="איתי אסרף 205439771"
+        android:textStyle="bold" />
 
-    <EditText
+    <TextView
         android:id="@+id/ageEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Age"
-        android:minHeight="48dp" />
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:text="אייר לוי 318163649"
+        android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/nextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="20dp"
+            android:text="Next" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="10dp"
+            android:text="Button" />
+    </LinearLayout>
+
+
 </LinearLayout>

@@ -6,26 +6,17 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private EditText nameEditText, heightEditText, ageEditText;
+    private TextView nameEditText, heightEditText, ageEditText;
     private Button nextButton;
 
     @Override
@@ -48,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 String age = ageEditText.getText().toString();
 
                 Intent intent = new Intent(MainActivity.this, com.example.playshare.StatsActivity.class);
+
                 intent.putExtra("name", name);
                 intent.putExtra("height", height);
                 intent.putExtra("age", age);
