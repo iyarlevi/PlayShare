@@ -1,5 +1,3 @@
 <resources>
-    <string name="email_input_hint">Enter your email address</string>
-    <string name="password_input_hint">Enter your password</string>
-    <string name="login_title">Login</string>
+
 </resources>

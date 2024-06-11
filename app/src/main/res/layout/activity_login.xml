@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="@dimen/pad_regular_xlarge"
+    android:layout_margin="@dimen/pad_regular_xlarge"
     tools:context=".LoginActivity">
 
     <TextView
@@ -18,6 +18,7 @@
         android:text="@string/login_title"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_display_medium"
+        android:gravity="center"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -25,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:endIconMode="clear_text"
+        app:errorEnabled="true"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -32,9 +34,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email_input_hint"
-            android:gravity="center"
             android:layout_marginBottom="@dimen/margin_regular_medium"
-            android:paddingLeft="@dimen/margin_regular_medium"
+            android:paddingStart="@dimen/margin_regular_medium"
+            android:paddingEnd="@dimen/margin_regular_medium"
             android:inputType="textEmailAddress"
             android:minHeight="@dimen/height_text_medium" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -44,6 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:endIconMode="password_toggle"
+        app:errorEnabled="true"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -51,8 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password_input_hint"
-            android:gravity="center"
-            android:paddingLeft="@dimen/margin_regular_medium"
+            android:paddingStart="@dimen/margin_regular_medium"
+            android:paddingEnd="@dimen/margin_regular_medium"
             android:inputType="textPassword"
             android:minHeight="@dimen/height_text_medium" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -62,20 +65,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_regular_xlarge"
-        android:text="Login"
-        android:textColor="@color/colorOnPrimary"
-        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/login_button"
         android:textSize="@dimen/text_size_body_large"
         android:textStyle="bold" />
 
     <Button
+        style="?attr/materialButtonOutlinedStyle"
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_regular_medium"
-        android:text="Register"
-        android:textColor="@color/colorPrimary"
-        android:backgroundTint="@color/colorOnPrimary"
+        android:text="@string/register_button"
+        android:backgroundTint="@android:color/transparent"
         android:textSize="@dimen/text_size_body_large"
         android:textStyle="bold" />
 
