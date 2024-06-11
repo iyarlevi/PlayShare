@@ -25,8 +25,8 @@
         style="?attr/textInputOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:endIconMode="clear_text"
         app:errorEnabled="true"
+        app:errorIconDrawable="@drawable/ic_error"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -38,6 +38,7 @@
             android:paddingStart="@dimen/margin_regular_medium"
             android:paddingEnd="@dimen/margin_regular_medium"
             android:inputType="textEmailAddress"
+            android:imeOptions="actionNext"
             android:minHeight="@dimen/height_text_medium" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,6 +48,7 @@
         android:layout_height="wrap_content"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
+        app:errorIconDrawable="@drawable/ic_error"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -57,6 +59,7 @@
             android:paddingStart="@dimen/margin_regular_medium"
             android:paddingEnd="@dimen/margin_regular_medium"
             android:inputType="textPassword"
+            android:imeOptions="actionDone"
             android:minHeight="@dimen/height_text_medium" />
     </com.google.android.material.textfield.TextInputLayout>
 

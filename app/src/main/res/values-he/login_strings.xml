@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email_input_hint">כתובת מייל</string>
+    <string name="password_input_hint">הכנס סיסמא</string>
+    <string name="login_title">ברוך הבא</string>
+    <string name="login_button">היכנס</string>
+    <string name="register_button">להירשם</string>
+</resources>
