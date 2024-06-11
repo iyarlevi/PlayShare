@@ -1,5 +1,6 @@
 package com.example.playshare;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.playshare.Connectors.FirebaseConnector;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -38,27 +40,15 @@ public class LoginActivity extends AppCompatActivity {
 
             try {
 
-//            String email = emailEdt.getText().toString();
-//            String password = passwordEdt.getText().toString();
-//            FirebaseConnector firebaseConnector = new FirebaseConnector();
-//            firebaseConnector.signIn(email, password, authResult -> {
-//                Intent intent = new Intent(this, MainActivity.class);
-//                startActivity(intent);
-
-                String email = emailEdt.getText().toString();
-                String password = passwordEdt.getText().toString();
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                        .addOnSuccessListener(authResult -> {
-                            // Handle successful login
-                            Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            // Handle failed login
-                            Toast.makeText(this, "Failed to login", Toast.LENGTH_SHORT).show();
-                        });
-//            },e -> {
-//                Toast.makeText(this, "Failed to login", Toast.LENGTH_SHORT).show();
-//            });
+            String email = emailEdt.getText().toString();
+            String password = passwordEdt.getText().toString();
+            FirebaseConnector firebaseConnector = new FirebaseConnector();
+            firebaseConnector.signIn(email, password, authResult -> {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            },e -> {
+                Toast.makeText(this, "Failed to login", Toast.LENGTH_SHORT).show();
+            });
         } catch(Exception e){
             Log.e("LoginActivity", "Error: " + e.getMessage());
         }
