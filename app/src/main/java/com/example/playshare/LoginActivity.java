@@ -3,6 +3,7 @@ package com.example.playshare;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,17 +16,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.playshare.Connectors.FirebaseConnector;
-import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     EditText emailEdt, passwordEdt;
-    Button loginBtn, signUpBtn;
+    Button loginBtn, registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdge.enable(this); // Ensure this is needed for your case
         setContentView(R.layout.activity_login);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -36,9 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         emailEdt = findViewById(R.id.emailEditText);
         passwordEdt = findViewById(R.id.passwordEditText);
         loginBtn = findViewById(R.id.loginButton);
+        registerBtn = findViewById(R.id.registerButton);
 
         emailEdt.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_NEXT){
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 passwordEdt.requestFocus();
                 return true;
             }
@@ -46,17 +48,28 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         passwordEdt.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginBtn.performClick();
                 return true;
             }
             return false;
         });
 
-        loginBtn.setOnClickListener(v -> {
+        loginBtn.setOnClickListener(this);
+        registerBtn.setOnClickListener(this);
+    }
 
-            try {
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.loginButton) {
+            handleLogin();
+        } else if (view.getId() == R.id.registerButton) {
+            handleRegister();
+        }
+    }
 
+    private void handleLogin() {
+        try {
             String email = emailEdt.getText().toString();
             if (email.isEmpty()) {
                 emailEdt.setError("Please enter email");
@@ -73,8 +86,8 @@ public class LoginActivity extends AppCompatActivity {
             firebaseConnector.signIn(email, password, authResult -> {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
-            },e -> {
-                if (e.getMessage().contains("email address is badly formatted")) {
+            }, e -> {
+                if ((Objects.requireNonNull(e.getMessage())).contains("email address is badly formatted")) {
                     emailEdt.setError("Please enter a valid email");
                     emailEdt.requestFocus();
                     return;
@@ -86,9 +99,14 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 Toast.makeText(this, "Failed to login", Toast.LENGTH_SHORT).show();
             });
-        } catch(Exception e){
+        } catch (Exception e) {
             Log.e("LoginActivity", "Error: " + e.getMessage());
         }
-    });
-}
+    }
+
+    private void handleRegister() {
+        // Implement registration functionality here
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
 }

@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/pad_regular_xlarge"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".RegistrationActivity">
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -25,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_regular_xlarge"
                 android:gravity="center"
-                android:text="@string/login_title"
+                android:text="@string/registration_title"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_display_medium"
                 android:textStyle="bold" />
@@ -38,7 +37,7 @@
                 app:errorIconDrawable="@drawable/ic_error">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailEditText"
+                    android:id="@+id/registerEmailEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_regular_medium"
@@ -54,12 +53,11 @@
                 style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="password_toggle"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@drawable/ic_error">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordEditText"
+                    android:id="@+id/registerPasswordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password_input_hint"
@@ -70,22 +68,30 @@
                     android:paddingEnd="@dimen/margin_regular_medium" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/loginButton"
+            <com.google.android.material.textfield.TextInputLayout
+                style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_regular_xlarge"
-                android:text="@string/login_button"
-                android:textSize="@dimen/text_size_body_large"
-                android:textStyle="bold" />
+                app:errorEnabled="true"
+                app:errorIconDrawable="@drawable/ic_error">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/confirmPasswordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_input_confirm_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:minHeight="@dimen/height_text_medium"
+                    android:paddingStart="@dimen/margin_regular_medium"
+                    android:paddingEnd="@dimen/margin_regular_medium" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/registerButton"
-                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/registerNewUserButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_regular_medium"
-                android:backgroundTint="@android:color/transparent"
                 android:text="@string/register_button"
                 android:textSize="@dimen/text_size_body_large"
                 android:textStyle="bold" />
