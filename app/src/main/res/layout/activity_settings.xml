@@ -5,64 +5,43 @@
     android:orientation="vertical"
     tools:context=".SettingsActivity">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="100dp"
-        android:gravity="center_horizontal"
-        android:text="Profile"
-        android:textSize="34sp"
-        android:textStyle="bold" />
-
     <EditText
         android:id="@+id/nameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:hint="Name"
-        android:minHeight="48dp"/>
+        android:hint="@string/name_input_hint" />
 
     <EditText
         android:id="@+id/heightEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:hint="Height"
+        android:hint="@string/height_input_hint"
         android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/ageEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:hint="Age"
+        android:hint="@string/age_input_hint"
         android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/sportEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:hint="Sport"
+        android:hint="@string/sport_input_hint"
         android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/gameTypeEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-
-        android:hint="Game Type"
+        android:hint="@string/game_type_input_hint"
         android:minHeight="48dp" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:text="Save" />
-
+        android:text="@string/save" />
 </LinearLayout>
