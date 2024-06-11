@@ -15,8 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlayShare"
         tools:targetApi="31">
-
-        <!--Define valid MAPS_API_KEY in local.properties file-->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <!-- Define valid MAPS_API_KEY in local.properties file -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
@@ -31,8 +33,9 @@
             android:name=".StatsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:supportsRtl="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

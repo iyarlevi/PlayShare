@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">PlayShare</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="name_input_hint">Name</string>
+    <string name="height_input_hint">Height</string>
+    <string name="age_input_hint">Age</string>
+    <string name="sport_input_hint">Sport</string>
+    <string name="game_type_input_hint">Game Type</string>
+    <string name="save">Save</string>
 </resources>
