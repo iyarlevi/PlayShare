@@ -82,8 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 passwordEdt.requestFocus();
                 return;
             }
-            FirebaseConnector firebaseConnector = new FirebaseConnector();
-            firebaseConnector.signIn(email, password, authResult -> {
+            FirebaseConnector.signIn(email, password, authResult -> {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }, e -> {
