@@ -38,7 +38,6 @@
         <item name="colorSurfaceInverse">@color/colorInverseSurface</item>
         <item name="colorOnSurfaceInverse">@color/colorInverseOnSurface</item>
         <item name="colorPrimaryInverse">@color/colorInversePrimary</item>
-
         <item name="android:shadowColor">@color/colorShadow</item>
     </style>
 

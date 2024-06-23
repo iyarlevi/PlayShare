@@ -8,4 +8,9 @@
     <string name="sport_input_hint">סוג הספורט</string>
     <string name="game_type_input_hint">סוג המשחק</string>
     <string name="save">שמור</string>
+
+    <string name="edit_profile">ערוך פרופיל</string>
+    <string name="content_description_edit_profile">ערוך פרופיל</string>
+    <string name="more">עוד</string>
+    <string name="content_description_more">עוד</string>
 </resources>
