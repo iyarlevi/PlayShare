@@ -7,19 +7,35 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-<!--     android:background="@drawable/minimal_background"-->
+    <!--     android:background="@drawable/minimal_background"-->
 
 
-    <TextView
-        android:id="@+id/textView"
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginBottom="140dp"-->
+    <!--        android:gravity="center"-->
+    <!--        android:minHeight="48dp"-->
+    <!--        android:text="PlayShare"-->
+    <!--        android:textSize="34sp"-->
+    <!--        android:textStyle="bold" />-->
+
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="140dp"
-        android:gravity="center"
-        android:minHeight="48dp"
-        android:text="PlayShare"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="@dimen/margin_regular_medium">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            style="@style/Base.Theme.PlayShare"
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:menu="@menu/top_app_bar"
+            app:titleCentered="true"
+            app:title="PlayShare" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ImageView
         android:id="@+id/imageView"

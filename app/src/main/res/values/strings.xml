@@ -7,4 +7,9 @@
     <string name="sport_input_hint">Sport</string>
     <string name="game_type_input_hint">Game Type</string>
     <string name="save">Save</string>
+
+    <string name="edit_profile">edit profile</string>
+    <string name="content_description_edit_profile">edit profile</string>
+    <string name="more">more</string>
+    <string name="content_description_more">more</string>
 </resources>
