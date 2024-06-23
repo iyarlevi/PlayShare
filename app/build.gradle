@@ -43,9 +43,15 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.play.services.maps
+    implementation libs.google.firebase.auth
+    implementation libs.firebase.firestore
+    implementation libs.firebase.storage
+    implementation libs.google.firebase.database
+    implementation platform('com.google.firebase:firebase-bom:33.1.1')
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation libs.firebase.auth
+    implementation libs.firebase.database
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
