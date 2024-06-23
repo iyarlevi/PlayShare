@@ -36,6 +36,11 @@ public class StatsActivity extends AppCompatActivity {
         Button mapButton = findViewById(R.id.mapButton);
         mapButton.setOnClickListener(v -> startActivity(new Intent(StatsActivity.this, MapActivity.class)));
 
+        // Set initial loading text
+        livePlayersTextView.setText(getString(R.string.loading));
+        basketballPlayersTextView.setText(getString(R.string.loading));
+        soccerPlayersTextView.setText(getString(R.string.loading));
+
         db = FirebaseFirestore.getInstance();
         setupStatsListener();
     }
@@ -79,7 +84,6 @@ public class StatsActivity extends AppCompatActivity {
                 basketballPlayersTextView.setText(getString(R.string.basketball_players, basketball_players_str));
                 String soccer_players_str = soccerPlayersStr != null ? soccerPlayersStr : "N/A";
                 soccerPlayersTextView.setText(getString(R.string.soccer_players, soccer_players_str));
-
             });
 
         } catch (Exception e) {

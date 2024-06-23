@@ -3,4 +3,5 @@
     <string name="live_players">Live Players: %s</string>
     <string name="basketball_players">Basketball Players: %s</string>
     <string name="soccer_players">Football Players: %s</string>
+    <string name="loading">Loading…</string>
 </resources>

@@ -44,12 +44,8 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.play.services.maps
     implementation libs.google.firebase.auth
-    implementation libs.firebase.firestore
-    implementation libs.firebase.storage
+    implementation libs.google.firebase.firestore
     implementation libs.google.firebase.database
-    implementation libs.firebase.bom
-    implementation libs.gms.play.services.maps.v1820
-    implementation libs.play.services.location.v2101
     implementation libs.play.services.maps.v1820
     implementation libs.play.services.location
     implementation libs.core.splashscreen
