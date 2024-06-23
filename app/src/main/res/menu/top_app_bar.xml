@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/favorite"
+        android:id="@+id/profile"
         android:icon="@drawable/baseline_edit_profile_24"
         android:iconTint="@color/colorOnPrimaryContainer"
         android:title="@string/edit_profile"
