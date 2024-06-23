@@ -46,7 +46,7 @@
     <style name="Theme.AnimatedSplashScreen" parent="Theme.SplashScreen"/>
 
     <style name="Theme.AppCompat.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/black</item>
+        <item name="windowSplashScreenBackground">@color/colorPrimary</item>
         <item name="postSplashScreenTheme">@style/Theme.AnimatedSplashScreen</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
     </style>
