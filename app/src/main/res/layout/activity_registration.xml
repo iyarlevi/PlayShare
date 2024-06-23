@@ -37,7 +37,7 @@
                 app:errorIconDrawable="@drawable/ic_error">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/registerEmailEditText"
+                    android:id="@+id/registerEmailEdt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_regular_medium"
@@ -57,11 +57,11 @@
                 app:errorIconDrawable="@drawable/ic_error">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/registerPasswordEditText"
+                    android:id="@+id/registerPasswordEdt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password_input_hint"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:minHeight="@dimen/height_text_medium"
                     android:paddingStart="@dimen/margin_regular_medium"
@@ -76,7 +76,7 @@
                 app:errorIconDrawable="@drawable/ic_error">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/confirmPasswordEditText"
+                    android:id="@+id/passwordConfirmEdt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password_input_confirm_hint"
