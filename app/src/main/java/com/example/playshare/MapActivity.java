@@ -1,94 +1,161 @@
 package com.example.playshare;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.playshare.databinding.ActivityMapBinding;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.ArrayList;
 
-    private GoogleMap mMap;
-    private ActivityMapBinding binding;
-    private FusedLocationProviderClient fusedLocationClient;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+public class MapActivity extends FragmentActivity implements
+        LocationListener,
+        OnMapReadyCallback,
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnMapLongClickListener {
+
+    private GoogleMap googleMap;
+    private LocationManager locationManager;
+    private ActivityResultLauncher<String> requestPermissionLauncher;
+    private ArrayList<LatLng> mapPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize Google Maps with the API key
-        MapsInitializer.initialize(getApplicationContext());
+        setContentView(R.layout.activity_map);
 
-        binding = ActivityMapBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        // Setup Permission Launcher callback
+        requestPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(), isGranted ->
+                {
+                    if (isGranted)
+                        // Define what to do when permission is granted:
+                        startLocationUpdates();
+                    else
+                        Toast.makeText(this, "Permission NOT Granted!", Toast.LENGTH_LONG).show();
+                });
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        // Setup Google Map - when its ready, will call onMapReady();
+        SupportMapFragment map = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        if (map != null)
+            map.getMapAsync(this);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        // Setup Location Manager
+        locationManager = getSystemService(LocationManager.class);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
-            getCurrentLocation();
+        this.googleMap = googleMap;
+        googleMap.setOnMapClickListener(this);
+        googleMap.setOnMapLongClickListener(this);
+
+        LatLng azrieli = new LatLng(31.7692, 35.1937);
+        googleMap.addMarker(new MarkerOptions().position(azrieli).title("Azrieli College"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(azrieli, 15f));
+
+        mapPath = new ArrayList<>();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            startLocationUpdates();
+        else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(this, "App needs to access Device's Location!", Toast.LENGTH_LONG).show();
+            } else {
+                // ask for the permission.
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
         }
     }
 
-    private void getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, location -> {
-                        if (location != null) {
-                            LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                            mMap.addMarker(new MarkerOptions().position(myLocation).title("Current Location"));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
-                            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-                        } else {
-                            // Handle the case where location is null
-                            LatLng defaultLocation = new LatLng(31.774938101720874, 35.21382054746735); // Default location (Jerusalem, Israel)
-                            mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Default Location"));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation));
-                            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-                        }
-                    });
-        }
+    @SuppressLint("MissingPermission")
+    private void startLocationUpdates() {
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, this);
+        else
+            Toast.makeText(this, "GPS Disable!", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getCurrentLocation();
-            } else {
-                // Permission denied, show a default location or handle the denial
-                LatLng defaultLocation = new LatLng(31.774938101720874, 35.21382054746735); // Default location (Jerusalem, Israel)
-                mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Default Location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-            }
-        }
+    public void onLocationChanged(Location location) {
+        Log.d("MainActivity", ">>> onLocationChanged: " + location);
+
+        LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+        googleMap.clear();
+        googleMap.addMarker(new MarkerOptions().position(pos));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f));
+
+        // draw path
+        mapPath.add(pos);
+        googleMap.addPolyline(new PolylineOptions().addAll(mapPath).color(Color.BLUE).width(10f));
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        Log.d("MainActivity", ">>> onProviderEnabled: " + provider);
+        Toast.makeText(this, "GPS Enabled!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        Log.d("MainActivity", ">>> onProviderDisabled: " + provider);
+        Toast.makeText(this, "GPS Disabled!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onMapClick(@NonNull LatLng latLng) {
+        Log.d("MainActivity", ">>> onMapClick: " + latLng);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 19f));
+
+    }
+
+    @Override
+    public void onMapLongClick(@NonNull LatLng latLng) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Create new game");
+        builder.setMessage("Do you want to create a new game here?");
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            Intent intent = new Intent(this, NewGameActivity.class);
+            intent.putExtra("lat", latLng.latitude);
+            intent.putExtra("lng", latLng.longitude);
+            startActivity(intent);
+            finish();
+        });
+        builder.setNegativeButton("No", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 }

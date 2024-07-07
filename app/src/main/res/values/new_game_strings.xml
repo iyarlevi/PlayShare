@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_new_game">Create New Game</string>
+    <string name="select_time">Select Time</string>
+    <string name="save_game">save game</string>
+    <string name="game_type_is_required">Game Type is required</string>
+    <string name="date_is_required">Date is required</string>
+    <string name="time_is_required">Time is required</string>
+</resources>
