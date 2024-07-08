@@ -4,12 +4,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +18,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 public class MainActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private TextView nameEditText, heightEditText, ageEditText;
+    private TextView nameTextView, heightTextView, ageTextView;
     private Button nextButton;
     private MaterialToolbar topAppBar;
 
@@ -30,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        nameEditText = findViewById(R.id.nameEditText);
-        heightEditText = findViewById(R.id.heightEditText);
-        ageEditText = findViewById(R.id.ageEditText);
+        nameTextView = findViewById(R.id.nameTextView);
+        heightTextView = findViewById(R.id.heightTextView);
+        ageTextView = findViewById(R.id.ageTextView);
         nextButton = findViewById(R.id.nextButton);
         topAppBar = findViewById(R.id.topAppBar);
 
@@ -50,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = nameEditText.getText().toString();
-                String height = heightEditText.getText().toString();
-                String age = ageEditText.getText().toString();
+                String name = nameTextView.getText().toString();
+                String height = heightTextView.getText().toString();
+                String age = ageTextView.getText().toString();
 
                 Intent intent = new Intent(MainActivity.this, com.example.playshare.StatsActivity.class);
 
