@@ -61,7 +61,6 @@ public class SettingsActivity extends AppCompatActivity {
         editor.putString("age", age);
         editor.apply();
 
-        // Optionally, you can finish() the activity or provide feedback to the user
         finish();
     }
 }

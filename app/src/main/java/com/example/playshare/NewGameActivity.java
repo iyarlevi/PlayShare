@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.playshare.Data.GameType;
+import com.example.playshare.Data.Enums.GameTypeEnum;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -29,7 +29,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_new_game);
         // todo get the values from firebase instead
-        for (GameType gameType : GameType.values()) {
+        for (GameTypeEnum gameType : GameTypeEnum.values()) {
             gameTypes.add(gameType.toString());
         }
         // initialize the input fields
