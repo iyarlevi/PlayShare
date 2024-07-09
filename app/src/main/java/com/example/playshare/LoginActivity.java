@@ -15,13 +15,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.playshare.Components.ProgressDialog;
 import com.example.playshare.Connectors.FirebaseConnector;
 
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText emailEdt, passwordEdt;
-    Button loginBtn, registerBtn;
+    private EditText emailEdt, passwordEdt;
+    private Button loginBtn, registerBtn;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return false;
         });
 
+        // Initialize class fields
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
+        progressDialog = new ProgressDialog(this);
     }
 
     @Override
@@ -82,10 +86,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 passwordEdt.requestFocus();
                 return;
             }
+
+            progressDialog.setMessage("Logging in...");
+            progressDialog.showLoading();
+
             FirebaseConnector.signIn(email, password, authResult -> {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }, e -> {
+                progressDialog.hideLoading();
                 if ((Objects.requireNonNull(e.getMessage())).contains("email address is badly formatted")) {
                     emailEdt.setError("Please enter a valid email");
                     emailEdt.requestFocus();
