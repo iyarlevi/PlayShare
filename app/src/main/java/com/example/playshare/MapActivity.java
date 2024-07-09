@@ -3,7 +3,6 @@ package com.example.playshare;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -12,6 +11,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,6 +29,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -42,28 +46,28 @@ public class MapActivity extends FragmentActivity implements
     private LocationManager locationManager;
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ArrayList<LatLng> mapPath;
+    private LatLng myLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_map);
 
         // Setup Permission Launcher callback
         requestPermissionLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(), isGranted ->
-                {
-                    if (isGranted)
-                        // Define what to do when permission is granted:
+                new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
                         startLocationUpdates();
-                    else
+                    } else {
                         Toast.makeText(this, "Permission NOT Granted!", Toast.LENGTH_LONG).show();
+                    }
                 });
 
         // Setup Google Map - when its ready, will call onMapReady();
         SupportMapFragment map = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        if (map != null)
+        if (map != null) {
             map.getMapAsync(this);
+        }
 
         // Setup Location Manager
         locationManager = getSystemService(LocationManager.class);
@@ -81,9 +85,9 @@ public class MapActivity extends FragmentActivity implements
 
         mapPath = new ArrayList<>();
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             startLocationUpdates();
-        else {
+        } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 Toast.makeText(this, "App needs to access Device's Location!", Toast.LENGTH_LONG).show();
             } else {
@@ -95,10 +99,11 @@ public class MapActivity extends FragmentActivity implements
 
     @SuppressLint("MissingPermission")
     private void startLocationUpdates() {
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, this);
-        else
+        } else {
             Toast.makeText(this, "GPS Disable!", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -106,13 +111,53 @@ public class MapActivity extends FragmentActivity implements
         Log.d("MainActivity", ">>> onLocationChanged: " + location);
 
         LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+        myLocation = pos; // Update the user's current location
+
         googleMap.clear();
-        googleMap.addMarker(new MarkerOptions().position(pos));
+
+        // Add marker for user's current location
+        Marker userLocationMarker = googleMap.addMarker(new MarkerOptions().position(pos).title("Your Location"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f));
+
+        // Set click listener for the user's location marker
+        googleMap.setOnMarkerClickListener(marker -> {
+            if (marker.equals(userLocationMarker)) {
+                showUserLocationDetails();
+                return true;
+            }
+            return false;
+        });
 
         // draw path
         mapPath.add(pos);
         googleMap.addPolyline(new PolylineOptions().addAll(mapPath).color(Color.BLUE).width(10f));
+    }
+
+    private void showUserLocationDetails() {
+        // Inflate the dialog layout
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.dialog_game_details, null);
+
+        // Set the user's location details in the dialog
+        TextView tvUserLocation = dialogView.findViewById(R.id.tvUserLocation);
+        TextView tvUserCoordinates = dialogView.findViewById(R.id.tvUserCoordinates);
+        Button btnClose = dialogView.findViewById(R.id.btnClose);
+
+        if (myLocation != null) {
+            tvUserCoordinates.setText("Coordinates: " + myLocation.latitude + ", " + myLocation.longitude);
+        }
+
+        btnClose.setOnClickListener(v -> {
+            // Dismiss the dialog
+            Dialog dialog = (Dialog) v.getTag();
+            dialog.dismiss();
+        });
+
+        // Create and show the dialog
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setView(dialogView);
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -137,7 +182,6 @@ public class MapActivity extends FragmentActivity implements
     public void onMapClick(@NonNull LatLng latLng) {
         Log.d("MainActivity", ">>> onMapClick: " + latLng);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 19f));
-
     }
 
     @Override
