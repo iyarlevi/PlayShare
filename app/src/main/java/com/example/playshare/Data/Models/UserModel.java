@@ -9,6 +9,7 @@ public class UserModel {
     private String _nickname;
     private LatLng _location;
     private ArrayList<String> _preferences;
+    private String _timeStamp;
 
     public UserModel(int age, String nickname, LatLng location, ArrayList<String> preferences) {
         _age = age;
@@ -59,5 +60,13 @@ public class UserModel {
 
     public void clearPreferences() {
         _preferences.clear();
+    }
+
+    public String getTimeStamp() {
+        return _timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        _timeStamp = timeStamp;
     }
 }
