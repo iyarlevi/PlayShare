@@ -3,9 +3,11 @@ package com.example.playshare.Data.Models;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class UserModel {
     private int _age;
+    private String _imageUrl;
     private String _nickname;
     private LatLng _location;
     private ArrayList<String> _preferences;
@@ -16,6 +18,7 @@ public class UserModel {
         _nickname = nickname;
         _location = location;
         _preferences = preferences;
+        _timeStamp = Calendar.getInstance().getTime().toString();
     }
 
     public int getAge() {
@@ -68,5 +71,13 @@ public class UserModel {
 
     public void setTimeStamp(String timeStamp) {
         _timeStamp = timeStamp;
+    }
+
+    public String getImageUrl() {
+        return _imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        _imageUrl = imageUrl;
     }
 }

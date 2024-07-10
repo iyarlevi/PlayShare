@@ -6,6 +6,8 @@
     <string name="age_input_hint">Age</string>
     <string name="sport_input_hint">Sport</string>
     <string name="game_type_input_hint">Game Type</string>
+    <string name="players_level_input_hint">Players Level</string>
+    <string name="preferred_game_input_hint">Preferred Game</string>
     <string name="save">Save</string>
 
     <string name="edit_profile">edit profile</string>
@@ -16,5 +18,5 @@
     <string name="itamar_string"> Itamar Brina 208560920</string>
     <string name="itay_string"> Itay Asraf 205439771</string>
     <string name="iyar_string"> Iyar Levy 318163649</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
 </resources>

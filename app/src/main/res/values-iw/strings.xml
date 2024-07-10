@@ -7,6 +7,8 @@
     <string name="age_input_hint">הכנס גיל</string>
     <string name="sport_input_hint">סוג הספורט</string>
     <string name="game_type_input_hint">סוג המשחק</string>
+    <string name="players_level_input_hint">רמת השחקנים</string>
+    <string name="preferred_game_input_hint">המשחק המועדף</string>
     <string name="save">שמור</string>
 
     <string name="edit_profile">ערוך פרופיל</string>
@@ -16,4 +18,5 @@
     <string name="itamar_string">איתמר ברינה 208560920</string>
     <string name="itay_string">איתי אסרף 205439771</string>
     <string name="iyar_string">אייר לוי 318163649</string>
+    <string name="cancel">ביטול</string>
 </resources>
