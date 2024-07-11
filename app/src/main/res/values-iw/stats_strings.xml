@@ -3,4 +3,9 @@
     <string name="live_players">שחקנים פעילים: %s</string>
     <string name="basketball_players">שחקני כדורסל: %s</string>
     <string name="soccer_players">שחקני כדורגל: %s</string>
+    <string name="stats">סטטיסטיקות</string>
+    <string name="live_players_n_a">שחקנים פעילים: שגיאה</string>
+    <string name="basketball_players_n_a">שחקני כדורסל: שגיאה</string>
+    <string name="soccer_players_n_a">שחקני כדורגל: שגיאה</string>
+    <string name="view_map">הצג מפה</string>
 </resources>

@@ -35,4 +35,14 @@
     <dimen name="text_size_display_medium">45sp</dimen>
     <dimen name="text_size_display_large">57sp</dimen>
 
+    <dimen name="width_button_small">100dp</dimen>
+    <dimen name="width_button_medium">150dp</dimen>
+    <dimen name="width_button_large">200dp</dimen>
+    <dimen name="width_button_xlarge">250dp</dimen>
+
+    <dimen name="width_edit_text_small">150dp</dimen>
+    <dimen name="width_edit_text_medium">200dp</dimen>
+    <dimen name="width_edit_text_large">250dp</dimen>
+    <dimen name="width_edit_text_xlarge">300dp</dimen>
+
 </resources>

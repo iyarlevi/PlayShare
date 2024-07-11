@@ -4,12 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Title TextView -->
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stats"
+        android:text="@string/stats"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,12 +17,11 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Live Players TextView -->
     <TextView
         android:id="@+id/livePlayersTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Live Players: N/A"
+        android:text="@string/live_players_n_a"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,12 +30,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"/>
 
-    <!-- Basketball Players TextView -->
     <TextView
         android:id="@+id/basketballPlayersTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Basketball Players: N/A"
+        android:text="@string/basketball_players_n_a"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,12 +43,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"/>
 
-    <!-- Soccer Players TextView -->
     <TextView
         android:id="@+id/soccerPlayersTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Soccer Players: N/A"
+        android:text="@string/soccer_players_n_a"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,12 +56,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"/>
 
-    <!-- Button to navigate to MapActivity -->
     <Button
         android:id="@+id/mapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View Map"
+        android:text="@string/view_map"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/soccerPlayersTextView"
         app:layout_constraintEnd_toEndOf="parent"
