@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
-                app:errorIconDrawable="@drawable/ic_error">
+                app:errorIconDrawable="@drawable/ic_warning">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/registerEmailEdt"
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
-                app:errorIconDrawable="@drawable/ic_error">
+                app:errorIconDrawable="@drawable/ic_warning">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/registerPasswordEdt"
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
-                app:errorIconDrawable="@drawable/ic_error">
+                app:errorIconDrawable="@drawable/ic_warning">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwordConfirmEdt"
@@ -95,6 +95,18 @@
                 android:text="@string/register_button"
                 android:textSize="@dimen/text_size_body_large"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/cancelButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_regular_medium"
+                android:backgroundTint="@android:color/transparent"
+                android:text="@string/cancel"
+                android:textSize="@dimen/text_size_body_large"
+                android:textStyle="bold" />
+
         </LinearLayout>
     </ScrollView>
 

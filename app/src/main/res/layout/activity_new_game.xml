@@ -34,7 +34,7 @@
                 android:layout_marginBottom="@dimen/margin_regular_medium"
                 android:layout_width="match_parent"
                 app:errorEnabled="true"
-                app:errorIconDrawable="@drawable/ic_error"
+                app:errorIconDrawable="@drawable/ic_warning"
                 android:layout_height="wrap_content"
                 android:hint="@string/game_type_input_hint">
 
@@ -54,7 +54,7 @@
                 android:layout_marginBottom="@dimen/margin_regular_medium"
                 android:layout_width="match_parent"
                 app:errorEnabled="true"
-                app:errorIconDrawable="@drawable/ic_error"
+                app:errorIconDrawable="@drawable/ic_warning"
                 android:layout_height="wrap_content"
                 android:hint="@string/players_level_input_hint">
 
@@ -74,7 +74,7 @@
                 android:layout_marginBottom="@dimen/margin_regular_medium"
                 android:layout_width="match_parent"
                 app:errorEnabled="true"
-                app:errorIconDrawable="@drawable/ic_error"
+                app:errorIconDrawable="@drawable/ic_warning"
                 android:layout_height="wrap_content"
                 android:hint="@string/preferred_game_input_hint">
 

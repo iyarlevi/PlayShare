@@ -2,5 +2,5 @@
 <resources>
     <string name="password_input_confirm_hint">Confirm your password</string>
     <string name="registration_title">Registration Page</string>
-<!--    <string name="nickname_input_hint">Enter your nickname</string>-->
+    <string name="nickname_input_hint">Enter your nickname</string>
 </resources>
