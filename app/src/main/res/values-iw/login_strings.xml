@@ -5,4 +5,5 @@
     <string name="login_title">ברוך הבא</string>
     <string name="login_button">היכנס</string>
     <string name="register_button">להירשם</string>
+    <string name="forgot_password">שכחתי סיסמא</string>
 </resources>

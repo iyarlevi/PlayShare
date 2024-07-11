@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="password_input_confirm_hint">אימות סיסמה</string>
+    <string name="registration_title">דף הרשמה</string>
+    <string name="nickname_input_hint">הזן כינוי</string>
+</resources>

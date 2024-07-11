@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_new_game">יצירת משחק חדש</string>
+    <string name="select_time">בחר זמן</string>
+    <string name="save_game">שמור משחק</string>
+    <string name="game_type_is_required">סוג המשחק נדרש</string>
+    <string name="players_level_is_required">רמת השחקנים נדרשת</string>
+    <string name="preferred_game_is_required">המשחק המועדף נדרש</string>
+</resources>

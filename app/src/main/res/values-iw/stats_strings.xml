@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="live_players">שחקנים פעילים: %s</string>
+    <string name="basketball_players">שחקני כדורסל: %s</string>
+    <string name="soccer_players">שחקני כדורגל: %s</string>
+</resources>
