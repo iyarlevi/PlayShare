@@ -1,117 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/pad_regular_xlarge"
     android:orientation="vertical"
     tools:context=".NewGameActivity">
 
-    <LinearLayout
+    <include
+        layout="@layout/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView"
-            style="@style/TextAppearance.Material3.DisplayLarge"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_regular_medium"
-            android:gravity="center"
-            android:text="@string/create_new_game"
-            android:textColor="@color/colorPrimary" />
+            android:orientation="vertical"
+            android:layout_margin="@dimen/margin_regular_xlarge">
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/gameTypeInputLayout"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="@dimen/width_edit_text_xlarge"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_regular_medium"
-            app:errorEnabled="true"
-            app:errorIconDrawable="@drawable/ic_warning">
-
-            <AutoCompleteTextView
-                android:id="@+id/gameTypeInput"
+            <TextView
+                android:id="@+id/textView"
+                style="@style/TextAppearance.Material3.DisplayLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="@string/game_type_input_hint"
-                android:inputType="none"
-                tools:ignore="SpeakableTextPresentCheck" />
+                android:layout_marginBottom="@dimen/margin_regular_medium"
+                android:gravity="center"
+                android:text="@string/create_new_game"
+                android:textColor="@color/colorPrimary" />
 
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/playersLevel"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="@dimen/width_edit_text_xlarge"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_regular_medium"
-            android:hint="@string/players_level_input_hint"
-            app:errorEnabled="true"
-            app:errorIconDrawable="@drawable/ic_warning">
-
-            <AutoCompleteTextView
-                android:id="@+id/playersLevelInput"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/gameTypeInputLayout"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="@dimen/width_edit_text_xlarge"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:inputType="none"
-                tools:ignore="SpeakableTextPresentCheck" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_regular_medium"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@drawable/ic_warning">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/gameTypeInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:hint="@string/game_type_input_hint"
+                    android:inputType="none"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/preferredGameLayout"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="@dimen/width_edit_text_xlarge"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_regular_medium"
-            android:hint="@string/preferred_game_input_hint"
-            app:errorEnabled="true"
-            app:errorIconDrawable="@drawable/ic_warning">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <AutoCompleteTextView
-                android:id="@+id/preferredGameInput"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/playersLevel"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="@dimen/width_edit_text_xlarge"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:inputType="none"
-                tools:ignore="SpeakableTextPresentCheck" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_regular_medium"
+                android:hint="@string/players_level_input_hint"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@drawable/ic_warning">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/playersLevelInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
-        <Button
-            android:id="@+id/saveGame"
-            android:layout_width="@dimen/width_button_xlarge"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_regular_xlarge"
-            android:text="@string/save_game"
-            android:textSize="@dimen/text_size_body_large"
-            android:textStyle="bold" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/cancel"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="@dimen/width_button_xlarge"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_regular_medium"
-            android:backgroundTint="@android:color/transparent"
-            android:text="@string/cancel"
-            android:textSize="@dimen/text_size_body_large"
-            android:textStyle="bold" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/preferredGameLayout"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="@dimen/width_edit_text_xlarge"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_regular_medium"
+                android:hint="@string/preferred_game_input_hint"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@drawable/ic_warning">
 
-    </LinearLayout>
-</ScrollView>
+                <AutoCompleteTextView
+                    android:id="@+id/preferredGameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/saveGame"
+                android:layout_width="@dimen/width_button_xlarge"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_regular_xlarge"
+                android:text="@string/save_game"
+                android:textSize="@dimen/text_size_body_large"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/cancel"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="@dimen/width_button_xlarge"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_regular_xlarge"
+                android:layout_marginTop="@dimen/margin_regular_medium"
+                android:backgroundTint="@android:color/transparent"
+                android:text="@string/cancel"
+                android:textSize="@dimen/text_size_body_large"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

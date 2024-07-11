@@ -87,6 +87,7 @@
             android:backgroundTint="@android:color/transparent"
             android:text="@string/register_button"
             android:textSize="@dimen/text_size_body_large"
+            android:layout_marginBottom="@dimen/margin_regular_xlarge"
             android:textStyle="bold" />
     </LinearLayout>
 

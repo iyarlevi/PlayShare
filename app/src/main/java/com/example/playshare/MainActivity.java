@@ -47,15 +47,8 @@ public class MainActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = nameTextView.getText().toString();
-                String height = heightTextView.getText().toString();
-                String age = ageTextView.getText().toString();
 
-                Intent intent = new Intent(MainActivity.this, com.example.playshare.StatsActivity.class);
-
-                intent.putExtra("name", name);
-                intent.putExtra("height", height);
-                intent.putExtra("age", age);
+                Intent intent = new Intent(MainActivity.this, StatsActivity.class);
                 startActivity(intent);
             }
         });
