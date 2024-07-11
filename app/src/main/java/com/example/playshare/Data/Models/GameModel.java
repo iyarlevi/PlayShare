@@ -6,6 +6,9 @@ import com.example.playshare.Data.Enums.PlayLevelEnum;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GameModel {
     private GameTypeEnum _type;
     private LatLng _location;
@@ -79,6 +82,16 @@ public class GameModel {
 
     public void setLevel(int levelIndex) {
         _level = PlayLevelEnum.values()[levelIndex];
+    }
+
+    public Map<String, Object> MappingForFirebase() {
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("type", _type.toString());
+        res.put("location", _location);
+        res.put("layout", _layout.toString());
+        res.put("creatorReference", _creatorReference);
+        res.put("level", _level.toString());
+        return res;
     }
 
 }

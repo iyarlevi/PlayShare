@@ -4,6 +4,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserModel {
     private int _age;
@@ -79,5 +81,20 @@ public class UserModel {
 
     public void setImageUrl(String imageUrl) {
         _imageUrl = imageUrl;
+    }
+
+    public void removeImageUrl() {
+        _imageUrl = null;
+    }
+
+    public Map<String, Object> MappingForFirebase() {
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("age", _age);
+        res.put("nickname", _nickname);
+        res.put("location", _location);
+        res.put("preferences", _preferences);
+        res.put("timeStamp", _timeStamp);
+        res.put("imageUrl", _imageUrl);
+        return res;
     }
 }
