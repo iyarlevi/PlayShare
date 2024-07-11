@@ -15,7 +15,7 @@ import com.example.playshare.Connectors.FirebaseConnector;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     EditText emailEdt, passwordEdt, passConfirmEdt;
-    Button registerButton;
+    Button registerButton, cancelButton;
 
 
     @Override
@@ -27,6 +27,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         passwordEdt = findViewById(R.id.registerPasswordEdt);
         passConfirmEdt = findViewById(R.id.passwordConfirmEdt);
         registerButton = findViewById(R.id.registerNewUserButton);
+        cancelButton = findViewById(R.id.cancelButton);
 
         passConfirmEdt.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -44,6 +45,27 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             String email = emailEdt.getText().toString();
             String password = passwordEdt.getText().toString();
             String passConfirm = passConfirmEdt.getText().toString();
+
+            boolean valid = true;
+
+            if (email.isEmpty()) {
+                emailEdt.setError("Email is required");
+                Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show();
+                valid = false;
+            }
+            if (password.isEmpty()) {
+                passwordEdt.setError("Password is required");
+                Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show();
+                valid = false;
+            }
+            if (passConfirm.isEmpty()) {
+                passConfirmEdt.setError("Password confirmation is required");
+                Toast.makeText(this, "Password confirmation is required", Toast.LENGTH_SHORT).show();
+                valid = false;
+            }
+            if (!valid)
+                return;
+
             if (password.equals(passConfirm)) {
                 FirebaseConnector.signUp(email, password, authResult -> {
                     // Handle successful registration
@@ -53,12 +75,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     Toast.makeText(this, "Registration failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
             }
+        } else if (v.getId() == R.id.cancelButton) {
+            finish();
         }
     }
 
     private void handleRegistrationSuccess() {
         // Handle successful registration
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 }

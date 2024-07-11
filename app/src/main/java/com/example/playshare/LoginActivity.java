@@ -9,26 +9,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.playshare.Components.ProgressDialog;
+import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
+import com.example.playshare.Data.Enums.CollectionsEnum;
 
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText emailEdt, passwordEdt;
-    private Button loginBtn, registerBtn;
+    private Button loginBtn;
     private ProgressDialog progressDialog;
+
+    FireStoreConnector database = FireStoreConnector.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this); // Ensure this is needed for your case
         setContentView(R.layout.activity_login);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -39,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         emailEdt = findViewById(R.id.emailEditText);
         passwordEdt = findViewById(R.id.passwordEditText);
         loginBtn = findViewById(R.id.loginButton);
-        registerBtn = findViewById(R.id.registerButton);
+        Button registerBtn = findViewById(R.id.registerButton);
 
         emailEdt.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -90,11 +92,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             progressDialog.setMessage("Logging in...");
             progressDialog.showLoading();
 
-            FirebaseConnector.signIn(email, password, authResult -> {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }, e -> {
+            FirebaseConnector.signIn(email, password, authResult -> database.getDocumentReference(CollectionsEnum.USERS.getCollectionName(),
+                    (authResult.getUser() != null) ? authResult.getUser().getUid() : "No User",
+                    documentReference -> { // Success
+                        progressDialog.hideLoading();
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }, e -> {
+                        Intent intent = new Intent(this, SettingsActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+            ), e -> {
                 progressDialog.hideLoading();
                 if ((Objects.requireNonNull(e.getMessage())).contains("email address is badly formatted")) {
                     emailEdt.setError("Please enter a valid email");

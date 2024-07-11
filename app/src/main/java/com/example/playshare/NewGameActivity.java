@@ -1,16 +1,20 @@
 package com.example.playshare;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.playshare.Connectors.FireStoreConnector;
+import com.example.playshare.Connectors.FirebaseConnector;
+import com.example.playshare.Data.Enums.CollectionsEnum;
 import com.example.playshare.Data.Enums.GameLayoutEnum;
 import com.example.playshare.Data.Enums.GameTypeEnum;
 import com.example.playshare.Data.Enums.PlayLevelEnum;
+import com.example.playshare.Data.Models.GameModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -20,7 +24,7 @@ public class NewGameActivity extends AppCompatActivity {
     ArrayList<String> playersLevels = new ArrayList<>();
     ArrayList<String> preferredGames = new ArrayList<>();
     private AutoCompleteTextView gameTypeInput, playersLevelInput, preferredGameInput;
-    private Button saveGame, cancel;
+    private final FireStoreConnector database = FireStoreConnector.getInstance();
 
 
     @Override
@@ -45,8 +49,8 @@ public class NewGameActivity extends AppCompatActivity {
         gameTypeInput = findViewById(R.id.gameTypeInput);
         playersLevelInput = findViewById(R.id.playersLevelInput);
         preferredGameInput = findViewById(R.id.preferredGameInput);
-        saveGame = findViewById(R.id.saveGame);
-        cancel = findViewById(R.id.cancel);
+        Button saveGame = findViewById(R.id.saveGame);
+        Button cancel = findViewById(R.id.cancel);
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, gameTypes);
@@ -97,5 +101,28 @@ public class NewGameActivity extends AppCompatActivity {
         LatLng location = new LatLng(
                 getIntent().getDoubleExtra("lat", 31.7692),
                 getIntent().getDoubleExtra("lng", 35.1937));
+
+        String currentUserUid = FirebaseConnector.getCurrentUser().getUid();
+        database.getDocumentReference(CollectionsEnum.USERS.getCollectionName(),
+                currentUserUid,
+                documentReference -> {
+                    GameModel game = new GameModel(
+                            GameTypeEnum.valueOf(gameTypeInput.getText().toString()),
+                            location,
+                            GameLayoutEnum.valueOf(preferredGameInput.getText().toString()),
+                            documentReference,
+                            PlayLevelEnum.valueOf(playersLevelInput.getText().toString())
+                    );
+                    database.addDocument(CollectionsEnum.GAMES.getCollectionName(),
+                            game.MappingForFirebase(),
+                            documentReference1 -> {
+                                Toast.makeText(this, "Game created successfully", Toast.LENGTH_SHORT).show();
+                                finish();
+                            },
+                            e -> Toast.makeText(this, "Error creating game: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                    );
+                },
+                e -> Toast.makeText(this, "Error getting user reference: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+        );
     }
 }
