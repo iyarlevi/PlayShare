@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -58,6 +59,30 @@ public class FireStoreConnector {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         onSuccess.onSuccess(documentSnapshot.getData());
+                    } else {
+                        onFailure.onFailure(new Exception("Document not found"));
+                    }
+                })
+                .addOnFailureListener(onFailure);
+    }
+
+    public void addDocument(String collectionName, Map<String, Object> data, OnSuccessListener<DocumentReference> onSuccess, OnFailureListener onFailure) {
+        database.collection(collectionName).add(data)
+                .addOnSuccessListener(onSuccess)
+                .addOnFailureListener(onFailure);
+    }
+
+    public void addDocumentWithCustomId(String collectionName, String documentId, Map<String, Object> data, OnSuccessListener<Void> onSuccess, OnFailureListener onFailure) {
+        database.collection(collectionName).document(documentId).set(data)
+                .addOnSuccessListener(onSuccess)
+                .addOnFailureListener(onFailure);
+    }
+
+    public void getDocumentReference(String collectionName, String documentId, OnSuccessListener<DocumentReference> onSuccess, OnFailureListener onFailure) {
+        database.collection(collectionName).document(documentId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        onSuccess.onSuccess(documentSnapshot.getReference());
                     } else {
                         onFailure.onFailure(new Exception("Document not found"));
                     }
