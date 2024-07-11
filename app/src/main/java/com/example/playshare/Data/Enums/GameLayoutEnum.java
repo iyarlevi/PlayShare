@@ -15,4 +15,10 @@ public enum GameLayoutEnum {
     public String getTitle() {
         return _title;
     }
+
+    public static GameLayoutEnum getEnum(String value) {
+        for (GameLayoutEnum v : values())
+            if (v.getTitle().equalsIgnoreCase(value)) return v;
+        throw new IllegalArgumentException();
+    }
 }

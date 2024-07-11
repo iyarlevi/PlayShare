@@ -1,72 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/sportEditText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Sport"
-        android:inputType="text"
-        android:padding="12dp"
-        android:background="@android:color/white"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/levelEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Level"
-        android:inputType="text"
-        android:padding="12dp"
-        android:background="@android:color/white"
-        android:layout_marginBottom="16dp" />
+        <TextView
+            android:id="@+id/textView"
+            style="@style/TextAppearance.Material3.DisplayLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_regular_medium"
+            android:gravity="center"
+            android:text="Enter Details"
+            android:textColor="@color/colorPrimary" />
 
-    <EditText
-        android:id="@+id/preferencesEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Preferences"
-        android:inputType="text"
-        android:padding="12dp"
-        android:background="@android:color/white"
-        android:layout_marginBottom="16dp" />
 
-    <EditText
-        android:id="@+id/heightEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Height"
-        android:inputType="numberDecimal"
-        android:padding="12dp"
-        android:background="@android:color/white"
-        android:layout_marginBottom="16dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_error">
 
-    <EditText
-        android:id="@+id/ageEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Age"
-        android:inputType="number"
-        android:padding="12dp"
-        android:background="@android:color/white"
-        android:layout_marginBottom="16dp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nicknameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_regular_medium"
+                android:hint="@string/nickname_input_hint"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:minHeight="@dimen/height_text_medium"
+                android:paddingStart="@dimen/margin_regular_medium"
+                android:paddingEnd="@dimen/margin_regular_medium" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Save"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"
-        android:layout_marginTop="16dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_error">
 
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/heightEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_regular_medium"
+                android:hint="Enter your height"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:minHeight="@dimen/height_text_medium"
+                android:paddingStart="@dimen/margin_regular_medium"
+                android:paddingEnd="@dimen/margin_regular_medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_error">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ageEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_regular_medium"
+                android:hint="Enter your age"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:minHeight="@dimen/height_text_medium"
+                android:paddingStart="@dimen/margin_regular_medium"
+                android:paddingEnd="@dimen/margin_regular_medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_warning">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/preferencesEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_regular_medium"
+                android:hint="Enter your preferences"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:minHeight="@dimen/height_text_medium"
+                android:paddingStart="@dimen/margin_regular_medium"
+                android:paddingEnd="@dimen/margin_regular_medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/saveButton"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:paddingStart="24dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="12dp"
+            android:text="Save"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>

@@ -1,6 +1,7 @@
 package com.example.playshare;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -109,7 +110,7 @@ public class NewGameActivity extends AppCompatActivity {
                     GameModel game = new GameModel(
                             GameTypeEnum.valueOf(gameTypeInput.getText().toString()),
                             location,
-                            GameLayoutEnum.valueOf(preferredGameInput.getText().toString()),
+                            GameLayoutEnum.getEnum(preferredGameInput.getText().toString()),
                             documentReference,
                             PlayLevelEnum.valueOf(playersLevelInput.getText().toString())
                     );
@@ -119,7 +120,10 @@ public class NewGameActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Game created successfully", Toast.LENGTH_SHORT).show();
                                 finish();
                             },
-                            e -> Toast.makeText(this, "Error creating game: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                            e -> {
+                                Toast.makeText(this, "Error creating game: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
+                            }
                     );
                 },
                 e -> Toast.makeText(this, "Error getting user reference: " + e.getMessage(), Toast.LENGTH_SHORT).show()

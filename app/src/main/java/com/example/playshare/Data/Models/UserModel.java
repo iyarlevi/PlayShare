@@ -11,16 +11,19 @@ public class UserModel {
     private int _age;
     private String _imageUrl;
     private String _nickname;
+    private Double _height;
     private LatLng _location;
     private ArrayList<String> _preferences;
     private String _timeStamp;
 
-    public UserModel(int age, String nickname, LatLng location, ArrayList<String> preferences) {
+    public UserModel(int age, double height, String nickname, LatLng location, ArrayList<String> preferences) {
         _age = age;
+        _height = height;
         _nickname = nickname;
-        _location = location;
         _preferences = preferences;
+        _location = location;
         _timeStamp = Calendar.getInstance().getTime().toString();
+
     }
 
     public int getAge() {
@@ -29,6 +32,14 @@ public class UserModel {
 
     public void setAge(int age) {
         _age = age;
+    }
+
+    public Double getHeight() {
+        return _height;
+    }
+
+    public void setHeight(Double height) {
+        _height = height;
     }
 
     public String getNickname() {

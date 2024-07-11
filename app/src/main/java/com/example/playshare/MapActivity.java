@@ -194,7 +194,6 @@ public class MapActivity extends FragmentActivity implements
             intent.putExtra("lat", latLng.latitude);
             intent.putExtra("lng", latLng.longitude);
             startActivity(intent);
-            finish();
         });
         builder.setNegativeButton("No", (dialog, which) -> {
             dialog.dismiss();
