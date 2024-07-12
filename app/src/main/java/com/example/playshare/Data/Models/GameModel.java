@@ -4,7 +4,6 @@ import com.example.playshare.Data.Enums.GameLayoutEnum;
 import com.example.playshare.Data.Enums.GameTypeEnum;
 import com.example.playshare.Data.Enums.PlayLevelEnum;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.firestore.DocumentReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,10 +12,10 @@ public class GameModel {
     private GameTypeEnum _type;
     private LatLng _location;
     private GameLayoutEnum _layout;
-    private DocumentReference _creatorReference;
+    private String _creatorReference;
     private PlayLevelEnum _level;
 
-    public GameModel(GameTypeEnum type, LatLng location, GameLayoutEnum layout, DocumentReference creatorReference, PlayLevelEnum level) {
+    public GameModel(GameTypeEnum type, LatLng location, GameLayoutEnum layout, String creatorReference, PlayLevelEnum level) {
         _type = type;
         _location = location;
         _layout = layout;
@@ -60,11 +59,11 @@ public class GameModel {
         _layout = GameLayoutEnum.values()[layoutIndex];
     }
 
-    public DocumentReference getCreatorReference() {
+    public String getCreatorReference() {
         return _creatorReference;
     }
 
-    public void setCreatorReference(DocumentReference creatorReference) {
+    public void setCreatorReference(String creatorReference) {
         _creatorReference = creatorReference;
     }
 

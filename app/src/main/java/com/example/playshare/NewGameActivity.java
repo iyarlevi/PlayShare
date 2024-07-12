@@ -19,6 +19,7 @@ import com.example.playshare.Data.Models.GameModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NewGameActivity extends AppCompatActivity {
     ArrayList<String> gameTypes = new ArrayList<>();
@@ -104,24 +105,41 @@ public class NewGameActivity extends AppCompatActivity {
                 getIntent().getDoubleExtra("lng", 35.1937));
 
         String currentUserUid = FirebaseConnector.getCurrentUser().getUid();
-        database.getDocumentReference(CollectionsEnum.USERS.getCollectionName(),
+        database.getDocument(CollectionsEnum.USERS.getCollectionName(),
                 currentUserUid,
-                documentReference -> {
+                userDocument -> {
+                    if (userDocument.getOrDefault("currentGame", null) != null) {
+                        Toast.makeText(this, "You are already in a game!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     GameModel game = new GameModel(
                             GameTypeEnum.valueOf(gameTypeInput.getText().toString()),
                             location,
                             GameLayoutEnum.getEnum(preferredGameInput.getText().toString()),
-                            documentReference,
+                            currentUserUid,
                             PlayLevelEnum.valueOf(playersLevelInput.getText().toString())
                     );
                     database.addDocument(CollectionsEnum.GAMES.getCollectionName(),
                             game.MappingForFirebase(),
-                            documentReference1 -> {
-                                Toast.makeText(this, "Game created successfully", Toast.LENGTH_SHORT).show();
-                                finish();
+                            gameDocumentReference -> {
+                                HashMap<String, Object> currentGame = new HashMap<>();
+                                currentGame.put("currentGame", gameDocumentReference.getId());
+                                database.updateDocument(
+                                        CollectionsEnum.USERS.getCollectionName(),
+                                        currentUserUid,
+                                        currentGame,
+                                        aVoid -> {
+                                            Toast.makeText(this, "Game created successfully", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        },
+                                        e -> {
+                                            Toast.makeText(this, "Error creating game!", Toast.LENGTH_SHORT).show();
+                                            Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
+                                        }
+                                );
                             },
                             e -> {
-                                Toast.makeText(this, "Error creating game: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Error creating game!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
                             }
                     );
