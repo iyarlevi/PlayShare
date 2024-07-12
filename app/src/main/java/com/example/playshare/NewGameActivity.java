@@ -1,5 +1,6 @@
 package com.example.playshare;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import com.example.playshare.Data.Enums.GameTypeEnum;
 import com.example.playshare.Data.Enums.PlayLevelEnum;
 import com.example.playshare.Data.Models.GameModel;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +55,16 @@ public class NewGameActivity extends AppCompatActivity {
         preferredGameInput = findViewById(R.id.preferredGameInput);
         Button saveGame = findViewById(R.id.saveGame);
         Button cancel = findViewById(R.id.cancel);
+
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        topAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.profile) {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, gameTypes);

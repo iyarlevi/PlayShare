@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -60,6 +61,16 @@ public class MapActivity extends FragmentActivity implements
         bottomNavigationView.setSelectedItemId(R.id.navigation_map);
         BottomNavigator bottomNavigator = new BottomNavigator(this, R.id.navigation_map);
         bottomNavigationView.setOnItemSelectedListener(bottomNavigator);
+
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        topAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.profile) {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
 
         // Setup Permission Launcher callback
         requestPermissionLauncher = registerForActivityResult(

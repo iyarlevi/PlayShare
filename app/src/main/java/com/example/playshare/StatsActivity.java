@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.playshare.Components.BottomNavigator;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.Map;
@@ -33,6 +34,16 @@ public class StatsActivity extends AppCompatActivity {
         soccerPlayersTextView = findViewById(R.id.soccerPlayersTextView);
         Button mapButton = findViewById(R.id.mapButton);
         mapButton.setOnClickListener(v -> startActivity(new Intent(StatsActivity.this, MapActivity.class)));
+
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        topAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.profile) {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
 
         //define bottom navigation:
         NavigationBarView bottomNavigationView = findViewById(R.id.bottomNavigationView);

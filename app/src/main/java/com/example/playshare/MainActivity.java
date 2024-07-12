@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private TextView nameTextView, heightTextView, ageTextView;
     private Button nextButton;
-    private MaterialToolbar topAppBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         heightTextView = findViewById(R.id.heightTextView);
         ageTextView = findViewById(R.id.ageTextView);
         nextButton = findViewById(R.id.nextButton);
-        topAppBar = findViewById(R.id.topAppBar);
 
         //define bottom navigation:
         NavigationBarView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -43,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         requestLocationPermission();
 
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
         topAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.profile) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
