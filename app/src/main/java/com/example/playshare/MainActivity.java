@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.playshare.Components.BottomNavigator;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.nextButton);
         topAppBar = findViewById(R.id.topAppBar);
 
+        //define bottom navigation:
+        NavigationBarView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        BottomNavigator bottomNavigator = new BottomNavigator(this, R.id.navigation_home);
+        bottomNavigationView.setOnItemSelectedListener(bottomNavigator);
+
         requestLocationPermission();
 
         topAppBar.setOnMenuItemClickListener(item -> {
@@ -44,13 +52,10 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        nextButton.setOnClickListener(v -> {
 
-                Intent intent = new Intent(MainActivity.this, StatsActivity.class);
-                startActivity(intent);
-            }
+            Intent intent = new Intent(MainActivity.this, StatsActivity.class);
+            startActivity(intent);
         });
     }
 

@@ -9,8 +9,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.playshare.Components.BottomNavigator;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.Map;
 
@@ -31,6 +33,12 @@ public class StatsActivity extends AppCompatActivity {
         soccerPlayersTextView = findViewById(R.id.soccerPlayersTextView);
         Button mapButton = findViewById(R.id.mapButton);
         mapButton.setOnClickListener(v -> startActivity(new Intent(StatsActivity.this, MapActivity.class)));
+
+        //define bottom navigation:
+        NavigationBarView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_stats);
+        BottomNavigator bottomNavigator = new BottomNavigator(this, R.id.navigation_stats);
+        bottomNavigationView.setOnItemSelectedListener(bottomNavigator);
 
         // Set initial loading text
         livePlayersTextView.setText(getString(R.string.loading));
