@@ -279,10 +279,13 @@ public class MapActivity extends BaseActivityClass implements
                             "Creator: " + document.get("nickname"));
                     builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
                     if (game.getCreatorReference().equals(FirebaseConnector.getCurrentUser().getUid())) {
-                        builder.setNegativeButton("Delete Game", (dialog, which) -> {
+                        builder.setNeutralButton("Delete", (dialog, which) -> {
                             handleGameDeletion(dialog, FirebaseConnector.getCurrentUser().getUid(), (String) document.get("currentGame"));
                         });
                     }
+                    //todo: add navigation to the game
+//                    builder.setNegativeButton("Navigate", (dialog, which) -> {
+//                    });
                     builder.create().show();
                 },
                 e -> {
