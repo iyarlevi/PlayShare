@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -28,6 +29,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.playshare.Components.BottomNavigator;
 import com.example.playshare.Connectors.FireStoreConnector;
+import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
 import com.example.playshare.Data.Models.GameModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,6 +47,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -227,9 +230,7 @@ public class MapActivity extends BaseActivityClass implements
             intent.putExtra("lng", latLng.longitude);
             startActivity(intent);
         });
-        builder.setNegativeButton("No", (dialog, which) -> {
-            dialog.dismiss();
-        });
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
         Dialog dialog = builder.create();
         dialog.show();
     }
@@ -277,6 +278,11 @@ public class MapActivity extends BaseActivityClass implements
                             "Game Level: " + game.getLevel().name() + "\n" +
                             "Creator: " + document.get("nickname"));
                     builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                    if (game.getCreatorReference().equals(FirebaseConnector.getCurrentUser().getUid())) {
+                        builder.setNegativeButton("Delete Game", (dialog, which) -> {
+                            handleGameDeletion(dialog, FirebaseConnector.getCurrentUser().getUid(), (String) document.get("currentGame"));
+                        });
+                    }
                     builder.create().show();
                 },
                 e -> {
@@ -284,5 +290,33 @@ public class MapActivity extends BaseActivityClass implements
                     Toast.makeText(this, "Error: cannot fetch game creator", Toast.LENGTH_LONG).show();
                 }
         );
+    }
+
+    private void handleGameDeletion(DialogInterface dialog, String userId, String gameId) {
+        fireStoreConnector.deleteDocument(
+                CollectionsEnum.GAMES.getCollectionName(),
+                gameId,
+                success -> {
+                    Toast.makeText(this, "Game deleted successfully", Toast.LENGTH_LONG).show();
+                    HashMap<String, Object> userGame = new HashMap<>();
+                    userGame.put("currentGame", null);
+                    fireStoreConnector.updateDocument(
+                            CollectionsEnum.USERS.getCollectionName(),
+                            userId,
+                            userGame,
+                            success1 -> {
+                                Log.d("MainActivity", ">>> Game removed from user's games list");
+                                dialog.dismiss();
+                            },
+                            error1 -> {
+                                Log.e("MainActivity", ">>> Error: cannot remove game from user's games list");
+                            }
+                    );
+                },
+                error -> {
+                    Toast.makeText(this, "Error: cannot delete game", Toast.LENGTH_LONG).show();
+                }
+        );
+
     }
 }
