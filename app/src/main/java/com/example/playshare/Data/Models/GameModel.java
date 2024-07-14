@@ -15,6 +15,29 @@ public class GameModel {
     private String _creatorReference;
     private PlayLevelEnum _level;
 
+    public GameModel(Map<String, Object> firestoreDocument) {
+        if (firestoreDocument == null) {
+            return;
+        }
+        _type = GameTypeEnum.valueOf((String) firestoreDocument.get("type"));
+        Object locationObject = firestoreDocument.get("location");
+        if (locationObject instanceof Map) {
+            Map<?, ?> locationMap = (Map<?, ?>) locationObject;
+            if (locationMap.containsKey("latitude") && locationMap.containsKey("longitude")) {
+                Object latObj = locationMap.get("latitude");
+                Object lngObj = locationMap.get("longitude");
+                if (latObj instanceof Double && lngObj instanceof Double) {
+                    double latitude = (Double) latObj;
+                    double longitude = (Double) lngObj;
+                    _location = new LatLng(latitude, longitude);
+                }
+            }
+        }
+        _layout = GameLayoutEnum.valueOf((String) firestoreDocument.get("layout"));
+        _creatorReference = (String) firestoreDocument.get("creatorReference");
+        _level = PlayLevelEnum.valueOf((String) firestoreDocument.get("level"));
+    }
+
     public GameModel(GameTypeEnum type, LatLng location, GameLayoutEnum layout, String creatorReference, PlayLevelEnum level) {
         _type = type;
         _location = location;

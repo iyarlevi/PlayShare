@@ -2,9 +2,12 @@ package com.example.playshare;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,10 +27,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.playshare.Components.BottomNavigator;
+import com.example.playshare.Connectors.FireStoreConnector;
+import com.example.playshare.Data.Enums.CollectionsEnum;
+import com.example.playshare.Data.Models.GameModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,6 +45,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MapActivity extends BaseActivityClass implements
         LocationListener,
@@ -49,6 +59,9 @@ public class MapActivity extends BaseActivityClass implements
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ArrayList<LatLng> mapPath;
     private LatLng myLocation;
+    private final List<GameModel> gamesArray = new ArrayList<>();
+
+    private final FireStoreConnector fireStoreConnector = FireStoreConnector.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +113,7 @@ public class MapActivity extends BaseActivityClass implements
         LatLng azrieli = new LatLng(31.7692, 35.1937);
         googleMap.addMarker(new MarkerOptions().position(azrieli).title("Azrieli College"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(azrieli, 15f));
+        addGamesToMap();
 
         mapPath = new ArrayList<>();
 
@@ -132,6 +146,7 @@ public class MapActivity extends BaseActivityClass implements
         myLocation = pos; // Update the user's current location
 
         googleMap.clear();
+        addGamesToMap();
 
         // Add marker for user's current location
         Marker userLocationMarker = googleMap.addMarker(new MarkerOptions().position(pos).title("Your Location"));
@@ -165,17 +180,16 @@ public class MapActivity extends BaseActivityClass implements
             tvUserCoordinates.setText("Coordinates: " + myLocation.latitude + ", " + myLocation.longitude);
         }
 
-        btnClose.setOnClickListener(v -> {
-            // Dismiss the dialog
-            Dialog dialog = (Dialog) v.getTag();
-            dialog.dismiss();
-        });
 
         // Create and show the dialog
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(dialogView);
         Dialog dialog = builder.create();
         dialog.show();
+        btnClose.setOnClickListener(v -> {
+            // Dismiss the dialog
+            dialog.dismiss();
+        });
     }
 
     @Override
@@ -218,5 +232,57 @@ public class MapActivity extends BaseActivityClass implements
         });
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void addGamesToMap() {
+        fireStoreConnector.getDocuments(CollectionsEnum.GAMES.getCollectionName(),
+                documents -> {
+                    for (int i = 0; i < documents.size(); i++) {
+                        Map<String, Object> currentDoc = documents.get(i);
+                        GameModel game = new GameModel(currentDoc);
+                        gamesArray.add(game);
+                        setupGameMarker(game);
+                    }
+                },
+                e -> {
+                    Log.e("MainActivity", ">>> Error: " + e.getMessage());
+                    Toast.makeText(this, "Error: cannot fetch games", Toast.LENGTH_LONG).show();
+                }
+        );
+    }
+
+    private void setupGameMarker(GameModel game) {
+        Bitmap iconBitmap = BitmapFactory.decodeResource(getResources(), game.getType().getIcon());
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconBitmap);
+        Marker gameMarker = googleMap.addMarker(new MarkerOptions().position(game.getLocation()).icon(icon));
+        googleMap.setOnMarkerClickListener(
+                marker -> {
+                    if (marker.equals(gameMarker)) {
+                        showGameDetails(game);
+                        return true;
+                    }
+                    return false;
+                }
+        );
+    }
+
+    private void showGameDetails(GameModel game) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
+                game.getCreatorReference(),
+                document -> {
+                    builder.setTitle("Game Details");
+                    builder.setMessage("Game Type: " + game.getType().name() + "\n" +
+                            "Game Layout: " + game.getLayout().getTitle() + "\n" +
+                            "Game Level: " + game.getLevel().name() + "\n" +
+                            "Creator: " + document.get("nickname"));
+                    builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                    builder.create().show();
+                },
+                e -> {
+                    Log.e("MainActivity", ">>> Error: " + e.getMessage());
+                    Toast.makeText(this, "Error: cannot fetch game creator", Toast.LENGTH_LONG).show();
+                }
+        );
     }
 }
