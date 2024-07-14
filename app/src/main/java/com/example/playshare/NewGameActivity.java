@@ -8,8 +8,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
@@ -23,7 +21,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class NewGameActivity extends AppCompatActivity {
+public class NewGameActivity extends BaseActivityClass {
     ArrayList<String> gameTypes = new ArrayList<>();
     ArrayList<String> playersLevels = new ArrayList<>();
     ArrayList<String> preferredGames = new ArrayList<>();

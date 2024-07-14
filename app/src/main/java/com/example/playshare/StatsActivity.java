@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.playshare.Components.BottomNavigator;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
@@ -17,7 +15,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.Map;
 
-public class StatsActivity extends AppCompatActivity {
+public class StatsActivity extends BaseActivityClass {
 
     private static final String TAG = "StatsActivity";
     private TextView livePlayersTextView;

@@ -22,7 +22,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.example.playshare.Components.BottomNavigator;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,7 +38,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 
-public class MapActivity extends FragmentActivity implements
+public class MapActivity extends BaseActivityClass implements
         LocationListener,
         OnMapReadyCallback,
         GoogleMap.OnMapClickListener,

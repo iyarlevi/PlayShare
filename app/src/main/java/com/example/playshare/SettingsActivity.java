@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.playshare.Components.ProgressDialog;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
@@ -18,7 +16,7 @@ import com.example.playshare.Data.Models.UserModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivityClass {
 
     private EditText heightEditText, ageEditText, nicknameEditText;
     private EditText preferencesEditText;
