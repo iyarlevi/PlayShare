@@ -20,8 +20,8 @@ public class ProgressDialog extends Dialog {
 
     public ProgressDialog(Context context, @ColorRes int backgroundColor) {
         super(context);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.progress_dialog);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.dialog_progress_bar);
         if (getWindow() != null) {
             getWindow().setBackgroundDrawable(new ColorDrawable(context.getColor(backgroundColor)));
             getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);

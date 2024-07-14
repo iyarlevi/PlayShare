@@ -17,7 +17,7 @@ import com.example.playshare.Components.BottomNavigator;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivityClass {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private TextView nameTextView, heightTextView, ageTextView;
