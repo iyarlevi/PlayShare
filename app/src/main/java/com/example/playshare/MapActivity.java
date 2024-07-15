@@ -242,8 +242,8 @@ public class MapActivity extends BaseActivityClass implements
                         Map<String, Object> currentDoc = documents.get(i);
                         GameModel game = new GameModel(currentDoc);
                         gamesArray.add(game);
-                        setupGameMarker(game);
                     }
+                    setupGamesMarkers(gamesArray);
                 },
                 e -> {
                     Log.e("MainActivity", ">>> Error: " + e.getMessage());
@@ -252,20 +252,25 @@ public class MapActivity extends BaseActivityClass implements
         );
     }
 
-    private void setupGameMarker(GameModel game) {
-        Bitmap iconBitmap = BitmapFactory.decodeResource(getResources(), game.getType().getIcon());
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconBitmap);
-        Marker gameMarker = googleMap.addMarker(new MarkerOptions().position(game.getLocation()).icon(icon));
-        googleMap.setOnMarkerClickListener(
-                marker -> {
-                    if (marker.equals(gameMarker)) {
-                        showGameDetails(game);
-                        return true;
-                    }
-                    return false;
+    private void setupGamesMarkers(List<GameModel> games) {
+        List<Marker> markers = new ArrayList<>();
+        for (GameModel game : games) {
+            Bitmap iconBitmap = BitmapFactory.decodeResource(getResources(), game.getType().getIcon());
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconBitmap);
+            Marker gameMarker = googleMap.addMarker(new MarkerOptions().position(game.getLocation()).icon(icon));
+            markers.add(gameMarker);
+        }
+        googleMap.setOnMarkerClickListener(marker -> {
+            for (int j = 0; j < games.size(); j++) {
+                if (marker.equals(markers.get(j))) {
+                    showGameDetails(games.get(j));
+                    return true;
                 }
-        );
+            }
+            return false;
+        });
     }
+
 
     private void showGameDetails(GameModel game) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

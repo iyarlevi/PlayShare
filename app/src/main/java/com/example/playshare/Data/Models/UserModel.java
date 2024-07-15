@@ -31,6 +31,37 @@ public class UserModel {
 
     }
 
+    public UserModel(Map<String, Object> document) {
+        _age = -1;
+        if (document.containsKey("age")) {
+            _age = Integer.parseInt((String) document.get("age"));
+        }
+        _height = 0.0;
+        if (document.containsKey("height")) {
+            _height = Double.parseDouble((String) document.get("height"));
+        }
+        if (document.containsKey("nickname"))
+            _nickname = (String) document.get("nickname");
+        Object locationObject = document.get("location");
+        if (locationObject instanceof Map) {
+            Map<?, ?> locationMap = (Map<?, ?>) locationObject;
+            if (locationMap.containsKey("latitude") && locationMap.containsKey("longitude")) {
+                Object latObj = locationMap.get("latitude");
+                Object lngObj = locationMap.get("longitude");
+                if (latObj instanceof Double && lngObj instanceof Double) {
+                    double latitude = (Double) latObj;
+                    double longitude = (Double) lngObj;
+                    _location = new LatLng(latitude, longitude);
+                }
+            }
+        }
+        _timeStamp = (String) document.get("timeStamp");
+        if (document.containsKey("imageUrl")) {
+            _imageUrl = (String) document.get("imageUrl");
+        }
+        _preferences = (ArrayList<String>) document.get("preferences");
+    }
+
     public int getAge() {
         return _age;
     }
