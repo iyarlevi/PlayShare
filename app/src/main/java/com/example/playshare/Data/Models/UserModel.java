@@ -101,6 +101,7 @@ public class UserModel {
     public Map<String, Object> MappingForFirebase() {
         HashMap<String, Object> res = new HashMap<>();
         res.put("age", _age);
+        res.put("height", _height);
         res.put("nickname", _nickname);
         res.put("location", _location);
         res.put("preferences", _preferences);
