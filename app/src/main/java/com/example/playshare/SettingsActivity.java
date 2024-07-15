@@ -83,14 +83,7 @@ public class SettingsActivity extends BaseActivityClass {
 
         // extract user data from the form
         int age = (ageEditText.getText().toString().isEmpty()) ? -1 : Integer.parseInt(ageEditText.getText().toString());
-        if (age > 120) {
-            age = -1;
-        }
-
         double height = (heightEditText.getText().toString().isEmpty()) ? -1 : Double.parseDouble(heightEditText.getText().toString());
-        if (height > 3) {
-            height = -1;
-        }
 
         ArrayList<String> preferences;
         if (preferencesEditText.getText().toString().isEmpty()) {
@@ -107,7 +100,7 @@ public class SettingsActivity extends BaseActivityClass {
                 preferences
         );
 
-        database.addDocumentWithCustomId(
+        database.updateDocument(
                 CollectionsEnum.USERS.getCollectionName(),
                 FirebaseConnector.getCurrentUser().getUid(),
                 user.MappingForFirebase(),

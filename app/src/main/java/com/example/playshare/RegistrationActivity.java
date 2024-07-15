@@ -11,11 +11,16 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
+import com.example.playshare.Data.Enums.CollectionsEnum;
+
+import java.util.HashMap;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     EditText emailEdt, passwordEdt, passConfirmEdt;
     Button registerButton, cancelButton;
+    private final FireStoreConnector database = FireStoreConnector.getInstance();
 
 
     @Override
@@ -68,8 +73,21 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             if (password.equals(passConfirm)) {
                 FirebaseConnector.signUp(email, password, authResult -> {
-                    // Handle successful registration
-                    handleRegistrationSuccess();
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("timeStamp", System.currentTimeMillis());
+                    database.addDocumentWithCustomId(
+                            CollectionsEnum.USERS.getCollectionName(),
+                            FirebaseConnector.getCurrentUser().getUid(),
+                            data,
+                            aVoid -> {
+                                // Handle successful registration
+                                handleRegistrationSuccess();
+                            },
+                            e -> {
+                                // Handle failed registration
+                                Toast.makeText(this, "Registration failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                    );
                 }, e -> {
                     // Handle failed registration
                     Toast.makeText(this, "Registration failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();

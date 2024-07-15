@@ -4,20 +4,28 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.playshare.Components.BottomNavigator;
+import com.example.playshare.Components.ProgressDialog;
+import com.example.playshare.Connectors.FireStoreConnector;
+import com.example.playshare.Connectors.FirebaseConnector;
+import com.example.playshare.Data.Enums.CollectionsEnum;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends BaseActivityClass {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private ProgressDialog progressDialog;
+    private final FireStoreConnector database = FireStoreConnector.getInstance();
     private TextView nameTextView, heightTextView, ageTextView;
     private Button nextButton;
 
@@ -30,13 +38,17 @@ public class MainActivity extends BaseActivityClass {
         heightTextView = findViewById(R.id.heightTextView);
         ageTextView = findViewById(R.id.ageTextView);
         nextButton = findViewById(R.id.nextButton);
-
+        progressDialog = new ProgressDialog(this);
+        // todo: put it in string.xml
+        progressDialog.setMessage("Fetch data...");
+        progressDialog.show();
         //define bottom navigation:
         NavigationBarView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         BottomNavigator bottomNavigator = new BottomNavigator(this, R.id.navigation_home);
         bottomNavigationView.setOnItemSelectedListener(bottomNavigator);
 
+        getUserData();
         requestLocationPermission();
 
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
@@ -75,5 +87,39 @@ public class MainActivity extends BaseActivityClass {
                 // Handle the case where the user denies the permission
             }
         }
+    }
+
+    private void getUserData() {
+        database.getDocument(CollectionsEnum.USERS.getCollectionName(),
+                FirebaseConnector.getCurrentUser().getUid(),
+                documentMap -> {
+                    Log.d("MainActivity", "getUserData: " + documentMap);
+                    if (documentMap == null || documentMap.isEmpty()) {
+                        Toast.makeText(this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (documentMap.get("nickname") != null)
+                        nameTextView.setText((String) documentMap.get("nickname"));
+                    Object heightObj = documentMap.get("height");
+                    if (heightObj != null) {
+                        double height = Double.parseDouble(heightObj.toString());
+                        if (height > 0) {
+                            heightTextView.setText(String.valueOf(height));
+                        }
+                    }
+                    Object ageObj = documentMap.get("age");
+                    if (ageObj != null) {
+                        int age = Integer.parseInt(ageObj.toString());
+                        if (age > 0) {
+                            ageTextView.setText(String.valueOf(age));
+                        }
+                    }
+                    progressDialog.dismiss();
+                },
+                e -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                }
+        );
     }
 }

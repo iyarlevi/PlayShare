@@ -42,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minHeight="48dp"
-                android:text="John Doe"
                 android:textStyle="bold" />
 
 
@@ -52,8 +51,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:minHeight="48dp"
-                android:text="1.87cm"
                 android:textStyle="bold" />
 
             <TextView
@@ -63,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minHeight="48dp"
-                android:text="18 years old"
                 android:textStyle="bold" />
 
             <LinearLayout

@@ -17,8 +17,13 @@ public class UserModel {
     private String _timeStamp;
 
     public UserModel(int age, double height, String nickname, LatLng location, ArrayList<String> preferences) {
-        _age = age;
-        _height = height;
+        _age = -1;
+        if (age <= 120)
+            _age = age;
+        _height = 0.0;
+        if (height <= 3) {
+            _height = height;
+        }
         _nickname = nickname;
         _preferences = preferences;
         _location = location;
