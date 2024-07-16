@@ -51,6 +51,8 @@ dependencies {
     implementation libs.core.splashscreen
     implementation libs.firebase.auth
     implementation libs.firebase.database
+    implementation libs.firebase.storage
+    implementation libs.volley
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

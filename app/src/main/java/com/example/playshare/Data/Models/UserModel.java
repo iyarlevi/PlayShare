@@ -16,7 +16,7 @@ public class UserModel {
     private ArrayList<String> _preferences;
     private String _timeStamp;
 
-    public UserModel(int age, double height, String nickname, LatLng location, ArrayList<String> preferences) {
+    public UserModel(int age, double height, String nickname, LatLng location, ArrayList<String> preferences, String imageUrl) {
         _age = -1;
         if (age <= 120)
             _age = age;
@@ -28,7 +28,8 @@ public class UserModel {
         _preferences = preferences;
         _location = location;
         _timeStamp = Calendar.getInstance().getTime().toString();
-
+        if (imageUrl != null)
+            _imageUrl = imageUrl;
     }
 
     public UserModel(Map<String, Object> document) {
@@ -142,7 +143,8 @@ public class UserModel {
         res.put("location", _location);
         res.put("preferences", _preferences);
         res.put("timeStamp", _timeStamp);
-        res.put("imageUrl", _imageUrl);
+        if (_imageUrl != null)
+            res.put("imageUrl", _imageUrl);
         return res;
     }
 }

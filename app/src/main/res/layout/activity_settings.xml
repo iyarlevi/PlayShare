@@ -19,8 +19,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="@dimen/margin_regular_xlarge">
+            android:layout_margin="@dimen/margin_regular_xlarge"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView"
@@ -116,13 +116,46 @@
                     android:paddingEnd="@dimen/margin_regular_medium" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cameraButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="@dimen/width_button_medium"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_regular_medium"
+                    android:layout_marginBottom="@dimen/margin_regular_xlarge"
+                    android:text="Camera" />
+
+                <Button
+                    android:id="@+id/galleryButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="@dimen/width_button_medium"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_regular_xlarge"
+                    android:text="Gallery" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/anonymous" />
+
             <Button
                 android:id="@+id/saveButton"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="@dimen/width_button_xlarge"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/margin_regular_xlarge"
                 android:layout_marginBottom="@dimen/margin_regular_xlarge"
                 android:text="Save"
                 android:textColor="@android:color/white" />
