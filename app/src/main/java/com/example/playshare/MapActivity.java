@@ -63,6 +63,8 @@ public class MapActivity extends BaseActivityClass implements
     private ArrayList<LatLng> mapPath;
     private LatLng myLocation;
     private final List<GameModel> gamesArray = new ArrayList<>();
+    private final Map<Marker, GameModel> gameMarkers = new HashMap<>();
+    private Marker userLocationMarker;
 
     private final FireStoreConnector fireStoreConnector = FireStoreConnector.getInstance();
 
@@ -137,7 +139,7 @@ public class MapActivity extends BaseActivityClass implements
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, this);
         } else {
-            Toast.makeText(this, "GPS Disable!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "GPS Disabled!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -152,47 +154,61 @@ public class MapActivity extends BaseActivityClass implements
         addGamesToMap();
 
         // Add marker for user's current location
-        Marker userLocationMarker = googleMap.addMarker(new MarkerOptions().position(pos).title("Your Location"));
+        userLocationMarker = googleMap.addMarker(new MarkerOptions().position(pos).title("Your Location"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f));
 
-        // Set click listener for the user's location marker
+        // draw path
+        mapPath.add(pos);
+        googleMap.addPolyline(new PolylineOptions().addAll(mapPath).color(Color.BLUE).width(10f));
+
+        // Set click listener for the markers
         googleMap.setOnMarkerClickListener(marker -> {
             if (marker.equals(userLocationMarker)) {
                 showUserLocationDetails();
                 return true;
             }
+            GameModel game = gameMarkers.get(marker);
+            if (game != null) {
+                showGameDetails(game);
+                return true;
+            }
             return false;
         });
-
-        // draw path
-        mapPath.add(pos);
-        googleMap.addPolyline(new PolylineOptions().addAll(mapPath).color(Color.BLUE).width(10f));
     }
 
     private void showUserLocationDetails() {
-        // Inflate the dialog layout
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View dialogView = inflater.inflate(R.layout.dialog_game_details, null);
+        // Fetch the current user's details from Firestore
+        String userId = FirebaseConnector.getCurrentUser().getUid();
+        fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
+                userId,
+                document -> {
+                    // Inflate the dialog layout
+                    LayoutInflater inflater = LayoutInflater.from(this);
+                    View dialogView = inflater.inflate(R.layout.dialog_user_details, null);
 
-        // Set the user's location details in the dialog
-        TextView tvUserLocation = dialogView.findViewById(R.id.tvUserLocation);
-        TextView tvUserCoordinates = dialogView.findViewById(R.id.tvUserCoordinates);
-        Button btnClose = dialogView.findViewById(R.id.btnClose);
+                    // Set the user's details in the dialog
+                    TextView tvUserNickname = dialogView.findViewById(R.id.tvUserNickname);
+                    TextView tvUserAge = dialogView.findViewById(R.id.tvUserAge);
+                    Button btnClose = dialogView.findViewById(R.id.btnClose);
 
-        if (myLocation != null) {
-            tvUserCoordinates.setText("Coordinates: " + myLocation.latitude + ", " + myLocation.longitude);
-        }
+                    tvUserNickname.setText("Nickname: " + document.get("nickname"));
+                    tvUserAge.setText("Age: " + document.get("age"));
 
-
-        // Create and show the dialog
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setView(dialogView);
-        Dialog dialog = builder.create();
-        dialog.show();
-        btnClose.setOnClickListener(v -> {
-            // Dismiss the dialog
-            dialog.dismiss();
-        });
+                    // Create and show the dialog
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+                    builder.setView(dialogView);
+                    Dialog dialog = builder.create();
+                    dialog.show();
+                    btnClose.setOnClickListener(v -> {
+                        // Dismiss the dialog
+                        dialog.dismiss();
+                    });
+                },
+                e -> {
+                    Log.e("MainActivity", ">>> Error: " + e.getMessage());
+                    Toast.makeText(this, "Error: cannot fetch user details", Toast.LENGTH_LONG).show();
+                }
+        );
     }
 
     @Override
@@ -253,24 +269,13 @@ public class MapActivity extends BaseActivityClass implements
     }
 
     private void setupGamesMarkers(List<GameModel> games) {
-        List<Marker> markers = new ArrayList<>();
         for (GameModel game : games) {
             Bitmap iconBitmap = BitmapFactory.decodeResource(getResources(), game.getType().getIcon());
             BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconBitmap);
             Marker gameMarker = googleMap.addMarker(new MarkerOptions().position(game.getLocation()).icon(icon));
-            markers.add(gameMarker);
+            gameMarkers.put(gameMarker, game);
         }
-        googleMap.setOnMarkerClickListener(marker -> {
-            for (int j = 0; j < games.size(); j++) {
-                if (marker.equals(markers.get(j))) {
-                    showGameDetails(games.get(j));
-                    return true;
-                }
-            }
-            return false;
-        });
     }
-
 
     private void showGameDetails(GameModel game) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
