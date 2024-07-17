@@ -116,4 +116,12 @@ public class GameModel {
         return res;
     }
 
+    public double getLatitude() {
+        return _location.latitude;
+    }
+
+    public double getLongitude() {
+        return _location.longitude;
+    }
+
 }
