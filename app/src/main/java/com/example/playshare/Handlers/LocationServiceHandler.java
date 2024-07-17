@@ -13,7 +13,6 @@ import com.example.playshare.Data.Enums.CollectionsEnum;
 import com.example.playshare.Data.Models.GameModel;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,9 +61,7 @@ public class LocationServiceHandler {
                         }
                     }
                 },
-                e -> {
-                    Log.e("LocationServiceHandler", "Error getting user location: " + e.getMessage());
-                }
+                e -> Log.e("LocationServiceHandler", "Error getting user location: " + e.getMessage())
         );
     }
 
@@ -86,9 +83,7 @@ public class LocationServiceHandler {
                     }
                     FindNearestGame();
                 },
-                e -> {
-                    Log.e("LocationServiceHandler", "Error getting games locations: " + e.getMessage());
-                }
+                e -> Log.e("LocationServiceHandler", "Error getting games locations: " + e.getMessage())
         );
     }
 
