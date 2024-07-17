@@ -75,6 +75,13 @@ public class MainActivity extends BaseActivityClass {
             Intent intent = new Intent(MainActivity.this, StatsActivity.class);
             startActivity(intent);
         });
+
+        // Initialize the Notification Channel (only needed once)
+        NotificationHelper.createNotificationChannel(this);
+
+        // Start the upload service
+        Intent serviceIntent = new Intent(this, UploadService.class);
+        startService(serviceIntent);
     }
 
     private void requestLocationPermission() {
