@@ -23,6 +23,7 @@ import com.example.playshare.Components.ProgressDialog;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
+import com.example.playshare.Handlers.LocationServiceHandler;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -34,7 +35,7 @@ public class MainActivity extends BaseActivityClass {
     private RequestQueue volleyQueue;
     private ImageView profileImageView;
     private TextView nameTextView, heightTextView, ageTextView;
-    private Button nextButton, nearestGameButton;
+    private Button nearestGameButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,6 @@ public class MainActivity extends BaseActivityClass {
         nameTextView = findViewById(R.id.nameTextView);
         heightTextView = findViewById(R.id.heightTextView);
         ageTextView = findViewById(R.id.ageTextView);
-        nextButton = findViewById(R.id.nextButton);
         nearestGameButton = findViewById(R.id.nearestGameButton);
         progressDialog = new ProgressDialog(this);
         // todo: put it in string.xml
@@ -71,25 +71,10 @@ public class MainActivity extends BaseActivityClass {
             return false;
         });
 
-        nextButton.setOnClickListener(v -> {
-
-            Intent intent = new Intent(MainActivity.this, StatsActivity.class);
-            startActivity(intent);
-        });
-
         nearestGameButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, NearestGameActivity.class);
-            startActivity(intent);
+            LocationServiceHandler.getInstance().getGameDistances(this);
         });
 
-
-
-        // Initialize the Notification Channel (only needed once)
-        NotificationHelper.createNotificationChannel(this);
-
-        // Start the upload service
-        Intent serviceIntent = new Intent(this, UploadService.class);
-        startService(serviceIntent);
     }
 
     private void requestLocationPermission() {

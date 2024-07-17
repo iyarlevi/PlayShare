@@ -116,9 +116,7 @@ public class MapActivity extends BaseActivityClass implements
         googleMap.setOnMapLongClickListener(this);
 
         LatLng azrieli = new LatLng(31.7692, 35.1937);
-        googleMap.addMarker(new MarkerOptions().position(azrieli).title("Azrieli College"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(azrieli, 15f));
-        addGamesToMap();
+        myLocation = azrieli;
 
         mapPath = new ArrayList<>();
 
@@ -145,20 +143,21 @@ public class MapActivity extends BaseActivityClass implements
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("MainActivity", ">>> onLocationChanged: " + location);
+        myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        updateDatabaseLocation();
+        refreshMap();
+    }
 
-        LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
-        myLocation = pos; // Update the user's current location
-
+    public void refreshMap() {
         googleMap.clear();
         addGamesToMap();
 
         // Add marker for user's current location
-        userLocationMarker = googleMap.addMarker(new MarkerOptions().position(pos).title("Your Location"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f));
+        userLocationMarker = googleMap.addMarker(new MarkerOptions().position(myLocation).title("Your Location"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15f));
 
         // draw path
-        mapPath.add(pos);
+        mapPath.add(myLocation);
         googleMap.addPolyline(new PolylineOptions().addAll(mapPath).color(Color.BLUE).width(10f));
 
         // Set click listener for the markers
@@ -231,8 +230,8 @@ public class MapActivity extends BaseActivityClass implements
 
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
-        Log.d("MainActivity", ">>> onMapClick: " + latLng);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 19f));
+        // todo add to string xml
+        Toast.makeText(this, "Press longer to create game", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -289,9 +288,7 @@ public class MapActivity extends BaseActivityClass implements
                             "Creator: " + document.get("nickname"));
                     builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
                     if (game.getCreatorReference().equals(FirebaseConnector.getCurrentUser().getUid())) {
-                        builder.setNeutralButton("Delete", (dialog, which) -> {
-                            handleGameDeletion(dialog, FirebaseConnector.getCurrentUser().getUid(), (String) document.get("currentGame"));
-                        });
+                        builder.setNeutralButton("Delete", (dialog, which) -> handleGameDeletion(dialog, FirebaseConnector.getCurrentUser().getUid(), (String) document.get("currentGame")));
                     }
                     //todo: add navigation to the game
 //                    builder.setNegativeButton("Navigate", (dialog, which) -> {
@@ -319,17 +316,25 @@ public class MapActivity extends BaseActivityClass implements
                             userGame,
                             success1 -> {
                                 Log.d("MainActivity", ">>> Game removed from user's games list");
+                                refreshMap();
                                 dialog.dismiss();
                             },
-                            error1 -> {
-                                Log.e("MainActivity", ">>> Error: cannot remove game from user's games list");
-                            }
+                            error1 -> Log.e("MainActivity", ">>> Error: cannot remove game from user's games list")
                     );
                 },
-                error -> {
-                    Toast.makeText(this, "Error: cannot delete game", Toast.LENGTH_LONG).show();
-                }
+                error -> Toast.makeText(this, "Error: cannot delete game", Toast.LENGTH_LONG).show()
         );
 
+    }
+
+    private void updateDatabaseLocation() {
+        Map<String, Object> userLocation = new HashMap<>();
+        userLocation.put("location", myLocation);
+        fireStoreConnector.updateDocument(CollectionsEnum.USERS.getCollectionName(),
+                FirebaseConnector.getCurrentUser().getUid(),
+                userLocation,
+                success -> Log.d("MainActivity", ">>> User location updated successfully"),
+                error -> Log.e("MainActivity", ">>> Error: " + error.getMessage())
+        );
     }
 }
