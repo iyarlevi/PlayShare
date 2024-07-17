@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivityClass {
     private RequestQueue volleyQueue;
     private ImageView profileImageView;
     private TextView nameTextView, heightTextView, ageTextView;
-    private Button nextButton;
+    private Button nextButton, nearestGameButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class MainActivity extends BaseActivityClass {
         heightTextView = findViewById(R.id.heightTextView);
         ageTextView = findViewById(R.id.ageTextView);
         nextButton = findViewById(R.id.nextButton);
+        nearestGameButton = findViewById(R.id.nearestGameButton);
         progressDialog = new ProgressDialog(this);
         // todo: put it in string.xml
         progressDialog.setMessage("Fetch data...");
@@ -75,6 +76,13 @@ public class MainActivity extends BaseActivityClass {
             Intent intent = new Intent(MainActivity.this, StatsActivity.class);
             startActivity(intent);
         });
+
+        nearestGameButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, NearestGameActivity.class);
+            startActivity(intent);
+        });
+
+
 
         // Initialize the Notification Channel (only needed once)
         NotificationHelper.createNotificationChannel(this);

@@ -13,8 +13,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class NearestGameActivity extends BaseActivityClass {
+
+    private static final String TAG = "NearestGameActivity";
 
     private TextView titleTextView;
     private TextView nearestGameTextView;
@@ -25,6 +28,7 @@ public class NearestGameActivity extends BaseActivityClass {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearest_game);
+        Log.d(TAG, "onCreate: Activity created");
 
         titleTextView = findViewById(R.id.titleTextView); // Initialize titleTextView
         nearestGameTextView = findViewById(R.id.nearestGameTextView);
@@ -40,19 +44,66 @@ public class NearestGameActivity extends BaseActivityClass {
     }
 
     private void fetchUserLocation() {
+        Log.d(TAG, "fetchUserLocation: Fetching user location");
         // Here you would implement your logic to fetch the user's location
         // For demonstration purposes, let's assume you have a method to get user's location
         getUserLocation();
     }
 
     private void getUserLocation() {
-        // Simulated method to get user's location; replace with your actual implementation
-        userLocation = new LatLng(31.7692, 35.1937); // Example coordinates; replace with actual user location
-        fetchNearestGames();
+        Log.d(TAG, "getUserLocation: Getting user location from Firestore");
+        fireStoreConnector.getDocuments(CollectionsEnum.USERS.getCollectionName(),
+                documents -> {
+                    Log.d(TAG, "getUserLocation: Documents received successfully");
+                    // Assuming you have a method to get user's location from documents
+                    userLocation = getUserLocationFromDocuments(documents);
+                    if (userLocation != null) {
+                        fetchNearestGames();
+                    } else {
+                        Log.e(TAG, "getUserLocation: User location is null or not found in documents");
+                        Toast.makeText(this, "User location not available", Toast.LENGTH_SHORT).show();
+                        // Set a placeholder or default location
+                        userLocation = new LatLng(0, 0); // Set to a non-real location (e.g., 0, 0)
+                        fetchNearestGames(); // Proceed with fetching games with placeholder location
+                    }
+                },
+                e -> {
+                    Log.e(TAG, "getUserLocation: Error fetching user location: " + e.getMessage());
+                    Toast.makeText(this, "Error fetching user location", Toast.LENGTH_SHORT).show();
+                }
+        );
+    }
+
+    // Method to get user's location from documents (assuming basic implementation)
+    private LatLng getUserLocationFromDocuments(List<Map<String, Object>> documents) {
+        if (documents.isEmpty()) {
+            Log.w(TAG, "getUserLocationFromDocuments: No documents found");
+            return null;
+        }
+
+        // Assuming user's location is stored in a field called "location"
+        // and it is a LatLng object
+        Map<String, Object> document = documents.get(0);
+        if (document.containsKey("location")) {
+            Object locationObj = document.get("location");
+            if (locationObj instanceof LatLng) {
+                LatLng location = (LatLng) locationObj;
+                Log.d(TAG, "getUserLocationFromDocuments: User location found: " + location.toString());
+                return location;
+            } else {
+                Log.w(TAG, "getUserLocationFromDocuments: 'location' field is not of type LatLng");
+                return null;
+            }
+        } else {
+            Log.w(TAG, "getUserLocationFromDocuments: 'location' field not found in document");
+            return null;
+        }
     }
 
     private void fetchNearestGames() {
+        Log.d(TAG, "fetchNearestGames: Fetching nearest games");
         if (userLocation == null) {
+            Log.e(TAG, "fetchNearestGames: User location is null");
             Toast.makeText(this, "User location not available", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -60,6 +111,7 @@ public class NearestGameActivity extends BaseActivityClass {
         // Fetch games from Firestore
         fireStoreConnector.getDocuments(CollectionsEnum.GAMES.getCollectionName(),
                 documents -> {
+                    Log.d(TAG, "fetchNearestGames: Games fetched successfully");
                     List<GameModel> games = new ArrayList<>();
                     for (int i = 0; i < documents.size(); i++) {
                         GameModel game = new GameModel(documents.get(i));
@@ -68,7 +120,7 @@ public class NearestGameActivity extends BaseActivityClass {
                     displayNearestGame(games);
                 },
                 e -> {
-                    Log.e("NearestGameActivity", "Error fetching games: " + e.getMessage());
+                    Log.e(TAG, "fetchNearestGames: Error fetching games: " + e.getMessage());
                     Toast.makeText(this, "Error fetching games", Toast.LENGTH_SHORT).show();
                 }
         );
@@ -80,9 +132,13 @@ public class NearestGameActivity extends BaseActivityClass {
         GameModel nearestGame = calculateNearestGame(games);
 
         if (nearestGame != null) {
+            // Calculate distance with two decimal places
+            double distanceMeters = calculateDistance(userLocation, nearestGame.getLocation());
+            @SuppressLint("DefaultLocale") String distanceFormatted = String.format("%.2f", distanceMeters);
+
             titleTextView.setText("Nearest Game");
             nearestGameTextView.setText("Type: " + nearestGame.getType().toString() + "\n" +
-                    "Distance: " + calculateDistance(userLocation, nearestGame.getLocation()) + " meters\n" +
+                    "Distance: " + distanceFormatted + " meters\n" +
                     "Layout: " + nearestGame.getLayout().getTitle() + "\n" +
                     "Level: " + nearestGame.getLevel().toString());
         } else {
@@ -91,9 +147,12 @@ public class NearestGameActivity extends BaseActivityClass {
         }
     }
 
+
     // Method to calculate nearest game (assuming basic distance calculation)
     private GameModel calculateNearestGame(List<GameModel> games) {
+        Log.d(TAG, "calculateNearestGame: Calculating nearest game");
         if (games.isEmpty()) {
+            Log.d(TAG, "calculateNearestGame: No games available");
             return null;
         }
 
@@ -109,6 +168,7 @@ public class NearestGameActivity extends BaseActivityClass {
             }
         }
 
+        Log.d(TAG, "calculateNearestGame: Nearest game calculated: " + nearestGame.toString());
         return nearestGame;
     }
 

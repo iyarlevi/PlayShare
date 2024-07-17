@@ -164,7 +164,7 @@ public class MapActivity extends BaseActivityClass implements
         // Set click listener for the markers
         googleMap.setOnMarkerClickListener(marker -> {
             if (marker.equals(userLocationMarker)) {
-                showUserLocationDetails();
+                showUserDetails();
                 return true;
             }
             GameModel game = gameMarkers.get(marker);
@@ -176,7 +176,7 @@ public class MapActivity extends BaseActivityClass implements
         });
     }
 
-    private void showUserLocationDetails() {
+    private void showUserDetails() {
         // Fetch the current user's details from Firestore
         String userId = FirebaseConnector.getCurrentUser().getUid();
         fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
