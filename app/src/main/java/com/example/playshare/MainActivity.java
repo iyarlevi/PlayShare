@@ -33,8 +33,7 @@ public class MainActivity extends BaseActivityClass {
     private final FireStoreConnector database = FireStoreConnector.getInstance();
     private RequestQueue volleyQueue;
     private ImageView profileImageView;
-    private TextView nameTextView, heightTextView, ageTextView;
-    private Button nextButton;
+    private TextView nameTextView, heightTextView, ageTextView, preferencesTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,9 @@ public class MainActivity extends BaseActivityClass {
         nameTextView = findViewById(R.id.nameTextView);
         heightTextView = findViewById(R.id.heightTextView);
         ageTextView = findViewById(R.id.ageTextView);
-        nextButton = findViewById(R.id.nextButton);
+        preferencesTextView = findViewById(R.id.preferencesTextView);
+        Button statsButton = findViewById(R.id.statsButton);
+        Button mapButton = findViewById(R.id.mapButton);
         progressDialog = new ProgressDialog(this);
         // todo: put it in string.xml
         progressDialog.setMessage("Fetch data...");
@@ -70,11 +71,17 @@ public class MainActivity extends BaseActivityClass {
             return false;
         });
 
-        nextButton.setOnClickListener(v -> {
-
+        // Set on click listeners
+        statsButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, StatsActivity.class);
             startActivity(intent);
         });
+
+        mapButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MapActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void requestLocationPermission() {
@@ -102,8 +109,8 @@ public class MainActivity extends BaseActivityClass {
         database.getDocument(CollectionsEnum.USERS.getCollectionName(),
                 FirebaseConnector.getCurrentUser().getUid(),
                 documentMap -> {
-                    Log.d("MainActivity", "getUserData: " + documentMap);
                     if (documentMap == null || documentMap.isEmpty()) {
+                        progressDialog.dismiss();
                         Toast.makeText(this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -123,7 +130,10 @@ public class MainActivity extends BaseActivityClass {
                             ageTextView.setText(String.valueOf(age));
                         }
                     }
-
+                    Object preferredGames = documentMap.get("preferences");
+                    if (preferredGames != null) {
+                        preferencesTextView.setText(preferredGames.toString());
+                    }
                     Object imageUrl = documentMap.get("imageUrl");
                     if (imageUrl != null) {
                         String url = imageUrl.toString();
@@ -146,6 +156,7 @@ public class MainActivity extends BaseActivityClass {
                     } else {
                         progressDialog.dismiss();
                     }
+
                 },
                 e -> {
                     progressDialog.dismiss();

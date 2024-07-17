@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -66,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_regular_medium"
-                    android:hint="Enter your height"
+                    android:hint="Enter height in meters"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
                     android:minHeight="@dimen/height_text_medium"
@@ -103,17 +104,27 @@
                 app:errorEnabled="true"
                 app:errorIconDrawable="@drawable/ic_warning">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/preferencesEditText"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/preferencesLayout"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    android:layout_width="@dimen/width_edit_text_xlarge"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_regular_medium"
-                    android:hint="Enter your preferences"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:minHeight="@dimen/height_text_medium"
-                    android:paddingStart="@dimen/margin_regular_medium"
-                    android:paddingEnd="@dimen/margin_regular_medium" />
+                    app:errorEnabled="true"
+                    app:errorIconDrawable="@drawable/ic_warning">
+
+                    <EditText
+                        android:id="@+id/preferencesInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="Enter your preferences"
+                        android:imeOptions="actionNext"
+                        android:inputType="none"
+                        tools:ignore="SpeakableTextPresentCheck" />
+                </com.google.android.material.textfield.TextInputLayout>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

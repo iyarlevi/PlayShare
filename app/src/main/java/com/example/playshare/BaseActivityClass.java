@@ -18,11 +18,11 @@ public class BaseActivityClass extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         receiver = new MyReceiver();
         // Initialize the Notification Channel (only needed once)
-        NotificationHelper.createNotificationChannel(this);
-
-        // Start the upload service
-        serviceIntent = new Intent(this, UploadService.class);
-        startService(serviceIntent);
+//        NotificationHelper.createNotificationChannel(this);
+//
+//        // Start the upload service
+//        serviceIntent = new Intent(this, UploadService.class);
+//        startService(serviceIntent);
     }
 
     @Override
@@ -40,6 +40,6 @@ public class BaseActivityClass extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(serviceIntent);
+//        stopService(serviceIntent);
     }
 }
