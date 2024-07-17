@@ -1,5 +1,6 @@
 package com.example.playshare;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.example.playshare.Components.ProgressDialog;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
+import com.example.playshare.Data.Enums.GameTypeEnum;
 import com.example.playshare.Data.Models.UserModel;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -30,17 +32,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SettingsActivity extends BaseActivityClass {
-    private EditText heightEditText, ageEditText, nicknameEditText;
-    private EditText preferencesEditText;
-    private ImageView profileImageView;
+    private EditText heightEditText, ageEditText, nicknameEditText, preferencesInput;
     private ProgressDialog progressDialog;
-    private final FireStoreConnector database = FireStoreConnector.getInstance();
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<String> openGalleryChooseImage;
+    private ImageView profileImageView;
     private Bitmap imageBitmap;
     private boolean changedImage = false;
     private RequestQueue volleyQueue;
+    private final FireStoreConnector database = FireStoreConnector.getInstance();
     private final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private final String[] preferredGames = new String[GameTypeEnum.values().length];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +51,16 @@ public class SettingsActivity extends BaseActivityClass {
         progressDialog = new ProgressDialog(this);
         progressDialog.show();
 
+        for (GameTypeEnum gameType : GameTypeEnum.values()) {
+            preferredGames[gameType.ordinal()] = gameType.toString();
+        }
+
         nicknameEditText = findViewById(R.id.nicknameEditText);
-        preferencesEditText = findViewById(R.id.preferencesEditText);
         heightEditText = findViewById(R.id.heightEditText);
         ageEditText = findViewById(R.id.ageEditText);
-        Button cameraButton = findViewById(R.id.cameraButton);
         profileImageView = findViewById(R.id.imageView);
+        preferencesInput = findViewById(R.id.preferencesInput);
+        Button cameraButton = findViewById(R.id.cameraButton);
         Button galleryButton = findViewById(R.id.galleryButton);
         Button saveButton = findViewById(R.id.saveButton);
         volleyQueue = Volley.newRequestQueue(this);
@@ -63,6 +69,7 @@ public class SettingsActivity extends BaseActivityClass {
         // Load saved settings if needed
         loadSavedSettings();
 
+        preferencesInput.setOnClickListener(v -> setPreferencesInput());
         saveButton.setOnClickListener(v -> saveSettings());
         cameraButton.setOnClickListener(v -> {
             Intent takePictureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -108,8 +115,8 @@ public class SettingsActivity extends BaseActivityClass {
                     nicknameEditText.setText(nickname);
 
                     objectHolder = document.get("preferences");
-                    String preferences = (objectHolder != null) ? objectHolder.toString() : "";
-                    preferencesEditText.setText(preferences);
+                    String preferences = (objectHolder != null) ? objectHolder.toString().replaceAll("[\\[\\]]", "") : "";
+                    preferencesInput.setText(preferences);
 
                     objectHolder = document.get("height");
                     String height = (objectHolder != null) ? objectHolder.toString() : "";
@@ -176,10 +183,10 @@ public class SettingsActivity extends BaseActivityClass {
         double height = (heightEditText.getText().toString().isEmpty()) ? -1 : Double.parseDouble(heightEditText.getText().toString());
 
         ArrayList<String> preferences;
-        if (preferencesEditText.getText().toString().isEmpty()) {
+        if (preferencesInput.getText().toString().isEmpty()) {
             preferences = null;
         } else {
-            preferences = new ArrayList<>(Arrays.asList(preferencesEditText.getText().toString().split(",")));
+            preferences = new ArrayList<>(Arrays.asList(preferencesInput.getText().toString().split(",")));
         }
 
         UserModel user = new UserModel(
@@ -207,6 +214,36 @@ public class SettingsActivity extends BaseActivityClass {
                     Log.d("SettingsActivity", ">>> saveSettings: " + e.getMessage());
                 }
         );
+    }
+
+    private void setPreferencesInput() {
+        ArrayList<String> chosenPreferredGames = new ArrayList<>();
+        boolean[] checkedItems = new boolean[preferredGames.length];
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //todo add xml string
+        builder.setTitle("Select Game Types");
+        builder.setMultiChoiceItems(preferredGames, checkedItems, (dialog, which, isChecked) -> {
+            if (isChecked) {
+                chosenPreferredGames.add(preferredGames[which]);
+            } else {
+                chosenPreferredGames.remove(preferredGames[which]);
+            }
+        });
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            StringBuilder selectedItemsString = new StringBuilder();
+            for (String item : chosenPreferredGames) {
+                if (selectedItemsString.length() > 0) {
+                    selectedItemsString.append(",");
+                }
+                selectedItemsString.append(item);
+            }
+            preferencesInput.setText(selectedItemsString.toString());
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        builder.create().show();
     }
 
 }
