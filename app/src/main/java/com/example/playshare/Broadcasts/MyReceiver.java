@@ -1,10 +1,12 @@
-package com.example.playshare.Components;
+package com.example.playshare.Broadcasts;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 import android.util.Log;
+
+import com.example.playshare.Components.LowBatteryDialog;
 
 public class MyReceiver extends BroadcastReceiver {
 

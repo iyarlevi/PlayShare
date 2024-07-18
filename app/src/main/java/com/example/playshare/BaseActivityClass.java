@@ -7,22 +7,19 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.playshare.Components.MyReceiver;
+import com.example.playshare.Broadcasts.MyReceiver;
+import com.example.playshare.Handlers.NotificationServiceAlarm;
 
 public class BaseActivityClass extends AppCompatActivity {
     private BroadcastReceiver receiver;
-    private Intent serviceIntent;
+    private NotificationServiceAlarm alarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receiver = new MyReceiver();
-        // Initialize the Notification Channel (only needed once)
-//        NotificationHelper.createNotificationChannel(this);
-//
-//        // Start the upload service
-//        serviceIntent = new Intent(this, UploadService.class);
-//        startService(serviceIntent);
+        alarm = new NotificationServiceAlarm(this);
+        alarm.setAlarm();
     }
 
     @Override
@@ -40,6 +37,5 @@ public class BaseActivityClass extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        stopService(serviceIntent);
     }
 }

@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
     <application
         android:allowBackup="true"
@@ -16,11 +18,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlayShare"
         tools:targetApi="31">
+        <service
+            android:name=".Services.NotificationService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse" />
 
         <receiver
-            android:name=".Components.MyReceiver"
+            android:name=".Broadcasts.MyReceiver"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false" />
+        <receiver android:name=".Broadcasts.NotificationServiceBroadcast" />
 
         <activity
             android:name=".NewGameActivity"
@@ -57,9 +64,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NearestGameActivity" />
-        <service android:name=".UploadService" />
-
     </application>
 
 </manifest>
