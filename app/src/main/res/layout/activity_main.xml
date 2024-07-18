@@ -98,14 +98,6 @@
 
             </LinearLayout>
 
-            <!-- New Button for Nearest Game -->
-            <Button
-                android:id="@+id/nearestGameButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Find Nearest Game"
-                android:layout_marginTop="16dp"/>
-
         </LinearLayout>
     </ScrollView>
 

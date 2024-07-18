@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +22,6 @@ import com.example.playshare.Components.ProgressDialog;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
-import com.example.playshare.Handlers.LocationServiceHandler;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -34,8 +32,7 @@ public class MainActivity extends BaseActivityClass {
     private final FireStoreConnector database = FireStoreConnector.getInstance();
     private RequestQueue volleyQueue;
     private ImageView profileImageView;
-    private TextView nameTextView, heightTextView, ageTextView;
-    private Button nearestGameButton;
+    private TextView nameTextView, heightTextView, ageTextView, preferencesTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +42,7 @@ public class MainActivity extends BaseActivityClass {
         nameTextView = findViewById(R.id.nameTextView);
         heightTextView = findViewById(R.id.heightTextView);
         ageTextView = findViewById(R.id.ageTextView);
-        nearestGameButton = findViewById(R.id.nearestGameButton);
+        preferencesTextView = findViewById(R.id.preferencesTextView);
         progressDialog = new ProgressDialog(this);
         // todo: put it in string.xml
         progressDialog.setMessage("Fetch data...");
@@ -70,11 +67,6 @@ public class MainActivity extends BaseActivityClass {
             }
             return false;
         });
-
-        nearestGameButton.setOnClickListener(v -> {
-            LocationServiceHandler.getInstance().getGameDistances(this);
-        });
-
     }
 
     private void requestLocationPermission() {
@@ -122,6 +114,10 @@ public class MainActivity extends BaseActivityClass {
                         if (age > 0) {
                             ageTextView.setText(String.valueOf(age));
                         }
+                    }
+                    Object preferences = documentMap.get("preferences");
+                    if (preferences != null) {
+                        preferencesTextView.setText(preferences.toString());
                     }
 
                     Object imageUrl = documentMap.get("imageUrl");
