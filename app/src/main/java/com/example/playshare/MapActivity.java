@@ -72,6 +72,12 @@ public class MapActivity extends BaseActivityClass implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (FirebaseConnector.getCurrentUser() == null) {
+            // deal with the case where the user is not logged in and see notification to here
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
         setContentView(R.layout.activity_map);
 
         //define bottom navigation:
