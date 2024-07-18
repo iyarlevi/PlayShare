@@ -17,8 +17,8 @@ public class NotificationServiceAlarm {
     }
 
     public void setAlarm() {
-//        int interval = 1000 * 60 * 60 * 2; // 2 hours
-        int interval = 60000; // 2 hours
+        int interval = 1000 * 60 * 60 * 2; // 2 hours
+//        int interval = 60000; // 1 minute for testing
         Intent intent = new Intent(context, NotificationServiceBroadcast.class);
         intent.setAction("NOTIFICATION_SERVICE");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
