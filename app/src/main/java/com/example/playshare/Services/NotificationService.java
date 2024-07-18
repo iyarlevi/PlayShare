@@ -7,10 +7,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.example.playshare.MainActivity;
+import com.example.playshare.Connectors.FirebaseConnector;
+import com.example.playshare.Handlers.LocationServiceHandler;
+import com.example.playshare.LoginActivity;
 import com.example.playshare.NotificationHelper;
+import com.example.playshare.R;
 
 public class NotificationService extends Service {
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -20,12 +24,25 @@ public class NotificationService extends Service {
         Notification notification = new Notification.Builder(this, "FOREGROUND_SERVICE_CHANNEL")
                 .setContentTitle("Search for games")
                 .setContentText("Searching for games in the background...")
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setSmallIcon(R.drawable.ic_logo)
                 .build();
         startForeground(1, notification);
 
         NotificationHelper.createNotificationChannel(this);
-        NotificationHelper.showNotification(this, "Your Title", "Your notification text", new Intent(this, MainActivity.class));
+
+        if (FirebaseConnector.getCurrentUser() == null) {
+            // todo add to string xml
+            NotificationHelper.showNotification(this, "PlayShare", "Long time not seen..", new Intent(this, LoginActivity.class));
+            stopSelf();
+            return;
+        }
+        try {
+            LocationServiceHandler.getInstance().getGameDistances(this);
+        } catch (Exception e) {
+            // todo add to string xml
+            NotificationHelper.showNotification(this, "PlayShare", "Long time not seen..", new Intent(this, LoginActivity.class));
+            stopSelf();
+        }
         stopSelf();
     }
 

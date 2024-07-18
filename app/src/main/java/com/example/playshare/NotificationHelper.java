@@ -6,9 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import androidx.core.app.NotificationCompat;
 
-import com.example.playshare.R;
+import androidx.core.app.NotificationCompat;
 
 public class NotificationHelper {
 
@@ -35,7 +34,7 @@ public class NotificationHelper {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.baseline_edit_profile_24) // Replace this with the app's icon
+                .setSmallIcon(R.drawable.ic_logo) // Replace this with the app's icon
                 .setContentTitle(title)
                 .setContentText(text)
                 .setContentIntent(pendingIntent)

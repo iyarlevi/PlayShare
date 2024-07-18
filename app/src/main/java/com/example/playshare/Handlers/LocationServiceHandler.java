@@ -2,6 +2,7 @@ package com.example.playshare.Handlers;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
@@ -11,6 +12,7 @@ import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
 import com.example.playshare.Data.Models.GameModel;
+import com.example.playshare.NotificationHelper;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
@@ -20,6 +22,7 @@ public class LocationServiceHandler {
     private static LocationServiceHandler instance;
     private final FireStoreConnector database = FireStoreConnector.getInstance();
     private final Map<GameModel, Float> gamesDistanceMap = new HashMap<>();
+    private Context context = null;
 
     private LocationServiceHandler() {
     }
@@ -32,6 +35,10 @@ public class LocationServiceHandler {
     }
 
     public void getGameDistances(Context context) {
+        if (context == null) {
+            return;
+        }
+        this.context = context;
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getUserLocationFromDB();
         }
@@ -96,8 +103,16 @@ public class LocationServiceHandler {
                 nearestDistance = entry.getValue();
             }
         }
-        if (nearestGame != null) {
-            Log.d("LocationServiceHandler", "Nearest game: " + nearestGame + ", distance: " + nearestDistance);
+        if (nearestGame != null && nearestDistance < 1000) {
+            Intent intent = new Intent(context, com.example.playshare.MapActivity.class);
+            intent.putExtra("latitude", nearestGame.getLocation().latitude);
+            intent.putExtra("longitude", nearestGame.getLocation().longitude);
+            NotificationHelper.createNotificationChannel(context);
+            NotificationHelper.showNotification(context,
+                    "Game Offer",
+                    "Would you like to play " + nearestGame.getType().name() + "?",
+                    intent
+            );
         }
     }
 }

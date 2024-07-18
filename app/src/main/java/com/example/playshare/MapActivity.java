@@ -65,7 +65,7 @@ public class MapActivity extends BaseActivityClass implements
     private final List<GameModel> gamesArray = new ArrayList<>();
     private final Map<Marker, GameModel> gameMarkers = new HashMap<>();
     private Marker userLocationMarker;
-
+    private boolean isCameraMoved = false, isInRoute = false;
     private final FireStoreConnector fireStoreConnector = FireStoreConnector.getInstance();
 
     @Override
@@ -114,9 +114,16 @@ public class MapActivity extends BaseActivityClass implements
         this.googleMap = googleMap;
         googleMap.setOnMapClickListener(this);
         googleMap.setOnMapLongClickListener(this);
-
-        LatLng azrieli = new LatLng(31.7692, 35.1937);
-        myLocation = azrieli;
+        Intent intent = getIntent();
+        if (intent.hasExtra("latitude") && intent.hasExtra("longitude")) {
+            double lat = intent.getDoubleExtra("latitude", 0);
+            double lng = intent.getDoubleExtra("longitude", 0);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15f));
+            isCameraMoved = true;
+        } else {
+            // Default location - Azrieli Center
+            myLocation = new LatLng(31.7692, 35.1937);
+        }
 
         mapPath = new ArrayList<>();
 
@@ -154,7 +161,8 @@ public class MapActivity extends BaseActivityClass implements
 
         // Add marker for user's current location
         userLocationMarker = googleMap.addMarker(new MarkerOptions().position(myLocation).title("Your Location"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15f));
+        if (!isCameraMoved && !isInRoute)
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15f));
 
         // draw path
         mapPath.add(myLocation);
