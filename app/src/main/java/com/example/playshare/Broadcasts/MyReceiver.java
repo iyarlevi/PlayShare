@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
-import android.util.Log;
 
 import com.example.playshare.Components.LowBatteryDialog;
 
@@ -16,13 +15,8 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action != null) {
-            switch (action) {
-                case Intent.ACTION_BATTERY_CHANGED:
-                    handleBatteryChanged(context, intent);
-                    break;
-                case Intent.ACTION_AIRPLANE_MODE_CHANGED:
-                    handleAirplaneModeChanged(intent);
-                    break;
+            if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
+                handleBatteryChanged(context, intent);
             }
         }
     }
@@ -43,10 +37,5 @@ public class MyReceiver extends BroadcastReceiver {
             lowBatteryDialog.dismiss();
             lowBatteryDialog = null;
         }
-    }
-
-    private void handleAirplaneModeChanged(Intent intent) {
-        boolean isAirplaneModeOn = intent.getBooleanExtra("state", false);
-        Log.d("Airplane Mode", "Airplane Mode: " + isAirplaneModeOn);
     }
 }
