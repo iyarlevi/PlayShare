@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="live_players">שחקנים פעילים: %s</string>
-    <string name="basketball_players">שחקני כדורסל: %s</string>
-    <string name="soccer_players">שחקני כדורגל: %s</string>
+    <string name="basketball_games">משחקי כדורסל: %s</string>
+    <string name="soccer_games">משחקי כדורגל: %s</string>
+    <string name="tennis_games">משחקי טניס: %s</string>
     <string name="stats">סטטיסטיקות</string>
     <string name="live_players_n_a">שחקנים פעילים: שגיאה</string>
-    <string name="basketball_players_n_a">שחקני כדורסל: שגיאה</string>
-    <string name="soccer_players_n_a">שחקני כדורגל: שגיאה</string>
+    <string name="basketball_games_n_a">משחקי כדורסל: שגיאה</string>
+    <string name="soccer_games_n_a">משחקי כדורגל: שגיאה</string>
+    <string name="tennis_games_n_a">משחקי טניס: שגיאה</string>
     <string name="view_map">הצג מפה</string>
 </resources>

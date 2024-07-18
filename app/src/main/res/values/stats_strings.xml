@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="live_players">Live Players: %s</string>
-    <string name="basketball_players">Basketball Players: %s</string>
-    <string name="soccer_players">Football Players: %s</string>
+    <string name="basketball_games">Basketball Games: %s</string>
+    <string name="soccer_games">Football Games: %s</string>
+    <string name="tennis_games">Tennis Games: %s</string>
     <string name="stats">Stats</string>
     <string name="live_players_n_a">Live Players: N/A</string>
-    <string name="basketball_players_n_a">Basketball Players: N/A</string>
-    <string name="soccer_players_n_a">Soccer Players: N/A</string>
+    <string name="basketball_games_n_a">Basketball Games: N/A</string>
+    <string name="soccer_games_n_a">Soccer Games: N/A</string>
+    <string name="tennis_games_n_a">Tennis Games: N/A</string>
     <string name="view_map">View Map</string>
 </resources>

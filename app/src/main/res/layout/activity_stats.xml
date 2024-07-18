@@ -42,19 +42,27 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/basketballPlayersTextView"
+                android:id="@+id/basketballGamesTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/basketball_players_n_a"
+                android:text="@string/basketball_games_n_a"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/soccerPlayersTextView"
+                android:id="@+id/soccerGamesTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/soccer_players_n_a"
+                android:text="@string/soccer_games_n_a"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tennisGamesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/tennis_games_n_a"
                 android:textSize="20sp" />
 
             <Button
