@@ -28,6 +28,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.playshare.Components.BottomNavigator;
+import com.example.playshare.Components.TopAppBarMenuListener;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
@@ -79,15 +80,10 @@ public class MapActivity extends BaseActivityClass implements
         BottomNavigator bottomNavigator = new BottomNavigator(this, R.id.navigation_map);
         bottomNavigationView.setOnItemSelectedListener(bottomNavigator);
 
+        //define top app bar:
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
-        topAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.profile) {
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            }
-            return false;
-        });
+        TopAppBarMenuListener topAppBarMenuListener = new TopAppBarMenuListener(this);
+        topAppBar.setOnMenuItemClickListener(topAppBarMenuListener);
 
         // Setup Permission Launcher callback
         requestPermissionLauncher = registerForActivityResult(

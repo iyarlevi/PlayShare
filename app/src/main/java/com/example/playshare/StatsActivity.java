@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.playshare.Components.BottomNavigator;
+import com.example.playshare.Components.TopAppBarMenuListener;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -33,15 +34,10 @@ public class StatsActivity extends BaseActivityClass {
         Button mapButton = findViewById(R.id.mapButton);
         mapButton.setOnClickListener(v -> startActivity(new Intent(StatsActivity.this, MapActivity.class)));
 
+        //define top app bar:
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
-        topAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.profile) {
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            }
-            return false;
-        });
+        TopAppBarMenuListener topAppBarMenuListener = new TopAppBarMenuListener(this);
+        topAppBar.setOnMenuItemClickListener(topAppBarMenuListener);
 
         //define bottom navigation:
         NavigationBarView bottomNavigationView = findViewById(R.id.bottomNavigationView);

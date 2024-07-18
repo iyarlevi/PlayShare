@@ -10,7 +10,7 @@
     <string name="preferred_game_input_hint">Preferred Game</string>
     <string name="save">Save</string>
 
-    <string name="edit_profile">edit profile</string>
+    <string name="edit_profile">Edit profile</string>
     <string name="content_description_edit_profile">edit profile</string>
     <string name="more">more</string>
     <string name="content_description_more">more</string>
@@ -21,4 +21,6 @@
     <string name="cancel">Cancel</string>
     <string name="loading">Loading…</string>
     <string name="app_logo">App Logo</string>
+    <string name="logout">Logout</string>
+    <string name="show_stats">Show stats</string>
 </resources>

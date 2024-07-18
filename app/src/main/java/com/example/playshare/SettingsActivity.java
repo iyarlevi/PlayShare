@@ -18,11 +18,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.playshare.Components.ProgressDialog;
+import com.example.playshare.Components.TopAppBarMenuListener;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
 import com.example.playshare.Data.Enums.GameTypeEnum;
 import com.example.playshare.Data.Models.UserModel;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -68,6 +70,11 @@ public class SettingsActivity extends BaseActivityClass {
 
         // Load saved settings if needed
         loadSavedSettings();
+
+        //define top app bar:
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        TopAppBarMenuListener topAppBarMenuListener = new TopAppBarMenuListener(this);
+        topAppBar.setOnMenuItemClickListener(topAppBarMenuListener);
 
         preferencesInput.setOnClickListener(v -> setPreferencesInput());
         saveButton.setOnClickListener(v -> saveSettings());

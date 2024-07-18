@@ -1,7 +1,6 @@
 package com.example.playshare;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.playshare.Components.BottomNavigator;
 import com.example.playshare.Components.ProgressDialog;
+import com.example.playshare.Components.TopAppBarMenuListener;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
@@ -58,15 +58,10 @@ public class MainActivity extends BaseActivityClass {
         getUserData();
         requestLocationPermission();
 
+        //define top app bar:
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
-        topAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.profile) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            }
-            return false;
-        });
+        TopAppBarMenuListener topAppBarMenuListener = new TopAppBarMenuListener(this);
+        topAppBar.setOnMenuItemClickListener(topAppBarMenuListener);
     }
 
     private void requestLocationPermission() {

@@ -21,4 +21,6 @@
     <string name="cancel">ביטול</string>
     <string name="loading">טוען…</string>
     <string name="app_logo">לוגו של האפליקציה</string>
+    <string name="logout">התנתק</string>
+    <string name="show_stats">הצג סטטיסטיקות</string>
 </resources>

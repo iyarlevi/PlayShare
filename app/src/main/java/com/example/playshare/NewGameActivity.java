@@ -8,6 +8,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.playshare.Components.TopAppBarMenuListener;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
@@ -54,15 +55,10 @@ public class NewGameActivity extends BaseActivityClass {
         Button saveGame = findViewById(R.id.saveGame);
         Button cancel = findViewById(R.id.cancel);
 
+        //define top app bar:
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
-        topAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.profile) {
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            }
-            return false;
-        });
+        TopAppBarMenuListener topAppBarMenuListener = new TopAppBarMenuListener(this);
+        topAppBar.setOnMenuItemClickListener(topAppBarMenuListener);
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, gameTypes);

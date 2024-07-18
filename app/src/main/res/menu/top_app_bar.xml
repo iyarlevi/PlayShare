@@ -4,17 +4,27 @@
 
     <item
         android:id="@+id/profile"
+        android:contentDescription="@string/content_description_edit_profile"
         android:icon="@drawable/baseline_edit_profile_24"
         android:iconTint="@color/colorOnPrimaryContainer"
         android:title="@string/edit_profile"
-        android:contentDescription="@string/content_description_edit_profile"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/more"
-        android:title="@string/more"
+        android:id="@+id/showStats"
         android:contentDescription="@string/content_description_more"
-        android:iconTint="@color/colorOnPrimary"
+        android:title="@string/show_stats"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/editProfile"
+        android:contentDescription="@string/content_description_more"
+        android:title="@string/edit_profile"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/logout"
+        android:contentDescription="@string/content_description_more"
+        android:title="@string/logout"
         app:showAsAction="never" />
 
 </menu>
