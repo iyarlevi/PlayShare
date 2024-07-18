@@ -34,12 +34,16 @@ public class UserModel {
 
     public UserModel(Map<String, Object> document) {
         _age = -1;
-        if (document.containsKey("age")) {
-            _age = Integer.parseInt((String) document.get("age"));
-        }
         _height = 0.0;
-        if (document.containsKey("height")) {
-            _height = Double.parseDouble((String) document.get("height"));
+        Object ageObject = document.get("age");
+        if (ageObject instanceof Long) {
+            _age = ((Long) ageObject).intValue();
+        } else if (ageObject instanceof Integer) {
+            _age = (Integer) ageObject;
+        }
+        Object heightObject = document.get("height");
+        if (heightObject instanceof Double) {
+            _height = (Double) heightObject;
         }
         if (document.containsKey("nickname"))
             _nickname = (String) document.get("nickname");
@@ -60,7 +64,15 @@ public class UserModel {
         if (document.containsKey("imageUrl")) {
             _imageUrl = (String) document.get("imageUrl");
         }
-        _preferences = (ArrayList<String>) document.get("preferences");
+//        _preferences = (ArrayList<String>) document.get("preferences");
+        Object preferences = document.get("preferences");
+        if (preferences instanceof Map) {
+            Map<?, ?> preferencesMap = (Map<?, ?>) preferences;
+            _preferences = new ArrayList<>();
+            for (Map.Entry<?, ?> entry : preferencesMap.entrySet()) {
+                _preferences.add((String) entry.getValue());
+            }
+        }
     }
 
     public int getAge() {

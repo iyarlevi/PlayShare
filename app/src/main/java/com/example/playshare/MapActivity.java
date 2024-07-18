@@ -148,6 +148,7 @@ public class MapActivity extends BaseActivityClass implements
     public void onLocationChanged(Location location) {
         myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         updateDatabaseLocation();
+        checkForGameDelete();
         refreshMap();
     }
 
@@ -157,12 +158,16 @@ public class MapActivity extends BaseActivityClass implements
 
         // Add marker for user's current location
         userLocationMarker = googleMap.addMarker(new MarkerOptions().position(myLocation).title("Your Location"));
-        if (!isCameraMoved && !isInRoute)
+        if (!isCameraMoved && !isInRoute) {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15f));
+            isCameraMoved = true;
+        }
 
         // draw path
-        mapPath.add(myLocation);
-        googleMap.addPolyline(new PolylineOptions().addAll(mapPath).color(Color.BLUE).width(10f));
+        if (isInRoute) {
+            mapPath.add(myLocation);
+            googleMap.addPolyline(new PolylineOptions().addAll(mapPath).color(Color.BLUE).width(10f));
+        }
 
         // Set click listener for the markers
         googleMap.setOnMarkerClickListener(marker -> {
@@ -255,6 +260,7 @@ public class MapActivity extends BaseActivityClass implements
     }
 
     private void addGamesToMap() {
+        gamesArray.clear();
         fireStoreConnector.getDocuments(CollectionsEnum.GAMES.getCollectionName(),
                 documents -> {
                     for (int i = 0; i < documents.size(); i++) {
@@ -341,4 +347,39 @@ public class MapActivity extends BaseActivityClass implements
                 error -> Log.e("MainActivity", ">>> Error: " + error.getMessage())
         );
     }
+
+    private void checkForGameDelete() {
+        fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
+                FirebaseConnector.getCurrentUser().getUid(),
+                document -> {
+                    if (document.get("currentGame") == null) {
+                        return;
+                    }
+                    String gameId = (String) document.get("currentGame");
+                    float[] distance = new float[1];
+                    fireStoreConnector.getDocument(
+                            CollectionsEnum.GAMES.getCollectionName(),
+                            gameId,
+                            gameDocument -> {
+                                GameModel game = new GameModel(gameDocument);
+                                android.location.Location.distanceBetween(
+                                        myLocation.latitude,
+                                        myLocation.longitude,
+                                        game.getLocation().latitude,
+                                        game.getLocation().longitude,
+                                        distance
+                                );
+                                if (distance[0] > 1000) {
+                                    handleGameDeletion(new MaterialAlertDialogBuilder(this).create(), FirebaseConnector.getCurrentUser().getUid(), gameId);
+                                }
+                            }
+                            ,
+                            e -> Log.e("MainActivity", ">>> Error: " + e.getMessage())
+                    );
+                },
+                e -> Log.e("MainActivity", ">>> Error: " + e.getMessage())
+        );
+
+    }
+
 }

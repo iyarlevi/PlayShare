@@ -16,6 +16,7 @@ import com.example.playshare.Data.Enums.GameLayoutEnum;
 import com.example.playshare.Data.Enums.GameTypeEnum;
 import com.example.playshare.Data.Enums.PlayLevelEnum;
 import com.example.playshare.Data.Models.GameModel;
+import com.example.playshare.Data.Models.UserModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -114,10 +115,25 @@ public class NewGameActivity extends BaseActivityClass {
         database.getDocument(CollectionsEnum.USERS.getCollectionName(),
                 currentUserUid,
                 userDocument -> {
+                    UserModel user = new UserModel(userDocument);
                     if (userDocument.getOrDefault("currentGame", null) != null) {
                         Toast.makeText(this, "You are already in a game!", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    // check distance from the user location to the game location
+                    float[] distance = new float[1];
+                    android.location.Location.distanceBetween(
+                            user.getLocation().latitude,
+                            user.getLocation().longitude,
+                            location.latitude,
+                            location.longitude,
+                            distance
+                    );
+                    if (distance[0] > 1000) {
+                        Toast.makeText(this, "You are too far from the game location!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     GameModel game = new GameModel(
                             GameTypeEnum.valueOf(gameTypeInput.getText().toString()),
                             location,
@@ -136,6 +152,10 @@ public class NewGameActivity extends BaseActivityClass {
                                         currentGame,
                                         aVoid -> {
                                             Toast.makeText(this, "Game created successfully", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(this, MapActivity.class);
+                                            intent.putExtra("latitude", location.latitude);
+                                            intent.putExtra("longitude", location.longitude);
+                                            startActivity(intent);
                                             finish();
                                         },
                                         e -> {
