@@ -54,18 +54,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             boolean valid = true;
 
             if (email.isEmpty()) {
-                emailEdt.setError("Email is required");
-                Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show();
+                emailEdt.setError(getString(R.string.email_empty));
+                Toast.makeText(this, getString(R.string.email_empty), Toast.LENGTH_SHORT).show();
                 valid = false;
             }
             if (password.isEmpty()) {
-                passwordEdt.setError("Password is required");
-                Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show();
+                passwordEdt.setError(getString(R.string.password_empty));
+                Toast.makeText(this, getString(R.string.password_empty), Toast.LENGTH_SHORT).show();
                 valid = false;
             }
             if (passConfirm.isEmpty()) {
-                passConfirmEdt.setError("Password confirmation is required");
-                Toast.makeText(this, "Password confirmation is required", Toast.LENGTH_SHORT).show();
+                passConfirmEdt.setError(getString(R.string.password_confirm_empty));
+                Toast.makeText(this, getString(R.string.password_confirm_empty), Toast.LENGTH_SHORT).show();
                 valid = false;
             }
             if (!valid)
@@ -92,6 +92,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     // Handle failed registration
                     Toast.makeText(this, "Registration failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+            } else {
+                passConfirmEdt.setError(getString(R.string.password_confirm_error));
+                Toast.makeText(this, getString(R.string.password_confirm_error), Toast.LENGTH_SHORT).show();
             }
         } else if (v.getId() == R.id.cancelButton) {
             finish();

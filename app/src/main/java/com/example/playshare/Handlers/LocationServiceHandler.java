@@ -12,27 +12,16 @@ import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
 import com.example.playshare.Data.Models.GameModel;
-import com.example.playshare.NotificationHelper;
+import com.example.playshare.Components.NotificationHelper;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class LocationServiceHandler {
-    private static LocationServiceHandler instance;
     private final FireStoreConnector database = FireStoreConnector.getInstance();
     private final Map<GameModel, Float> gamesDistanceMap = new HashMap<>();
     private Context context = null;
-
-    private LocationServiceHandler() {
-    }
-
-    public static LocationServiceHandler getInstance() {
-        if (instance == null) {
-            instance = new LocationServiceHandler();
-        }
-        return instance;
-    }
 
     public void getGameDistances(Context context) {
         if (context == null) {

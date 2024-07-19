@@ -145,7 +145,7 @@ public class SettingsActivity extends BaseActivityClass {
                                 error -> {
                                     Log.d("SettingsActivity", ">>> loadSavedSettings: " + error.getMessage());
                                     progressDialog.dismiss();
-                                    Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, getString(R.string.failed_load_image), Toast.LENGTH_SHORT).show();
                                 });
                         volleyQueue.add(imageRequest);
                     } else {
@@ -155,15 +155,15 @@ public class SettingsActivity extends BaseActivityClass {
                 },
                 e -> {
                     progressDialog.dismiss();
-                    Toast.makeText(this, "Failed to load previous settings", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
                 }
         );
     }
 
     private void saveSettings() {
         if (nicknameEditText.getText().toString().isEmpty()) {
-            nicknameEditText.setError("Nickname is required");
-            Toast.makeText(this, "Please enter nickname", Toast.LENGTH_SHORT).show();
+            nicknameEditText.setError(getString(R.string.nickname_empty));
+            Toast.makeText(this, getString(R.string.nickname_empty), Toast.LENGTH_SHORT).show();
             return;
         }
         progressDialog.show();
@@ -176,7 +176,7 @@ public class SettingsActivity extends BaseActivityClass {
             UploadTask uploadTask = mountainsRef.putBytes(imageBytes);
             uploadTask.addOnFailureListener(exception -> {
                 progressDialog.dismiss();
-                Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.image_saving_error), Toast.LENGTH_SHORT).show();
                 Log.d("SettingsActivity", ">>> saveSettings: " + exception.getMessage());
             }).addOnSuccessListener(taskSnapshot -> mountainsRef.getDownloadUrl().addOnSuccessListener(uri -> uploadData(uri.toString())));
         } else {
@@ -217,7 +217,7 @@ public class SettingsActivity extends BaseActivityClass {
                 },
                 e -> {
                     progressDialog.dismiss();
-                    Toast.makeText(this, "Failed to save settings", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.failed_settings_save), Toast.LENGTH_SHORT).show();
                     Log.d("SettingsActivity", ">>> saveSettings: " + e.getMessage());
                 }
         );

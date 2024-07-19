@@ -23,4 +23,12 @@
     <string name="app_logo">App Logo</string>
     <string name="logout">Logout</string>
     <string name="show_stats">Show stats</string>
+
+    <string name="failed_fetch_data">Failed to fetch data</string>
+    <string name="failed_load_image">Failed to load image</string>
+
+    <string name="permission_denied">Permission denied</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="map_preview">Map Preview</string>
 </resources>

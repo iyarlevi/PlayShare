@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_regular_medium"
                 android:gravity="center"
-                android:text="Enter Details"
+                android:text="@string/settings_activity_title"
                 android:textColor="@color/colorPrimary" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -67,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_regular_medium"
-                    android:hint="Enter height in meters"
+                    android:hint="@string/enter_height"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
                     android:minHeight="@dimen/height_text_medium"
@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_regular_medium"
-                    android:hint="Enter your age"
+                    android:hint="@string/enter_age"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:minHeight="@dimen/height_text_medium"
@@ -118,9 +118,10 @@
                         android:id="@+id/preferencesInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:autofillHints=""
                         android:clickable="true"
                         android:focusable="false"
-                        android:hint="Enter your preferences"
+                        android:hint="@string/enter_preferences"
                         android:imeOptions="actionNext"
                         android:inputType="none"
                         tools:ignore="SpeakableTextPresentCheck" />
@@ -140,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_regular_medium"
                     android:layout_marginBottom="@dimen/margin_regular_xlarge"
-                    android:text="Camera" />
+                    android:text="@string/camera" />
 
                 <Button
                     android:id="@+id/galleryButton"
@@ -148,7 +149,7 @@
                     android:layout_width="@dimen/width_button_medium"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_regular_xlarge"
-                    android:text="Gallery" />
+                    android:text="@string/gallery" />
 
             </LinearLayout>
 
@@ -158,6 +159,7 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
+                android:contentDescription="@string/profile_picture_content_description"
                 android:src="@drawable/anonymous" />
 
             <Button
@@ -168,7 +170,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_regular_xlarge"
                 android:layout_marginBottom="@dimen/margin_regular_xlarge"
-                android:text="Save"
+                android:text="@string/save"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

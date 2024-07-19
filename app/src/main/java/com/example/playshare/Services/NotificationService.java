@@ -10,7 +10,7 @@ import android.os.IBinder;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Handlers.LocationServiceHandler;
 import com.example.playshare.LoginActivity;
-import com.example.playshare.NotificationHelper;
+import com.example.playshare.Components.NotificationHelper;
 import com.example.playshare.R;
 
 public class NotificationService extends Service {
@@ -31,15 +31,14 @@ public class NotificationService extends Service {
         NotificationHelper.createNotificationChannel(this);
 
         if (FirebaseConnector.getCurrentUser() == null) {
-            // todo add to string xml
             NotificationHelper.showNotification(this, "PlayShare", "Long time not seen..", new Intent(this, LoginActivity.class));
             stopSelf();
             return;
         }
         try {
-            LocationServiceHandler.getInstance().getGameDistances(this);
+            LocationServiceHandler locationServiceHandler = new LocationServiceHandler();
+            locationServiceHandler.getGameDistances(this);
         } catch (Exception e) {
-            // todo add to string xml
             NotificationHelper.showNotification(this, "PlayShare", "Long time not seen..", new Intent(this, LoginActivity.class));
             stopSelf();
         }

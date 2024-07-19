@@ -3,4 +3,7 @@
     <string name="password_input_confirm_hint">Confirm your password</string>
     <string name="registration_title">Registration Page</string>
     <string name="nickname_input_hint">Enter your nickname</string>
+
+    <string name="password_confirm_error">Passwords do not match</string>
+    <string name="password_confirm_empty">Please confirm your password</string>
 </resources>

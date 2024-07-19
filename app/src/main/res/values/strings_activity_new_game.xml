@@ -6,4 +6,8 @@
     <string name="game_type_is_required">Game Type is required</string>
     <string name="players_level_is_required">Players Level is required</string>
     <string name="preferred_game_is_required">Game Type</string>
+    <string name="game_already_exists">You already have a game at this time</string>
+    <string name="game_too_far">You are too far from the game location</string>
+    <string name="game_created">Game Created successfully</string>
+    <string name="game_not_created">Game not created</string>
 </resources>

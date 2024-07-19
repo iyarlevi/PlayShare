@@ -1,4 +1,4 @@
-package com.example.playshare;
+package com.example.playshare.Components;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
+
+import com.example.playshare.R;
 
 public class NotificationHelper {
 

@@ -78,18 +78,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             String email = emailEdt.getText().toString();
             if (email.isEmpty()) {
-                emailEdt.setError("Please enter email");
+                emailEdt.setError(getString(R.string.email_empty));
                 emailEdt.requestFocus();
                 return;
             }
             String password = passwordEdt.getText().toString();
             if (password.isEmpty()) {
-                passwordEdt.setError("Please enter password");
+                passwordEdt.setError(getString(R.string.password_empty));
                 passwordEdt.requestFocus();
                 return;
             }
 
-            progressDialog.setMessage("Logging in...");
+            progressDialog.setMessage(getString(R.string.login_delay));
             progressDialog.showLoading();
 
             FirebaseConnector.signIn(email, password, authResult -> database.getDocumentReference(CollectionsEnum.USERS.getCollectionName(),
@@ -107,16 +107,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             ), e -> {
                 progressDialog.hideLoading();
                 if ((Objects.requireNonNull(e.getMessage())).contains("email address is badly formatted")) {
-                    emailEdt.setError("Please enter a valid email");
+                    emailEdt.setError(getString(R.string.invalid_email));
                     emailEdt.requestFocus();
                     return;
                 }
                 if (e.getMessage().contains("password is invalid")) {
-                    passwordEdt.setError("Please enter a valid password");
+                    passwordEdt.setError(getString(R.string.invalid_password));
                     passwordEdt.requestFocus();
                     return;
                 }
-                Toast.makeText(this, "Failed to login", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
             });
         } catch (Exception e) {
             Log.e("LoginActivity", "Error: " + e.getMessage());

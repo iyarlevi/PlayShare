@@ -6,4 +6,8 @@
     <string name="game_type_is_required">סוג המשחק נדרש</string>
     <string name="players_level_is_required">רמת השחקנים נדרשת</string>
     <string name="preferred_game_is_required">המשחק המועדף נדרש</string>
+    <string name="game_already_exists">כבר יש לך משחק בזמן זה</string>
+    <string name="game_too_far">אתה רחוק מדי ממיקום המשחק</string>
+    <string name="game_created">משחק נוצר בהצלחה</string>
+    <string name="game_not_created">משחק לא נוצר</string>
 </resources>

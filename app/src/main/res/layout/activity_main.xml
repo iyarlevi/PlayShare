@@ -30,7 +30,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/margin_regular_xlarge"
                 android:layout_marginBottom="@dimen/margin_regular_xlarge"
-                android:contentDescription="Profile Picture"
+                android:contentDescription="@string/profile_picture_content_description"
                 android:src="@drawable/anonymous"
                 tools:ignore="ImageContrastCheck" />
 
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minHeight="48dp"
-                android:text="No height details"
+                android:text="@string/no_height_details"
                 android:textStyle="bold" />
 
             <TextView
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minHeight="48dp"
-                android:text="No age details"
+                android:text="@string/no_age_details"
                 android:textStyle="bold" />
 
             <TextView
@@ -70,9 +70,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minHeight="48dp"
-                android:text="No preferences"
+                android:text="@string/no_preferences"
                 android:textStyle="bold" />
-
         </LinearLayout>
     </ScrollView>
 

@@ -3,4 +3,7 @@
     <string name="password_input_confirm_hint">אימות סיסמה</string>
     <string name="registration_title">דף הרשמה</string>
     <string name="nickname_input_hint">הזן כינוי</string>
+
+    <string name="password_confirm_error">הסיסמאות אינן תואמות</string>
+    <string name="password_confirm_empty">אנא אמת את הסיסמה</string>
 </resources>

@@ -6,4 +6,10 @@
     <string name="login_button">Login</string>
     <string name="register_button">Register</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="login_delay">Logging in…</string>
+    <string name="login_failed">Failed to login</string>
+    <string name="invalid_email">Invalid email address</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="email_empty">Please enter your email address</string>
+    <string name="password_empty">Please enter your password</string>
 </resources>

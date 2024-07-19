@@ -3,7 +3,6 @@ package com.example.playshare.Components;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -20,7 +19,6 @@ public class ProgressDialog extends Dialog {
 
     public ProgressDialog(Context context, @ColorRes int backgroundColor) {
         super(context);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_progress_bar);
         if (getWindow() != null) {
             getWindow().setBackgroundDrawable(new ColorDrawable(context.getColor(backgroundColor)));

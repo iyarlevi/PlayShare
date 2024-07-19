@@ -6,4 +6,10 @@
     <string name="login_button">היכנס</string>
     <string name="register_button">להירשם</string>
     <string name="forgot_password">שכחתי סיסמא</string>
+    <string name="login_delay">אנא המתן…</string>
+    <string name="login_failed">לא זיהינו אותך</string>
+    <string name="invalid_email">כתובת מייל לא תקינה</string>
+    <string name="invalid_password">סיסמא לא תקינה</string>
+    <string name="email_empty">אנא הכנס כתובת מייל</string>
+    <string name="password_empty">אנא הכנס סיסמא</string>
 </resources>

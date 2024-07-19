@@ -23,4 +23,12 @@
     <string name="app_logo">לוגו של האפליקציה</string>
     <string name="logout">התנתק</string>
     <string name="show_stats">הצג סטטיסטיקות</string>
+
+    <string name="failed_fetch_data">שגיאה בטעינת המידע</string>
+    <string name="failed_load_image">שגיאה בטעינת התמונה</string>
+
+    <string name="permission_denied">הרשאה נדחתה</string>
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+    <string name="map_preview">תצוגת מפה</string>
 </resources>

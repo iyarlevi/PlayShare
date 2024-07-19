@@ -6,15 +6,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 
 import com.example.playshare.R;
 
 public class LowBatteryDialog extends Dialog {
-
-    private Button dismissButton;
 
     public LowBatteryDialog(Context context) {
         this(context, R.color.colorSurface);
@@ -30,7 +27,7 @@ public class LowBatteryDialog extends Dialog {
             getWindow().setBackgroundDrawable(colorDrawable);
             getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         }
-        dismissButton = findViewById(R.id.buttonDismiss);
+        Button dismissButton = findViewById(R.id.buttonDismiss);
         dismissButton.setOnClickListener(v -> dismiss());
     }
 }

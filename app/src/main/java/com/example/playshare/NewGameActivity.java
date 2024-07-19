@@ -125,7 +125,7 @@ public class NewGameActivity extends BaseActivityClass {
                 userDocument -> {
                     UserModel user = new UserModel(userDocument);
                     if (userDocument.getOrDefault("currentGame", null) != null) {
-                        Toast.makeText(this, "You are already in a game!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.game_already_exists), Toast.LENGTH_SHORT).show();
                         cancel.setEnabled(true);
                         return;
                     }
@@ -139,7 +139,7 @@ public class NewGameActivity extends BaseActivityClass {
                             distance
                     );
                     if (distance[0] > 1000) {
-                        Toast.makeText(this, "You are too far from the game location!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.game_too_far), Toast.LENGTH_SHORT).show();
                         cancel.setEnabled(true);
                         return;
                     }
@@ -161,7 +161,7 @@ public class NewGameActivity extends BaseActivityClass {
                                         currentUserUid,
                                         currentGame,
                                         aVoid -> {
-                                            Toast.makeText(this, "Game created successfully", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(this, getString(R.string.game_created), Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(this, MapActivity.class);
                                             intent.putExtra("latitude", location.latitude);
                                             intent.putExtra("longitude", location.longitude);
@@ -169,19 +169,19 @@ public class NewGameActivity extends BaseActivityClass {
                                             finish();
                                         },
                                         e -> {
-                                            Toast.makeText(this, "Error creating game!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(this, getString(R.string.game_not_created), Toast.LENGTH_SHORT).show();
                                             cancel.setEnabled(true);
                                             Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
                                         }
                                 );
                             },
                             e -> {
-                                Toast.makeText(this, "Error creating game!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, getString(R.string.game_not_created), Toast.LENGTH_SHORT).show();
                                 Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
                             }
                     );
                 },
-                e -> Toast.makeText(this, "Error getting user reference: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                e -> Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show()
         );
     }
 }

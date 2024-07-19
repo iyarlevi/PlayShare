@@ -4,15 +4,15 @@
         android:id="@+id/navigation_map"
         android:enabled="true"
         android:icon="@drawable/ic_map"
-        android:title="Map"/>
+        android:title="@string/map" />
     <item
         android:id="@+id/navigation_home"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="Home"/>
+        android:title="@string/home" />
     <item
         android:id="@+id/navigation_stats"
         android:enabled="true"
         android:icon="@drawable/ic_stats"
-        android:title="Stats"/>
+        android:title="@string/stats" />
 </menu>

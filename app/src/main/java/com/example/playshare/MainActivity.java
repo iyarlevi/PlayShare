@@ -44,8 +44,6 @@ public class MainActivity extends BaseActivityClass {
         ageTextView = findViewById(R.id.ageTextView);
         preferencesTextView = findViewById(R.id.preferencesTextView);
         progressDialog = new ProgressDialog(this);
-        // todo: put it in string.xml
-        progressDialog.setMessage("Fetch data...");
         progressDialog.show();
         //define bottom navigation:
         NavigationBarView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -91,7 +89,7 @@ public class MainActivity extends BaseActivityClass {
                 documentMap -> {
                     Log.d("MainActivity", "getUserData: " + documentMap);
                     if (documentMap == null || documentMap.isEmpty()) {
-                        Toast.makeText(this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (documentMap.get("nickname") != null)
@@ -128,7 +126,7 @@ public class MainActivity extends BaseActivityClass {
                                     error -> {
                                         Log.d("SettingsActivity", ">>> loadSavedSettings: " + error.getMessage());
                                         progressDialog.dismiss();
-                                        Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(this, getString(R.string.failed_load_image), Toast.LENGTH_SHORT).show();
                                     });
                             volleyQueue.add(imageRequest);
                         } else {
@@ -140,7 +138,7 @@ public class MainActivity extends BaseActivityClass {
                 },
                 e -> {
                     progressDialog.dismiss();
-                    Toast.makeText(this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
                 }
         );
     }

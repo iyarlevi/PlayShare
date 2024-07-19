@@ -8,16 +8,16 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:alpha="0.5" />
+        android:alpha="0.5"
+        android:background="@android:color/transparent" />
 
     <!-- Progress bar and text -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:gravity="center"
         android:background="@android:color/transparent"
+        android:gravity="center"
         android:padding="16dp">
 
         <ProgressBar
@@ -25,8 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:indeterminateTint="#FFDE59"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:indeterminateTint="#FFDE59" />
 
         <TextView
             android:id="@+id/progressText"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/progressBar"
             android:layout_centerHorizontal="true"
-            android:text="Loading..."
+            android:text="@string/dialog_progress_bar_message"
             android:textColor="#FFDE59"
             android:textSize="16sp" />
 

@@ -1,13 +1,18 @@
 package com.example.playshare.Data.Enums;
 
+import android.content.res.Resources;
+
+import com.example.playshare.R;
+
 public enum GameLayoutEnum {
-    TEN_VS_TEN("10 vs 10"),
-    FIVE_VS_FIVE("5 vs 5"),
-    THREE_VS_THREE("3 vs 3"),
-    TWO_VS_TWO("2 vs 2"),
-    ONE_VS_ONE("1 vs 1");
+    TEN_VS_TEN(Resources.getSystem().getString(R.string.ten_game)),
+    FIVE_VS_FIVE(Resources.getSystem().getString(R.string.five_game)),
+    THREE_VS_THREE(Resources.getSystem().getString(R.string.three_game)),
+    TWO_VS_TWO(Resources.getSystem().getString(R.string.two_game)),
+    ONE_VS_ONE(Resources.getSystem().getString(R.string.one_game));
 
     private final String _title;
+
     GameLayoutEnum(String title) {
         _title = title;
     }

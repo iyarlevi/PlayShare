@@ -97,7 +97,7 @@ public class MapActivity extends BaseActivityClass implements
                     if (isGranted) {
                         startLocationUpdates();
                     } else {
-                        Toast.makeText(this, "Permission NOT Granted!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -133,7 +133,7 @@ public class MapActivity extends BaseActivityClass implements
             startLocationUpdates();
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                Toast.makeText(this, "App needs to access Device's Location!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
             } else {
                 // ask for the permission.
                 requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -205,8 +205,8 @@ public class MapActivity extends BaseActivityClass implements
                     TextView tvUserAge = dialogView.findViewById(R.id.tvUserAge);
                     Button btnClose = dialogView.findViewById(R.id.btnClose);
 
-                    tvUserNickname.setText("Nickname: " + document.get("nickname"));
-                    tvUserAge.setText("Age: " + document.get("age"));
+                    tvUserNickname.setText(getString(R.string.users_nickname, document.get("nickname")));
+                    tvUserAge.setText(getString(R.string.users_age, document.get("age")));
 
                     // Create and show the dialog
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
@@ -220,7 +220,7 @@ public class MapActivity extends BaseActivityClass implements
                 },
                 e -> {
                     Log.e("MainActivity", ">>> Error: " + e.getMessage());
-                    Toast.makeText(this, "Error: cannot fetch user details", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
                 }
         );
     }
@@ -246,21 +246,21 @@ public class MapActivity extends BaseActivityClass implements
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
         // todo add to string xml
-        Toast.makeText(this, "Press longer to create game", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.create_new_game_hint), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onMapLongClick(@NonNull LatLng latLng) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Create new game");
-        builder.setMessage("Do you want to create a new game here?");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
+        builder.setTitle(getString(R.string.create_new_game));
+        builder.setMessage(getString(R.string.create_new_game_question));
+        builder.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             Intent intent = new Intent(this, NewGameActivity.class);
             intent.putExtra("lat", latLng.latitude);
             intent.putExtra("lng", latLng.longitude);
             startActivity(intent);
         });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss());
         Dialog dialog = builder.create();
         dialog.show();
     }
@@ -278,7 +278,7 @@ public class MapActivity extends BaseActivityClass implements
                 },
                 e -> {
                     Log.e("MainActivity", ">>> Error: " + e.getMessage());
-                    Toast.makeText(this, "Error: cannot fetch games", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
                 }
         );
     }
@@ -306,14 +306,14 @@ public class MapActivity extends BaseActivityClass implements
                     if (game.getCreatorReference().equals(FirebaseConnector.getCurrentUser().getUid())) {
                         builder.setNeutralButton("Delete", (dialog, which) -> handleGameDeletion(dialog, FirebaseConnector.getCurrentUser().getUid(), (String) document.get("currentGame")));
                     }
-                    //todo: add navigation to the game
-//                    builder.setNegativeButton("Navigate", (dialog, which) -> {
+                    //todo optional: add navigation to the game
+//                   optional!!! builder.setNegativeButton("Navigate", (dialog, which) -> {
 //                    });
                     builder.create().show();
                 },
                 e -> {
                     Log.e("MainActivity", ">>> Error: " + e.getMessage());
-                    Toast.makeText(this, "Error: cannot fetch game creator", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
                 }
         );
     }
@@ -323,7 +323,7 @@ public class MapActivity extends BaseActivityClass implements
                 CollectionsEnum.GAMES.getCollectionName(),
                 gameId,
                 success -> {
-                    Toast.makeText(this, "Game deleted successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.game_deleted), Toast.LENGTH_LONG).show();
                     HashMap<String, Object> userGame = new HashMap<>();
                     userGame.put("currentGame", null);
                     fireStoreConnector.updateDocument(
@@ -338,7 +338,7 @@ public class MapActivity extends BaseActivityClass implements
                             error1 -> Log.e("MainActivity", ">>> Error: cannot remove game from user's games list")
                     );
                 },
-                error -> Toast.makeText(this, "Error: cannot delete game", Toast.LENGTH_LONG).show()
+                error -> Toast.makeText(this, getString(R.string.game_deleted_failed), Toast.LENGTH_LONG).show()
         );
 
     }
