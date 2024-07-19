@@ -28,6 +28,7 @@
     <string name="failed_load_image">Failed to load image</string>
 
     <string name="permission_denied">Permission denied</string>
+    <string name="permission_denied_location_message">You need to grant location permission to use Map feature</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="map_preview">Map Preview</string>

@@ -97,7 +97,7 @@ public class MapActivity extends BaseActivityClass implements
                     if (isGranted) {
                         startLocationUpdates();
                     } else {
-                        Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
+                        locationPermissionDenied();
                     }
                 });
 
@@ -133,7 +133,7 @@ public class MapActivity extends BaseActivityClass implements
             startLocationUpdates();
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
+                locationPermissionDenied();
             } else {
                 // ask for the permission.
                 requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -386,6 +386,19 @@ public class MapActivity extends BaseActivityClass implements
                 e -> Log.e("MainActivity", ">>> Error: " + e.getMessage())
         );
 
+    }
+
+    private void locationPermissionDenied() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.permission_denied));
+        builder.setMessage(getString(R.string.permission_denied_location_message));
+        builder.setPositiveButton(getString(R.string.dismiss_button), (dialog, which) -> {
+            dialog.dismiss();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
+        builder.create().show();
     }
 
 }

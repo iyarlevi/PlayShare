@@ -28,6 +28,7 @@
     <string name="failed_load_image">שגיאה בטעינת התמונה</string>
 
     <string name="permission_denied">הרשאה נדחתה</string>
+    <string name="permission_denied_location_message">עליך לאשר הרשאת מיקום כדי להשתמש בתכונת המפה</string>
     <string name="yes">כן</string>
     <string name="no">לא</string>
     <string name="map_preview">תצוגת מפה</string>
