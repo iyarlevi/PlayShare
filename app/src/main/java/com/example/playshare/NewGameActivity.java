@@ -29,7 +29,7 @@ public class NewGameActivity extends BaseActivityClass {
     ArrayList<String> preferredGames = new ArrayList<>();
     private AutoCompleteTextView gameTypeInput, playersLevelInput, preferredGameInput;
     private final FireStoreConnector database = FireStoreConnector.getInstance();
-
+    private Button saveGame, cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +53,8 @@ public class NewGameActivity extends BaseActivityClass {
         gameTypeInput = findViewById(R.id.gameTypeInput);
         playersLevelInput = findViewById(R.id.playersLevelInput);
         preferredGameInput = findViewById(R.id.preferredGameInput);
-        Button saveGame = findViewById(R.id.saveGame);
-        Button cancel = findViewById(R.id.cancel);
+        saveGame = findViewById(R.id.saveGame);
+        cancel = findViewById(R.id.cancel);
 
         //define top app bar:
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
@@ -75,7 +75,11 @@ public class NewGameActivity extends BaseActivityClass {
         gameTypeInput.setOnClickListener(v -> gameTypeInput.showDropDown());
         playersLevelInput.setOnClickListener(v -> playersLevelInput.showDropDown());
         preferredGameInput.setOnClickListener(v -> preferredGameInput.showDropDown());
-        saveGame.setOnClickListener(v -> createNewGame());
+        saveGame.setOnClickListener(v -> {
+            saveGame.setEnabled(false);
+            cancel.setEnabled(false);
+            createNewGame();
+        });
         cancel.setOnClickListener(v -> cancelOperation());
     }
 
@@ -104,7 +108,11 @@ public class NewGameActivity extends BaseActivityClass {
         } else {
             preferredGameInput.setError(null);
         }
-        if (!isValid) return;
+        if (!isValid) {
+            saveGame.setEnabled(true);
+            cancel.setEnabled(true);
+            return;
+        }
 
         // get the location from the intent, default to Azrieli College
         LatLng location = new LatLng(
@@ -118,6 +126,7 @@ public class NewGameActivity extends BaseActivityClass {
                     UserModel user = new UserModel(userDocument);
                     if (userDocument.getOrDefault("currentGame", null) != null) {
                         Toast.makeText(this, "You are already in a game!", Toast.LENGTH_SHORT).show();
+                        cancel.setEnabled(true);
                         return;
                     }
                     // check distance from the user location to the game location
@@ -131,6 +140,7 @@ public class NewGameActivity extends BaseActivityClass {
                     );
                     if (distance[0] > 1000) {
                         Toast.makeText(this, "You are too far from the game location!", Toast.LENGTH_SHORT).show();
+                        cancel.setEnabled(true);
                         return;
                     }
 
@@ -160,6 +170,7 @@ public class NewGameActivity extends BaseActivityClass {
                                         },
                                         e -> {
                                             Toast.makeText(this, "Error creating game!", Toast.LENGTH_SHORT).show();
+                                            cancel.setEnabled(true);
                                             Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
                                         }
                                 );
