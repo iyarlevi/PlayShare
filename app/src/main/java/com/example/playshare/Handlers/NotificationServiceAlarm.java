@@ -22,7 +22,7 @@ public class NotificationServiceAlarm {
         Intent intent = new Intent(context, NotificationServiceBroadcast.class);
         intent.setAction("NOTIFICATION_SERVICE");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + interval, interval, pendingIntent);
     }
 
     public void cancelAlarm() {
