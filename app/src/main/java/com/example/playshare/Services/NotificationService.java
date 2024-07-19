@@ -42,7 +42,6 @@ public class NotificationService extends Service {
             NotificationHelper.showNotification(this, "PlayShare", "Long time not seen..", new Intent(this, LoginActivity.class));
             stopSelf();
         }
-        stopSelf();
     }
 
     @Override

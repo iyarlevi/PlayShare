@@ -306,8 +306,10 @@ public class MapActivity extends BaseActivityClass implements
                     if (game.getCreatorReference().equals(FirebaseConnector.getCurrentUser().getUid())) {
                         builder.setNeutralButton("Delete", (dialog, which) -> handleGameDeletion(dialog, FirebaseConnector.getCurrentUser().getUid(), (String) document.get("currentGame")));
                     }
-                    //todo optional: add navigation to the game
-//                   optional!!! builder.setNegativeButton("Navigate", (dialog, which) -> {
+//                   builder.setNegativeButton("Show Creator", (dialog, which) -> {
+//                        Intent intent = new Intent(this, ProfileActivity.class);
+//                        intent.putExtra("userId", game.getCreatorReference());
+//                        startActivity(intent);
 //                    });
                     builder.create().show();
                 },

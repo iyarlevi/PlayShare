@@ -8,11 +8,11 @@ import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.playshare.Components.NotificationHelper;
 import com.example.playshare.Connectors.FireStoreConnector;
 import com.example.playshare.Connectors.FirebaseConnector;
 import com.example.playshare.Data.Enums.CollectionsEnum;
 import com.example.playshare.Data.Models.GameModel;
-import com.example.playshare.Components.NotificationHelper;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
@@ -92,16 +92,22 @@ public class LocationServiceHandler {
                 nearestDistance = entry.getValue();
             }
         }
+        NotificationHelper.createNotificationChannel(context);
         if (nearestGame != null && nearestDistance < 1000) {
             Intent intent = new Intent(context, com.example.playshare.MapActivity.class);
             intent.putExtra("latitude", nearestGame.getLocation().latitude);
             intent.putExtra("longitude", nearestGame.getLocation().longitude);
-            NotificationHelper.createNotificationChannel(context);
             NotificationHelper.showNotification(context,
                     "Game Offer",
                     "Would you like to play " + nearestGame.getType().name() + "?",
                     intent
             );
+            Intent serviceIntent = new Intent(context, com.example.playshare.Services.NotificationService.class);
+            context.stopService(serviceIntent);
+        } else {
+            NotificationHelper.showNotification(context, "PlayShare", "Long time not seen...", new Intent(context, com.example.playshare.MainActivity.class));
+            Intent serviceIntent = new Intent(context, com.example.playshare.Services.NotificationService.class);
+            context.stopService(serviceIntent);
         }
     }
 }

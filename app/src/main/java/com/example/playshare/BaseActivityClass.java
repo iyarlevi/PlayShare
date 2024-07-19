@@ -18,7 +18,7 @@ public class BaseActivityClass extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receiver = new MyReceiver();
-        alarm = new NotificationServiceAlarm(this);
+        alarm = new NotificationServiceAlarm(this.getApplicationContext());
         alarm.setAlarm();
     }
 
