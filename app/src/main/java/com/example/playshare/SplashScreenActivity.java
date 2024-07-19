@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.playshare.Connectors.FirebaseConnector;
+
 
 public class SplashScreenActivity extends Activity {
 
@@ -22,8 +24,11 @@ public class SplashScreenActivity extends Activity {
                 else
                     Log.e("SplashScreenActivity", "Unknown error occurred");
             }
-
-            Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+            Intent intent;
+            if (FirebaseConnector.getCurrentUser() != null)
+                intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+            else
+                intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }).start();
