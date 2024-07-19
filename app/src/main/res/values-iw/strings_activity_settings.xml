@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_activity_title">הזן פרטים</string>
+    <string name="enter_height">הזן גובה במטרים</string>
+    <string name="enter_age">הזן גיל</string>
+    <string name="enter_preferences">הזן את הפעילויות המועדפות עליך</string>
+
+    <string name="camera">מצלמה</string>
+    <string name="gallery">גלריה</string>
+</resources>

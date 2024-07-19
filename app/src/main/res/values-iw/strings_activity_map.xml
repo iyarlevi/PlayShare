@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_new_game_hint">לחץ והחזק כדי ליצור משחק</string>
+    <string name="create_new_game_question">האם ברצונך ליצור משחק חדש כאן?</string>
+    <string name="game_deleted">המשחק נמחק</string>
+    <string name="game_deleted_failed">נכשל למחוק את המשחק</string>
+</resources>

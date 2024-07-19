@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="image_saving_error">שגיאה בשמירת התמונה</string>
+    <string name="nickname_empty">אנא הזן שם משתמש</string>
+    <string name="failed_settings_save">שמירת ההגדרות נכשלה</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_low_battery_title">שים לב, סוללה נמוכה</string>
+    <string name="dialog_low_battery_message">הסוללה שלך נמוכה. אנא חבר את המכשיר למטען.</string>
+    <string name="dialog_low_battery_button">אישור</string>
+
+    <string name="title_icon">אייקון כותרת</string>
+    <string name="description_image">תמונת המחשה</string>
+    <string name="dismiss_button">הבנתי</string>
+</resources>

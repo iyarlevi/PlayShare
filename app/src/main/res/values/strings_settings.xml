@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="image_saving_error">Error saving image</string>
+    <string name="nickname_empty">Please enter a nickname</string>
+    <string name="failed_settings_save">Failed to save settings</string>
+</resources>

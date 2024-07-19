@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_low_battery_title">Attention Low Battery</string>
+    <string name="dialog_low_battery_message">Your battery is low. Please connect your device to a charger.</string>
+    <string name="dialog_low_battery_button">OK</string>
+
+    <string name="title_icon">Title icon</string>
+    <string name="description_image">Description image</string>
+    <string name="dismiss_button">Dismiss</string>
+</resources>

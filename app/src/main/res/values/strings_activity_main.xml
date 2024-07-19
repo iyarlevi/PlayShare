@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_picture_content_description">Profile Picture</string>
+    <string name="no_height_details">No height details</string>
+    <string name="no_age_details">No age details</string>
+    <string name="no_preferences">No preferences</string>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="users_nickname">שם משתמש: %s</string>
+    <string name="users_age">גיל: %s</string>
+</resources>

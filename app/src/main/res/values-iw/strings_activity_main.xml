@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_picture_content_description">תמונת פרופיל</string>
+    <string name="no_height_details">אין פרטי גובה</string>
+    <string name="no_age_details">אין פרטי גיל</string>
+    <string name="no_preferences">אין העדפות</string>
+</resources>

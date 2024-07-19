@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_activity_title">Enter Details</string>
+    <string name="enter_height">Enter height in meters</string>
+    <string name="enter_age">Enter age</string>
+    <string name="enter_preferences">Enter your preferred activities</string>
+
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+</resources>

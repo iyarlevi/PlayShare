@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_new_game_hint">Press longer to create game</string>
+    <string name="create_new_game_question">Do you want to create a new game here?</string>
+    <string name="game_deleted">Game deleted</string>
+    <string name="game_deleted_failed">Failed to delete game</string>
+</resources>

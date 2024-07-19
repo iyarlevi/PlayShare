@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ten_game">10 נגד 10</string>
+    <string name="five_game">5 נגד 5</string>
+    <string name="three_game">3 נגד 3</string>
+    <string name="two_game">2 נגד 2</string>
+    <string name="one_game">1 נגד 1</string>
+</resources>
