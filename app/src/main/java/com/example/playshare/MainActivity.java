@@ -1,6 +1,7 @@
 package com.example.playshare;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -37,6 +38,12 @@ public class MainActivity extends BaseActivityClass {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (FirebaseConnector.getCurrentUser() == null) {
+            // deal with the case where the user is not logged in and see notification to here
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         nameTextView = findViewById(R.id.nameTextView);
         heightTextView = findViewById(R.id.heightTextView);
