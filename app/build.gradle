@@ -16,8 +16,18 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        def mapsApiKey = project.hasProperty("MAPS_API_KEY") ? project.MAPS_API_KEY : ""
-        buildConfigField "String", "MAPS_API_KEY", "\"$mapsApiKey\""
+//        def mapsApiKey = project.hasProperty("MAPS_API_KEY") ? project.MAPS_API_KEY : ""
+//        buildConfigField "String", "MAPS_API_KEY", "\"$mapsApiKey\""
+        def mapsPropertiesFile = file("${rootDir}/Maps.properties")
+        def mapsApiKey = ""
+        if (mapsPropertiesFile.exists()) {
+            Properties mapsProperties = new Properties()
+            mapsProperties.load(new FileInputStream(mapsPropertiesFile))
+            mapsApiKey = mapsProperties.getProperty("MAPS_API_KEY", "")
+        } else {
+            throw new GradleException("Maps.properties file not found")
+        }
+        manifestPlaceholders = [MAPS_API_KEY: mapsApiKey]
     }
 
     buildTypes {
