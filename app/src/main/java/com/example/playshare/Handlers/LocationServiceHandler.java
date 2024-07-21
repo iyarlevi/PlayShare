@@ -34,53 +34,61 @@ public class LocationServiceHandler {
     }
 
     private void getUserLocationFromDB() {
-        database.getDocument(
-                CollectionsEnum.USERS.getCollectionName(),
-                FirebaseConnector.getCurrentUser().getUid(),
-                documentMap ->
-                {
-                    if (documentMap == null || documentMap.isEmpty()) {
-                        return;
-                    }
-                    Object locationObj = documentMap.get("location");
-                    if (locationObj instanceof Map) {
-                        Map<?, ?> locationMap = (Map<?, ?>) locationObj;
-                        if (locationMap.containsKey("latitude") && locationMap.containsKey("longitude")) {
-                            Object latObj = locationMap.get("latitude");
-                            Object lngObj = locationMap.get("longitude");
-                            if (latObj instanceof Double && lngObj instanceof Double) {
-                                double latitude = (Double) latObj;
-                                double longitude = (Double) lngObj;
-                                LatLng userLocation = new LatLng(latitude, longitude);
-                                getGamesLocationsDistances(userLocation);
+        try {
+            database.getDocument(
+                    CollectionsEnum.USERS.getCollectionName(),
+                    FirebaseConnector.getCurrentUser().getUid(),
+                    documentMap ->
+                    {
+                        if (documentMap == null || documentMap.isEmpty()) {
+                            return;
+                        }
+                        Object locationObj = documentMap.get("location");
+                        if (locationObj instanceof Map) {
+                            Map<?, ?> locationMap = (Map<?, ?>) locationObj;
+                            if (locationMap.containsKey("latitude") && locationMap.containsKey("longitude")) {
+                                Object latObj = locationMap.get("latitude");
+                                Object lngObj = locationMap.get("longitude");
+                                if (latObj instanceof Double && lngObj instanceof Double) {
+                                    double latitude = (Double) latObj;
+                                    double longitude = (Double) lngObj;
+                                    LatLng userLocation = new LatLng(latitude, longitude);
+                                    getGamesLocationsDistances(userLocation);
+                                }
                             }
                         }
-                    }
-                },
-                e -> Log.e("LocationServiceHandler", "Error getting user location: " + e.getMessage())
-        );
+                    },
+                    e -> Log.e("LocationServiceHandler", "Error getting user location: " + e.getMessage())
+            );
+        } catch (Exception e) {
+            Log.e("LocationServiceHandler", "Error getting user location: " + e.getMessage());
+        }
     }
 
     public void getGamesLocationsDistances(LatLng userLocation) {
-        database.getDocuments(
-                CollectionsEnum.GAMES.getCollectionName(),
-                documents -> {
-                    for (Map<String, Object> document : documents) {
-                        GameModel game = new GameModel(document);
-                        if (game.getLocation() != null) {
-                            float[] distance = new float[1];
-                            android.location.Location.distanceBetween(
-                                    userLocation.latitude, userLocation.longitude,
-                                    game.getLocation().latitude, game.getLocation().longitude,
-                                    distance
-                            );
-                            gamesDistanceMap.put(game, distance[0]);
+        try {
+            database.getDocuments(
+                    CollectionsEnum.GAMES.getCollectionName(),
+                    documents -> {
+                        for (Map<String, Object> document : documents) {
+                            GameModel game = new GameModel(document);
+                            if (game.getLocation() != null) {
+                                float[] distance = new float[1];
+                                android.location.Location.distanceBetween(
+                                        userLocation.latitude, userLocation.longitude,
+                                        game.getLocation().latitude, game.getLocation().longitude,
+                                        distance
+                                );
+                                gamesDistanceMap.put(game, distance[0]);
+                            }
                         }
-                    }
-                    FindNearestGame();
-                },
-                e -> Log.e("LocationServiceHandler", "Error getting games locations: " + e.getMessage())
-        );
+                        FindNearestGame();
+                    },
+                    e -> Log.e("LocationServiceHandler", "Error getting games locations: " + e.getMessage())
+            );
+        } catch (Exception e) {
+            Log.e("LocationServiceHandler", "Error getting games locations: " + e.getMessage());
+        }
     }
 
     private void FindNearestGame() {

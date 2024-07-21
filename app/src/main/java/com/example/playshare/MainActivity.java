@@ -70,62 +70,68 @@ public class MainActivity extends BaseActivityClass {
     }
 
     private void getUserData() {
-        database.getDocument(CollectionsEnum.USERS.getCollectionName(),
-                FirebaseConnector.getCurrentUser().getUid(),
-                documentMap -> {
-                    Log.d("MainActivity", "getUserData: " + documentMap);
-                    if (documentMap == null || documentMap.isEmpty()) {
-                        Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (documentMap.get("nickname") != null)
-                        nameTextView.setText((String) documentMap.get("nickname"));
-                    Object heightObj = documentMap.get("height");
-                    if (heightObj != null) {
-                        double height = Double.parseDouble(heightObj.toString());
-                        if (height > 0) {
-                            heightTextView.setText(String.valueOf(height));
+        try {
+            database.getDocument(CollectionsEnum.USERS.getCollectionName(),
+                    FirebaseConnector.getCurrentUser().getUid(),
+                    documentMap -> {
+                        Log.d("MainActivity", "getUserData: " + documentMap);
+                        if (documentMap == null || documentMap.isEmpty()) {
+                            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
+                            return;
                         }
-                    }
-                    Object ageObj = documentMap.get("age");
-                    if (ageObj != null) {
-                        int age = Integer.parseInt(ageObj.toString());
-                        if (age > 0) {
-                            ageTextView.setText(String.valueOf(age));
+                        if (documentMap.get("nickname") != null)
+                            nameTextView.setText((String) documentMap.get("nickname"));
+                        Object heightObj = documentMap.get("height");
+                        if (heightObj != null) {
+                            double height = Double.parseDouble(heightObj.toString());
+                            if (height > 0) {
+                                heightTextView.setText(String.valueOf(height));
+                            }
                         }
-                    }
-                    Object preferences = documentMap.get("preferences");
-                    if (preferences != null) {
-                        preferencesTextView.setText(preferences.toString());
-                    }
+                        Object ageObj = documentMap.get("age");
+                        if (ageObj != null) {
+                            int age = Integer.parseInt(ageObj.toString());
+                            if (age > 0) {
+                                ageTextView.setText(String.valueOf(age));
+                            }
+                        }
+                        Object preferences = documentMap.get("preferences");
+                        if (preferences != null) {
+                            preferencesTextView.setText(preferences.toString());
+                        }
 
-                    Object imageUrl = documentMap.get("imageUrl");
-                    if (imageUrl != null) {
-                        String url = imageUrl.toString();
-                        if (!url.isEmpty()) {
-                            ImageRequest imageRequest = new ImageRequest(url,
-                                    response -> {
-                                        profileImageView.setImageBitmap(response);
-                                        progressDialog.dismiss();
-                                    },
-                                    0, 0, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565,
-                                    error -> {
-                                        Log.d("SettingsActivity", ">>> loadSavedSettings: " + error.getMessage());
-                                        progressDialog.dismiss();
-                                        Toast.makeText(this, getString(R.string.failed_load_image), Toast.LENGTH_SHORT).show();
-                                    });
-                            volleyQueue.add(imageRequest);
+                        Object imageUrl = documentMap.get("imageUrl");
+                        if (imageUrl != null) {
+                            String url = imageUrl.toString();
+                            if (!url.isEmpty()) {
+                                ImageRequest imageRequest = new ImageRequest(url,
+                                        response -> {
+                                            profileImageView.setImageBitmap(response);
+                                            progressDialog.dismiss();
+                                        },
+                                        0, 0, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565,
+                                        error -> {
+                                            Log.d("SettingsActivity", ">>> loadSavedSettings: " + error.getMessage());
+                                            progressDialog.dismiss();
+                                            Toast.makeText(this, getString(R.string.failed_load_image), Toast.LENGTH_SHORT).show();
+                                        });
+                                volleyQueue.add(imageRequest);
+                            } else {
+                                progressDialog.dismiss();
+                            }
                         } else {
                             progressDialog.dismiss();
                         }
-                    } else {
+                    },
+                    e -> {
                         progressDialog.dismiss();
+                        Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
                     }
-                },
-                e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
-                }
-        );
+            );
+        } catch (Exception e) {
+            progressDialog.dismiss();
+            Log.d("MainActivity", "getUserData: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
+        }
     }
 }

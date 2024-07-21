@@ -191,38 +191,43 @@ public class MapActivity extends BaseActivityClass implements
     }
 
     private void showUserDetails() {
-        // Fetch the current user's details from Firestore
-        String userId = FirebaseConnector.getCurrentUser().getUid();
-        fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
-                userId,
-                document -> {
-                    // Inflate the dialog layout
-                    LayoutInflater inflater = LayoutInflater.from(this);
-                    View dialogView = inflater.inflate(R.layout.dialog_user_details, null);
+        try {
+            // Fetch the current user's details from Firestore
+            String userId = FirebaseConnector.getCurrentUser().getUid();
+            fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
+                    userId,
+                    document -> {
+                        // Inflate the dialog layout
+                        LayoutInflater inflater = LayoutInflater.from(this);
+                        View dialogView = inflater.inflate(R.layout.dialog_user_details, null);
 
-                    // Set the user's details in the dialog
-                    TextView tvUserNickname = dialogView.findViewById(R.id.tvUserNickname);
-                    TextView tvUserAge = dialogView.findViewById(R.id.tvUserAge);
-                    Button btnClose = dialogView.findViewById(R.id.btnClose);
+                        // Set the user's details in the dialog
+                        TextView tvUserNickname = dialogView.findViewById(R.id.tvUserNickname);
+                        TextView tvUserAge = dialogView.findViewById(R.id.tvUserAge);
+                        Button btnClose = dialogView.findViewById(R.id.btnClose);
 
-                    tvUserNickname.setText(getString(R.string.users_nickname, document.get("nickname")));
-                    tvUserAge.setText(getString(R.string.users_age, document.get("age")));
+                        tvUserNickname.setText(getString(R.string.users_nickname, document.get("nickname")));
+                        tvUserAge.setText(getString(R.string.users_age, document.get("age")));
 
-                    // Create and show the dialog
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-                    builder.setView(dialogView);
-                    Dialog dialog = builder.create();
-                    dialog.show();
-                    btnClose.setOnClickListener(v -> {
-                        // Dismiss the dialog
-                        dialog.dismiss();
-                    });
-                },
-                e -> {
-                    Log.e("MainActivity", ">>> Error: " + e.getMessage());
-                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
-                }
-        );
+                        // Create and show the dialog
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+                        builder.setView(dialogView);
+                        Dialog dialog = builder.create();
+                        dialog.show();
+                        btnClose.setOnClickListener(v -> {
+                            // Dismiss the dialog
+                            dialog.dismiss();
+                        });
+                    },
+                    e -> {
+                        Log.e("MainActivity", ">>> Error: " + e.getMessage());
+                        Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
+                    }
+            );
+        } catch (Exception e) {
+            Log.e("MainActivity", ">>> Error: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -267,20 +272,25 @@ public class MapActivity extends BaseActivityClass implements
 
     private void addGamesToMap() {
         gamesArray.clear();
-        fireStoreConnector.getDocuments(CollectionsEnum.GAMES.getCollectionName(),
-                documents -> {
-                    for (int i = 0; i < documents.size(); i++) {
-                        Map<String, Object> currentDoc = documents.get(i);
-                        GameModel game = new GameModel(currentDoc);
-                        gamesArray.add(game);
+        try {
+            fireStoreConnector.getDocuments(CollectionsEnum.GAMES.getCollectionName(),
+                    documents -> {
+                        for (int i = 0; i < documents.size(); i++) {
+                            Map<String, Object> currentDoc = documents.get(i);
+                            GameModel game = new GameModel(currentDoc);
+                            gamesArray.add(game);
+                        }
+                        setupGamesMarkers(gamesArray);
+                    },
+                    e -> {
+                        Log.e("MainActivity", ">>> Error: " + e.getMessage());
+                        Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
                     }
-                    setupGamesMarkers(gamesArray);
-                },
-                e -> {
-                    Log.e("MainActivity", ">>> Error: " + e.getMessage());
-                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
-                }
-        );
+            );
+        } catch (Exception e) {
+            Log.e("MainActivity", ">>> Error: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void setupGamesMarkers(List<GameModel> games) {
@@ -293,101 +303,120 @@ public class MapActivity extends BaseActivityClass implements
     }
 
     private void showGameDetails(GameModel game) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
-                game.getCreatorReference(),
-                document -> {
-                    builder.setTitle("Game Details");
-                    builder.setMessage("Game Type: " + game.getType().name() + "\n" +
-                            "Game Layout: " + game.getLayout().getTitle() + "\n" +
-                            "Game Level: " + game.getLevel().name() + "\n" +
-                            "Creator: " + document.get("nickname"));
-                    builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-                    if (game.getCreatorReference().equals(FirebaseConnector.getCurrentUser().getUid())) {
-                        builder.setNeutralButton("Delete", (dialog, which) -> handleGameDeletion(dialog, FirebaseConnector.getCurrentUser().getUid(), (String) document.get("currentGame")));
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
+                    game.getCreatorReference(),
+                    document -> {
+                        builder.setTitle("Game Details");
+                        builder.setMessage("Game Type: " + game.getType().name() + "\n" +
+                                "Game Layout: " + game.getLayout().getTitle() + "\n" +
+                                "Game Level: " + game.getLevel().name() + "\n" +
+                                "Creator: " + document.get("nickname"));
+                        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                        if (game.getCreatorReference().equals(FirebaseConnector.getCurrentUser().getUid())) {
+                            builder.setNeutralButton("Delete", (dialog, which) -> handleGameDeletion(dialog, FirebaseConnector.getCurrentUser().getUid(), (String) document.get("currentGame")));
+                        }
+                        builder.setNegativeButton("Show Creator", (dialog, which) -> {
+                            Intent intent = new Intent(this, ProfileActivity.class);
+                            intent.putExtra("userId", game.getCreatorReference());
+                            startActivity(intent);
+                        });
+                        builder.create().show();
+                    },
+                    e -> {
+                        Log.e("MainActivity", ">>> Error: " + e.getMessage());
+                        Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
                     }
-                   builder.setNegativeButton("Show Creator", (dialog, which) -> {
-                        Intent intent = new Intent(this, ProfileActivity.class);
-                        intent.putExtra("userId", game.getCreatorReference());
-                        startActivity(intent);
-                    });
-                    builder.create().show();
-                },
-                e -> {
-                    Log.e("MainActivity", ">>> Error: " + e.getMessage());
-                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
-                }
-        );
+            );
+        } catch (Exception e) {
+            Log.e("MainActivity", ">>> Error: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void handleGameDeletion(DialogInterface dialog, String userId, String gameId) {
-        fireStoreConnector.deleteDocument(
-                CollectionsEnum.GAMES.getCollectionName(),
-                gameId,
-                success -> {
-                    Toast.makeText(this, getString(R.string.game_deleted), Toast.LENGTH_LONG).show();
-                    HashMap<String, Object> userGame = new HashMap<>();
-                    userGame.put("currentGame", null);
-                    fireStoreConnector.updateDocument(
-                            CollectionsEnum.USERS.getCollectionName(),
-                            userId,
-                            userGame,
-                            success1 -> {
-                                Log.d("MainActivity", ">>> Game removed from user's games list");
-                                refreshMap();
-                                dialog.dismiss();
-                            },
-                            error1 -> Log.e("MainActivity", ">>> Error: cannot remove game from user's games list")
-                    );
-                },
-                error -> Toast.makeText(this, getString(R.string.game_deleted_failed), Toast.LENGTH_LONG).show()
-        );
+        try {
+            fireStoreConnector.deleteDocument(
+                    CollectionsEnum.GAMES.getCollectionName(),
+                    gameId,
+                    success -> {
+                        Toast.makeText(this, getString(R.string.game_deleted), Toast.LENGTH_LONG).show();
+                        HashMap<String, Object> userGame = new HashMap<>();
+                        userGame.put("currentGame", null);
+                        fireStoreConnector.updateDocument(
+                                CollectionsEnum.USERS.getCollectionName(),
+                                userId,
+                                userGame,
+                                success1 -> {
+                                    Log.d("MainActivity", ">>> Game removed from user's games list");
+                                    refreshMap();
+                                    dialog.dismiss();
+                                },
+                                error1 -> Log.e("MainActivity", ">>> Error: cannot remove game from user's games list")
+                        );
+                    },
+                    error -> Toast.makeText(this, getString(R.string.game_deleted_failed), Toast.LENGTH_LONG).show()
+            );
+        } catch (Exception e) {
+            Log.e("MainActivity", ">>> Error: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
+        }
 
     }
 
     private void updateDatabaseLocation() {
-        Map<String, Object> userLocation = new HashMap<>();
-        userLocation.put("location", myLocation);
-        fireStoreConnector.updateDocument(CollectionsEnum.USERS.getCollectionName(),
-                FirebaseConnector.getCurrentUser().getUid(),
-                userLocation,
-                success -> Log.d("MainActivity", ">>> User location updated successfully"),
-                error -> Log.e("MainActivity", ">>> Error: " + error.getMessage())
-        );
+        try {
+            Map<String, Object> userLocation = new HashMap<>();
+            userLocation.put("location", myLocation);
+            fireStoreConnector.updateDocument(CollectionsEnum.USERS.getCollectionName(),
+                    FirebaseConnector.getCurrentUser().getUid(),
+                    userLocation,
+                    success -> Log.d("MainActivity", ">>> User location updated successfully"),
+                    error -> Log.e("MainActivity", ">>> Error: " + error.getMessage())
+            );
+        } catch (Exception e) {
+            Log.e("MainActivity", ">>> Error: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void checkForGameDelete() {
-        fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
-                FirebaseConnector.getCurrentUser().getUid(),
-                document -> {
-                    if (document.get("currentGame") == null) {
-                        return;
-                    }
-                    String gameId = (String) document.get("currentGame");
-                    float[] distance = new float[1];
-                    fireStoreConnector.getDocument(
-                            CollectionsEnum.GAMES.getCollectionName(),
-                            gameId,
-                            gameDocument -> {
-                                GameModel game = new GameModel(gameDocument);
-                                android.location.Location.distanceBetween(
-                                        myLocation.latitude,
-                                        myLocation.longitude,
-                                        game.getLocation().latitude,
-                                        game.getLocation().longitude,
-                                        distance
-                                );
-                                if (distance[0] > 1000) {
-                                    handleGameDeletion(new MaterialAlertDialogBuilder(this).create(), FirebaseConnector.getCurrentUser().getUid(), gameId);
+        try {
+            fireStoreConnector.getDocument(CollectionsEnum.USERS.getCollectionName(),
+                    FirebaseConnector.getCurrentUser().getUid(),
+                    document -> {
+                        if (document.get("currentGame") == null) {
+                            return;
+                        }
+                        String gameId = (String) document.get("currentGame");
+                        float[] distance = new float[1];
+                        fireStoreConnector.getDocument(
+                                CollectionsEnum.GAMES.getCollectionName(),
+                                gameId,
+                                gameDocument -> {
+                                    GameModel game = new GameModel(gameDocument);
+                                    android.location.Location.distanceBetween(
+                                            myLocation.latitude,
+                                            myLocation.longitude,
+                                            game.getLocation().latitude,
+                                            game.getLocation().longitude,
+                                            distance
+                                    );
+                                    if (distance[0] > 1000) {
+                                        handleGameDeletion(new MaterialAlertDialogBuilder(this).create(), FirebaseConnector.getCurrentUser().getUid(), gameId);
+                                    }
                                 }
-                            }
-                            ,
-                            e -> Log.e("MainActivity", ">>> Error: " + e.getMessage())
-                    );
-                },
-                e -> Log.e("MainActivity", ">>> Error: " + e.getMessage())
-        );
-
+                                ,
+                                e -> Log.e("MainActivity", ">>> Error: " + e.getMessage())
+                        );
+                    },
+                    e -> Log.e("MainActivity", ">>> Error: " + e.getMessage())
+            );
+        } catch (Exception e) {
+            Log.e("MainActivity", ">>> Error: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void locationPermissionDenied() {

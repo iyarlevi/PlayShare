@@ -113,51 +113,57 @@ public class SettingsActivity extends BaseActivityClass {
     }
 
     private void loadSavedSettings() {
-        database.getDocument(
-                CollectionsEnum.USERS.getCollectionName(),
-                FirebaseConnector.getCurrentUser().getUid(),
-                document -> {
-                    Object objectHolder = document.get("nickname");
-                    String nickname = (objectHolder != null) ? objectHolder.toString() : "";
-                    nicknameEditText.setText(nickname);
+        try {
+            database.getDocument(
+                    CollectionsEnum.USERS.getCollectionName(),
+                    FirebaseConnector.getCurrentUser().getUid(),
+                    document -> {
+                        Object objectHolder = document.get("nickname");
+                        String nickname = (objectHolder != null) ? objectHolder.toString() : "";
+                        nicknameEditText.setText(nickname);
 
-                    objectHolder = document.get("preferences");
-                    String preferences = (objectHolder != null) ? objectHolder.toString().replaceAll("[\\[\\]]", "") : "";
-                    preferencesInput.setText(preferences);
+                        objectHolder = document.get("preferences");
+                        String preferences = (objectHolder != null) ? objectHolder.toString().replaceAll("[\\[\\]]", "") : "";
+                        preferencesInput.setText(preferences);
 
-                    objectHolder = document.get("height");
-                    String height = (objectHolder != null) ? objectHolder.toString() : "";
-                    heightEditText.setText(height);
+                        objectHolder = document.get("height");
+                        String height = (objectHolder != null) ? objectHolder.toString() : "";
+                        heightEditText.setText(height);
 
-                    objectHolder = document.get("age");
-                    String age = (objectHolder != null) ? objectHolder.toString() : "";
-                    ageEditText.setText(age);
+                        objectHolder = document.get("age");
+                        String age = (objectHolder != null) ? objectHolder.toString() : "";
+                        ageEditText.setText(age);
 
-                    objectHolder = document.get("imageUrl");
-                    if (objectHolder != null) {
-                        String imageUrl = objectHolder.toString();
-                        ImageRequest imageRequest = new ImageRequest(imageUrl,
-                                response -> {
-                                    profileImageView.setImageBitmap(response);
-                                    progressDialog.dismiss();
-                                },
-                                0, 0, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565,
-                                error -> {
-                                    Log.d("SettingsActivity", ">>> loadSavedSettings: " + error.getMessage());
-                                    progressDialog.dismiss();
-                                    Toast.makeText(this, getString(R.string.failed_load_image), Toast.LENGTH_SHORT).show();
-                                });
-                        volleyQueue.add(imageRequest);
-                    } else {
+                        objectHolder = document.get("imageUrl");
+                        if (objectHolder != null) {
+                            String imageUrl = objectHolder.toString();
+                            ImageRequest imageRequest = new ImageRequest(imageUrl,
+                                    response -> {
+                                        profileImageView.setImageBitmap(response);
+                                        progressDialog.dismiss();
+                                    },
+                                    0, 0, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565,
+                                    error -> {
+                                        Log.d("SettingsActivity", ">>> loadSavedSettings: " + error.getMessage());
+                                        progressDialog.dismiss();
+                                        Toast.makeText(this, getString(R.string.failed_load_image), Toast.LENGTH_SHORT).show();
+                                    });
+                            volleyQueue.add(imageRequest);
+                        } else {
+                            progressDialog.dismiss();
+                        }
+
+                    },
+                    e -> {
                         progressDialog.dismiss();
+                        Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
                     }
-
-                },
-                e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
-                }
-        );
+            );
+        } catch (Exception e) {
+            progressDialog.dismiss();
+            Log.d("SettingsActivity", ">>> loadSavedSettings: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void saveSettings() {
@@ -204,23 +210,28 @@ public class SettingsActivity extends BaseActivityClass {
                 preferences,
                 imageUrl
         );
-
-        database.updateDocument(
-                CollectionsEnum.USERS.getCollectionName(),
-                FirebaseConnector.getCurrentUser().getUid(),
-                user.MappingForFirebase(),
-                aVoid -> {
-                    progressDialog.dismiss();
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                },
-                e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, getString(R.string.failed_settings_save), Toast.LENGTH_SHORT).show();
-                    Log.d("SettingsActivity", ">>> saveSettings: " + e.getMessage());
-                }
-        );
+        try {
+            database.updateDocument(
+                    CollectionsEnum.USERS.getCollectionName(),
+                    FirebaseConnector.getCurrentUser().getUid(),
+                    user.MappingForFirebase(),
+                    aVoid -> {
+                        progressDialog.dismiss();
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    },
+                    e -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(this, getString(R.string.failed_settings_save), Toast.LENGTH_SHORT).show();
+                        Log.d("SettingsActivity", ">>> saveSettings: " + e.getMessage());
+                    }
+            );
+        } catch (Exception e) {
+            progressDialog.dismiss();
+            Toast.makeText(this, getString(R.string.failed_settings_save), Toast.LENGTH_SHORT).show();
+            Log.d("SettingsActivity", ">>> saveSettings: " + e.getMessage());
+        }
     }
 
     private void setPreferencesInput() {

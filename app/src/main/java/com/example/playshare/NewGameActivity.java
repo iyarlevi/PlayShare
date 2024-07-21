@@ -120,68 +120,73 @@ public class NewGameActivity extends BaseActivityClass {
                 getIntent().getDoubleExtra("lng", 35.1937));
 
         String currentUserUid = FirebaseConnector.getCurrentUser().getUid();
-        database.getDocument(CollectionsEnum.USERS.getCollectionName(),
-                currentUserUid,
-                userDocument -> {
-                    UserModel user = new UserModel(userDocument);
-                    if (userDocument.getOrDefault("currentGame", null) != null) {
-                        Toast.makeText(this, getString(R.string.game_already_exists), Toast.LENGTH_SHORT).show();
-                        cancel.setEnabled(true);
-                        return;
-                    }
-                    // check distance from the user location to the game location
-                    float[] distance = new float[1];
-                    android.location.Location.distanceBetween(
-                            user.getLocation().latitude,
-                            user.getLocation().longitude,
-                            location.latitude,
-                            location.longitude,
-                            distance
-                    );
-                    if (distance[0] > 1000) {
-                        Toast.makeText(this, getString(R.string.game_too_far), Toast.LENGTH_SHORT).show();
-                        cancel.setEnabled(true);
-                        return;
-                    }
+        try {
+            database.getDocument(CollectionsEnum.USERS.getCollectionName(),
+                    currentUserUid,
+                    userDocument -> {
+                        UserModel user = new UserModel(userDocument);
+                        if (userDocument.getOrDefault("currentGame", null) != null) {
+                            Toast.makeText(this, getString(R.string.game_already_exists), Toast.LENGTH_SHORT).show();
+                            cancel.setEnabled(true);
+                            return;
+                        }
+                        // check distance from the user location to the game location
+                        float[] distance = new float[1];
+                        android.location.Location.distanceBetween(
+                                user.getLocation().latitude,
+                                user.getLocation().longitude,
+                                location.latitude,
+                                location.longitude,
+                                distance
+                        );
+                        if (distance[0] > 1000) {
+                            Toast.makeText(this, getString(R.string.game_too_far), Toast.LENGTH_SHORT).show();
+                            cancel.setEnabled(true);
+                            return;
+                        }
 
-                    GameModel game = new GameModel(
-                            GameTypeEnum.valueOf(gameTypeInput.getText().toString()),
-                            location,
-                            GameLayoutEnum.getEnum(preferredGameInput.getText().toString()),
-                            currentUserUid,
-                            PlayLevelEnum.valueOf(playersLevelInput.getText().toString())
-                    );
-                    database.addDocument(CollectionsEnum.GAMES.getCollectionName(),
-                            game.MappingForFirebase(),
-                            gameDocumentReference -> {
-                                HashMap<String, Object> currentGame = new HashMap<>();
-                                currentGame.put("currentGame", gameDocumentReference.getId());
-                                database.updateDocument(
-                                        CollectionsEnum.USERS.getCollectionName(),
-                                        currentUserUid,
-                                        currentGame,
-                                        aVoid -> {
-                                            Toast.makeText(this, getString(R.string.game_created), Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(this, MapActivity.class);
-                                            intent.putExtra("latitude", location.latitude);
-                                            intent.putExtra("longitude", location.longitude);
-                                            startActivity(intent);
-                                            finish();
-                                        },
-                                        e -> {
-                                            Toast.makeText(this, getString(R.string.game_not_created), Toast.LENGTH_SHORT).show();
-                                            cancel.setEnabled(true);
-                                            Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
-                                        }
-                                );
-                            },
-                            e -> {
-                                Toast.makeText(this, getString(R.string.game_not_created), Toast.LENGTH_SHORT).show();
-                                Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
-                            }
-                    );
-                },
-                e -> Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show()
-        );
+                        GameModel game = new GameModel(
+                                GameTypeEnum.valueOf(gameTypeInput.getText().toString()),
+                                location,
+                                GameLayoutEnum.getEnum(preferredGameInput.getText().toString()),
+                                currentUserUid,
+                                PlayLevelEnum.valueOf(playersLevelInput.getText().toString())
+                        );
+                        database.addDocument(CollectionsEnum.GAMES.getCollectionName(),
+                                game.MappingForFirebase(),
+                                gameDocumentReference -> {
+                                    HashMap<String, Object> currentGame = new HashMap<>();
+                                    currentGame.put("currentGame", gameDocumentReference.getId());
+                                    database.updateDocument(
+                                            CollectionsEnum.USERS.getCollectionName(),
+                                            currentUserUid,
+                                            currentGame,
+                                            aVoid -> {
+                                                Toast.makeText(this, getString(R.string.game_created), Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(this, MapActivity.class);
+                                                intent.putExtra("latitude", location.latitude);
+                                                intent.putExtra("longitude", location.longitude);
+                                                startActivity(intent);
+                                                finish();
+                                            },
+                                            e -> {
+                                                Toast.makeText(this, getString(R.string.game_not_created), Toast.LENGTH_SHORT).show();
+                                                cancel.setEnabled(true);
+                                                Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
+                                            }
+                                    );
+                                },
+                                e -> {
+                                    Toast.makeText(this, getString(R.string.game_not_created), Toast.LENGTH_SHORT).show();
+                                    Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
+                                }
+                        );
+                    },
+                    e -> Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show()
+            );
+        } catch (Exception e) {
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
+            Log.e("NewGameActivity", ">>> createNewGame: " + e.getMessage());
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.playshare.Components.BottomNavigator;
 import com.example.playshare.Components.ProgressDialog;
@@ -61,62 +62,72 @@ public class StatsActivity extends BaseActivityClass {
     }
 
     private void getData() {
-        firestore.getDocuments(CollectionsEnum.USERS.getCollectionName(),
-                documents -> {
-                    int livePlayers = 0;
-                    SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-                    Date currentDate = new Date();
-                    for (Map<String, Object> document : documents) {
-                        Object timeStamp = document.get("timeStamp");
-                        if (timeStamp != null) {
-                            String timeStampString = timeStamp.toString();
-                            try {
-                                Date playerDate = sdf.parse(timeStampString);
-                                if (playerDate == null) {
-                                    throw new ParseException("Date is null", 0);
+        try {
+            firestore.getDocuments(CollectionsEnum.USERS.getCollectionName(),
+                    documents -> {
+                        int livePlayers = 0;
+                        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+                        Date currentDate = new Date();
+                        for (Map<String, Object> document : documents) {
+                            Object timeStamp = document.get("timeStamp");
+                            if (timeStamp != null) {
+                                String timeStampString = timeStamp.toString();
+                                try {
+                                    Date playerDate = sdf.parse(timeStampString);
+                                    if (playerDate == null) {
+                                        throw new ParseException("Date is null", 0);
+                                    }
+                                    long diff = currentDate.getTime() - playerDate.getTime();
+                                    long diffDays = diff / (24 * 60 * 60 * 1000);
+                                    if (diffDays <= 7) {
+                                        livePlayers++;
+                                    }
+                                } catch (ParseException e) {
+                                    Log.e(TAG, "Error parsing date: " + e.getMessage());
                                 }
-                                long diff = currentDate.getTime() - playerDate.getTime();
-                                long diffDays = diff / (24 * 60 * 60 * 1000);
-                                if (diffDays <= 7) {
-                                    livePlayers++;
-                                }
-                            } catch (ParseException e) {
-                                Log.e(TAG, "Error parsing date: " + e.getMessage());
                             }
                         }
-                    }
-                    get_GamesStats();
+                        get_GamesStats();
 
 
-                    livePlayersTextView.setText(getString(R.string.live_players, String.valueOf(livePlayers)));
-                    progressDialog.dismiss();
+                        livePlayersTextView.setText(getString(R.string.live_players, String.valueOf(livePlayers)));
+                        progressDialog.dismiss();
 
-                }, e -> {
-                    Log.e(TAG, "Error getting stats: " + e.getMessage());
-                    get_GamesStats();
-                });
+                    }, e -> {
+                        Log.e(TAG, "Error getting stats: " + e.getMessage());
+                        get_GamesStats();
+                    });
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting stats: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void get_GamesStats() {
-        firestore.getDocuments(CollectionsEnum.GAMES.getCollectionName(),
-                documents -> {
-                    int basketballGames = 0;
-                    int soccerGames = 0;
-                    int tennisGames = 0;
-                    for (Map<String, Object> document : documents) {
-                        GameModel game = new GameModel(document);
-                        if (game.getType() == GameTypeEnum.BASKETBALL) {
-                            basketballGames++;
-                        } else if (game.getType() == GameTypeEnum.SOCCER) {
-                            soccerGames++;
-                        } else if (game.getType() == GameTypeEnum.TENNIS) {
-                            tennisGames++;
+        try {
+            firestore.getDocuments(CollectionsEnum.GAMES.getCollectionName(),
+                    documents -> {
+                        int basketballGames = 0;
+                        int soccerGames = 0;
+                        int tennisGames = 0;
+                        for (Map<String, Object> document : documents) {
+                            GameModel game = new GameModel(document);
+                            if (game.getType() == GameTypeEnum.BASKETBALL) {
+                                basketballGames++;
+                            } else if (game.getType() == GameTypeEnum.SOCCER) {
+                                soccerGames++;
+                            } else if (game.getType() == GameTypeEnum.TENNIS) {
+                                tennisGames++;
+                            }
                         }
-                    }
-                    basketballGamesTextView.setText(getString(R.string.basketball_games, String.valueOf(basketballGames)));
-                    soccerGamesTextView.setText(getString(R.string.soccer_games, String.valueOf(soccerGames)));
-                    tennisGamesTextView.setText(getString(R.string.tennis_games, String.valueOf(tennisGames)));
-                }, e -> Log.e(TAG, "Error getting games stats: " + e.getMessage()));
+                        basketballGamesTextView.setText(getString(R.string.basketball_games, String.valueOf(basketballGames)));
+                        soccerGamesTextView.setText(getString(R.string.soccer_games, String.valueOf(soccerGames)));
+                        tennisGamesTextView.setText(getString(R.string.tennis_games, String.valueOf(tennisGames)));
+                    }, e -> Log.e(TAG, "Error getting games stats: " + e.getMessage()));
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting games stats: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.failed_fetch_data), Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
